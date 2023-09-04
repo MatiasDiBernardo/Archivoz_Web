@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST">
+  <h3>Información del Usuario</h3>
+  <p>Explicar porque necesitamos la info</p>
+  <div class="form-group">
+    <label for="Nombre">Nombre</label>
+    <input
+      type="text"
+      class="form-control"
+      id="nombre"
+      name="nombre"
+      placeholder="Ingresa tu nombre"
+    />
+  </div>
+  <div class="form-group">
+    <label for="Edad">Edad</label>
+    <input
+      type="text"
+      class="form-control"
+      id="edad"
+      name="edad"
+      placeholder="Ingresa tu edad"
+    />
+  </div>
+  <div class="form-group">
+    <label for="Sexo">Sexo</label>
+    <input
+      type="text"
+      class="form-control"
+      id="sexo"
+      name="sexo"
+      placeholder="Cambiar por un checkbox"
+    />
+  </div>
+  <div class="form-group">
+    <label for="Region">Region</label>
+    <input
+      type="text"
+      class="form-control"
+      id="region"
+      name="region"
+      placeholder="Ingresa tu región"
+    />
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Confirmar datos</button>
+</form>
+  <a href="recording">
+  <button>Dona tu voz</button>
+  </a>
+
+{% endblock %}

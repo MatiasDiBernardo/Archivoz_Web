@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/recording.css">
+    <title>Grabador de Audio</title>
+</head>
+<body>
+    <form method="POST">
+        <h1>Grabador de Audio</h1>
+        <button id="startButton">Iniciar Grabación</button>
+        <button id="stopButton" disabled>Detener Grabación</button>
+        <p>Total Recording Time: <span id="totalRecordingTimeDisplay">0:00</span></p>
+        <p id="recordingTimeDisplay">0:00</p>
+        <ul id="recordingsList"></ul>
+        <script src="../static/recording.js"></script>
+    </form>
+</body>
+</html>

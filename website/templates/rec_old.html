@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recorder Form</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Audio Recorder Form</h1>
+
+    <form id="audioForm">
+        <label for="audioRecording">Record Audio:</label>
+        <button id="startRecording">Start Recording</button>
+        <button id="stopRecording" disabled>Stop Recording</button>
+        <audio id="audioRecording" controls></audio>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        const audioForm = document.getElementById('audioForm');
+        const startRecordingButton = document.getElementById('startRecording');
+        const stopRecordingButton = document.getElementById('stopRecording');
+        const audioRecording = document.getElementById('audioRecording');
+
+        let mediaRecorder;
+        let audioChunks = [];
+
+        startRecordingButton.addEventListener('click', () => {
+            navigator.mediaDevices
+                .getUserMedia({ audio: true })
+                .then((stream) => {
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = (e) => {
+                        if (e.data.size > 0) {
+                            audioChunks.push(e.data);
+                        }
+                    };
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        audioRecording.src = URL.createObjectURL(audioBlob);
+                        audioRecording.controls = true;
+                        audioRecording.autoplay = false;
+                        audioRecording.muted = false;
+                    };
+                    mediaRecorder.start();
+                    startRecordingButton.disabled = true;
+                    stopRecordingButton.disabled = false;
+                })
+                .catch((error) => {
+                    console.error('Error accessing microphone:', error);
+                });
+        });
+
+        stopRecordingButton.addEventListener('click', () => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                startRecordingButton.disabled = false;
+                stopRecordingButton.disabled = true;
+            }
+        });
+
+        audioForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Attach the audio blob to a FormData object and submit it
+            const formData = new FormData();
+            formData.append('audioRecording', new Blob(audioChunks, { type: 'audio/wav' }));
+            
+            // Send the form data to the server using fetch or XMLHttpRequest
+            // Example using fetch:
+            fetch('/recording', {
+                method: 'POST',
+                body: formData,
+            })
+            .then((response) => {
+                // Handle the response from the server
+                console.log('Form submitted successfully');
+            })
+            .catch((error) => {
+                console.error('Error submitting form:', error);
+            });
+        });
+    </script>
+</body>
+</html>

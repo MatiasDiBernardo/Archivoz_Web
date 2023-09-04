@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>ArchiVoz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet"> 
+<!-- LETTERING -->
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"  />
+<script src="https://kit.fontawesome.com/d6cd842b44.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../static/src/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="../static/src/style.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon"> 
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+</head>
+
+<body>
+ 
+  <div class="scrollpos container-fluid p-0">
+    
+    <!-- NAVBAR -->
+    <div class="nav-container">
+      <nav class="navbar navbar-expand-lg navbar-dark">
+       
+
+        <div class="ellipsis_container" name="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent">
+          <i class="fas fa-ellipsis-h menuEllipsis"></i>
+        </div>
+        
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a href="/" class="nav-link"><span>Inicio</span></a>
+            </li>
+            <li class="nav-item">
+              <!-- <a href="src/common/clonar.html" class="nav-link">Clonar</a> -->
+              <a href="get-info" class="nav-link">
+                <span>Participar</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-toggle="modal" data-target="#contactoModal"><span>Contacto</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" id="info"><span>Info</span></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Modal clonar -->
+<div class="modal fade" id="clonarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content " >
+      <div class="modal-header bg-col">
+        <h5 class="modal-title" >#Clonar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body  bg-clonar bg-col">
+        <div>
+          <h1 class="display-4 text-center">Clona tu Voz</h1>
+          <h3 class="mt-5 mb-3 ">¿Cómo participar?</h3>
+          <p>1. Realizar una grabación leyendo algún texto en español, preferentemente de autorx argentinx</p>
+          <p>2. La grabación debe ser en formato wav y debe durar entre 30 minutos y 9 horas aproximadamente</p>
+          <p>3. El nombre del archivo debe estar nomenclado de la siguiente forma: <b>Nombre, apellido, nacionalidad,
+              provinicia y fecha</b></p>
+          <p>4. Ademas del archivo se deberá enviar un documento pdf o texto digital del texto leído</p>
+          <p>5. Enviar a <a
+              href="mailto:intercambiostransorganicos@gmail.com?subject=Archivoz">intercambiostransorganicos@gmail.com</a>
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer bg-col">
+      </div>
+    </div>
+  </div>
+</div>
+
+   <!-- Modal contacto -->
+  
+   <div class="modal fade" id="contactoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content " >
+        <div class="modal-header bg-col">
+          <h5 class="modal-title" >#Contacto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body  bg-clonar bg-col redes-bg">
+                
+          <div class="modal-content contactContent">
+            <a href="https://www.instagram.com/intercambios_transorganicos/"><i class="fab fa-instagram"></i></a>
+          </div>
+
+          <div class="modal-content contactContent">
+          <a href="https://www.facebook.com/intercambiostransorganicos"><i class="fab fa-facebook-f"></i></a> 
+          </div>
+            
+          <div class="modal-content contactContent">
+            <a href="mailto:intercambios.transorganicos@gmail.com"><i class="fas fa-at"></i></a>
+          </div>
+
+          <div class="modal-content contactContent">
+            <a href="https://intercambiostransorganicos.org/"><i class="far fa-window-restore"></i></a>
+          </div>
+          
+        </div>
+        <div class="modal-footer bg-col">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL TTS -->
+
+  <div class="modal fade" id="ttsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content " >
+        <div class="modal-header bg-col">
+          <h5 class="modal-title" >#Texto a voz</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body  bg-clonar bg-col">
+          <div>
+            <h1 class="display-4 text-center title_anim">Texto a Voz</h1>
+            <!-- <p class="lead text-center">Breve descripcion de la voz clonada</p> -->
+      
+            <form>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1"></label>
+                <textarea class="form-control mb-5" id="exampleFormControlTextarea1" placeholder="Escribi algo"></textarea>
+              </div>
+            </form>
+      
+          
+            <div class="d-flex justify-content-around">
+      
+              
+              <!-- <button type="button" class="btn btn-primary btn-lg mt-4" id="miBtn">Hablar</button> -->
+              <svg
+               xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16" id="playBtn">
+                <path fill-rule="evenodd" d="M10.804 8L5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+              </svg>
+      
+              <div class="d-flex justify-content-center" id="loader">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 681.19 135.43">
+                  <defs>
+                  <style>.cls-1{font-size:20px;font-family:IBMPlexMono-SemiBold, IBM Plex Mono;font-weight:600;}
+                  .cls-1,.cls-2{fill:#eeeeee;}
+                  .cls-2{font-size:32px;font-family:IBMPlexMono-Bold, IBM Plex Mono;font-weight:700;}
+                  .cls-3,.cls-4{fill:none;stroke-linecap:round;stroke-miterlimit:10;}
+                  .cls-3{stroke:#7d287d;stroke-width:57px}
+                  .cls-4{stroke:#95d0a4;stroke-width:38px;}
+                  </style>
+                  </defs>
+                  <text id="loader_message" class="cls-1" transform="translate(172.6 58.29)">Estamos procesando tu voz...</text>
+                  <text id="cargandotxt" class="cls-2" transform="translate(235 27.17)">Cargando...</text>
+                  <line class="cls-3" x1="28.5" y1="106.93" x2="652.69" y2="106.93"/>
+                  <line id = "carga" class="cls-4" x1="28.5" y1="106.93" x2="30" y2="106.93"/>
+                 
+                  </svg>
+              </div>
+      
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16" id="downloadBtn">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+              </svg>
+              
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-col">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUMBO CONTAINER -->
+
+    <div class="jumbotron" id="jumbo-canvas">
+
+      <h1 class="display-4 text-center titleAnim">ArchiVoz</h1>
+      <p class="lead text-center subAnim">Archivo de voces diversas</p>
+
+      <div class="overlay text-center">
+        <button type="button" class="btn btn-primary btn-lg miBtn">Comenzar</button>
+        <!-- CONTENEDOR AUDIOS -->
+        <div class=" audios"></div>
+      </div>
+
+      
+    </div>
+
+       <!-- INFO CONTAINER    -->
+  <div class=" info-container row " id="infosection">
+    
+      <div class="svg_container col-md-8 ">
+
+        <img class=" laringe" src="../statis/assets/SVG/laringe.svg" alt="">
+        <img class=" capas flor3" src="../statis/assets/SVG/flor3.svg" alt="">
+        <img class=" capas flor2" src="../statis/assets/SVG/flor2.svg" alt="">
+        <img class=" capas flor1" src="../statis/assets/SVG/flor1.svg" alt="">
+        
+        <i id="lg_tooltip" class=" capas fas fa-play-circle" data-toggle="tooltip" data-placement="top" title="Click!"></i>
+  
+  
+      </div>
+   
+      <div class="info-text col-md-8">
+        <p  class="tlt">Este archivo está destinado a recopilar grabaciones  de voces diversas.
+          Trabajamos con la voz como sonido que representa nuestra corporeidad,
+          Un modulo de nuestro sistema con el cual nos expresamos, nos relacionamos y tenemos la posibilidad de "resonar" en el entorno  .
+        
+          La idea  surgio con el animo de aportar soluciones a personas laringectomizadas, pero hoy en día se propone invitar a distintas identidades a la investigación de su propia diccion.
+  
+          Estas voces serán la  materia prima de un proceso técnico que podría devenir en la sintesis de una voz artificial o voz expandida.
+        </p>
+        
+      </div>
+  </div>
+  
+  </div>
+
+  
+  <!-- Footer -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    <a class="text-dark" href="https://intercambiostransorganicos.org/" target="_blank"><img src="../static/assets/logo.png"
+        alt="" width="100px"></a>
+  </div>
+
+<!-- SCRIPT -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/textillate/0.4.0/jquery.textillate.min.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+  <script src="../static/src/bootstrap/js/bootstrap.js" charset="utf-8"></script>
+  <script src="https://unpkg.com/wavesurfer.js"></script>
+  <script src="../static/src/js/data.js"></script>
+  <script src="../static/src/script.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="../static/src/js/req.js" ></script>
+  <script src="../static/src/js/gsapAnim.js" ></script>
+
+  </body>
+
+</html>
