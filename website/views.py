@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .utils import validate_user_data
+from .utils import validate_user_data, find_selected_text
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
 import os
@@ -22,7 +22,6 @@ def obtener_datos():
         mailUsuarioConfirmacion = request.form.get("mail2")
 
         data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, mailUsuario, mailUsuarioConfirmacion)
-        print("Error ", error_msj)
 
         if not data_validation:
             flash(error_msj, category='error')
@@ -34,6 +33,10 @@ def obtener_datos():
 
             id_user_for_session = newUser.id
 
+            #Lugar para crear la db de texto cuando sea necesario.
+            # from .text import create_text_db
+            # create_text_db()
+
             return redirect(url_for("views.grabacion", id_user=id_user_for_session))
 
     return render_template('get_info.html')
@@ -42,6 +45,10 @@ def obtener_datos():
 @views.route('/recording/<int:id_user>', methods=['GET', 'POST'])
 def grabacion(id_user):
     print("Id del usuario creado", id_user)
+    contador_frases = 0  #Opción para ir pasando las frases.
+    oracion = "Asistente de grabación"
+    dynamic_url =  f"/recording/{str(id_user)}"
+
     if request.method  == 'POST':
         if 'audioRecording' not in request.files:
             return 'No audio file provided', 400
@@ -51,14 +58,19 @@ def grabacion(id_user):
         if audio_file.filename == '':
             return 'No selected file', 400
 
-        wav_filename = os.path.join('uploads', f'audio_{id_user}.wav')
+        print("Estoy en el post de grabación")
+        oraciones = ["Hola como va", "No necesito las cosas", "Esto es una prueba"]
+        contador_frases += 0
+        oracion = oraciones[contador_frases%len(oracion)]
+        text_id = contador_frases
+        wav_filename = os.path.join('uploads', f'audio_{id_user}_{text_id}.wav')
         with open(wav_filename, 'wb') as wav_name:
             audio_file.save(wav_name)
         
         good_audio_conditons = False # Hacer función que chequee que se grabo bién
         if good_audio_conditons:
-            newRecording = Grabacion(usuario_id=id_user, texto_id=2, audio_path=wav_name)
+            newRecording = Grabacion(usuario_id=id_user, texto_id=2, audio_path=wav_filename)
             db.session.add(newRecording)
             db.session.commit()
 
-    return render_template('rec_old.html')
+    return render_template('rec_old.html', text_sentence=oracion, dynamic_url=dynamic_url)

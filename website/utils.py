@@ -1,4 +1,4 @@
-#from .models import Usuario
+from .models import Usuario, Texto
 
 """
 IMPORTANTE: Mirar las funciones de test es trampa. Se espera que el
@@ -18,6 +18,21 @@ Cosas a validar:
 Si se te ocurre algún caso mas lo podes agregar (suma puntos extra para la nota)
 """
 
+def find_selected_text(userID, source, autor):
+    """Esta función me devuelve un ID de texto según las preferencias del
+    usuario entre las opciones que se le dan a elegir de textos a leer.
+    Esta función también compara que el texto que se le de para leer al usuario
+    no se repita.
+
+    Args:
+        userID (int): ID del usuario activo en la sesión.
+        source (string): Fuente de origen del texto.
+        autor (string): Autor del texto. 
+    """
+    #Aca tengo que hacer los querys correspondientes y devolver un ID.
+    #Averiguar como hacer para poder tener acá el valor del ID que necesito
+    Texto.query.filter_by(autor=autor).first()
+
 def validate_user_data(nombre, edad, mail, mail_confirmacion):
     """Verifica si los datos que ingreso el usuario son válidos.
     Si algún dato no es válido devuelve False y un mensaje explicando
@@ -36,7 +51,7 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion):
 
     #Codigo para verificar si el mail que ingreso el usuario ya esta en la base de datos.
     #email_en_uso = Usuario.query.filter_by(mail=mail).first()
-    email_en_uso = False  #Por ahora
+    email_en_uso = False  #Asumir falso por ahora.
 
     validate = True
     mensaje = ""

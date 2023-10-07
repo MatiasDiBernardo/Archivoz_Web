@@ -10,6 +10,7 @@
 </head>
 <body>
     <h1>Audio Recorder Form</h1>
+    <p> {{text_sentence}}</p>
 
     <form id="audioForm">
         <label for="audioRecording">Record Audio:</label>
@@ -20,6 +21,8 @@
     </form>
 
     <script>
+        var dynamic_url_from_backend = JSON.parse('{{dynamic_url|tojson}}');
+        console.log(dynamic_url_from_backend);
         const audioForm = document.getElementById('audioForm');
         const startRecordingButton = document.getElementById('startRecording');
         const stopRecordingButton = document.getElementById('stopRecording');
@@ -71,7 +74,7 @@
             
             // Send the form data to the server using fetch or XMLHttpRequest
             // Example using fetch:
-            fetch('/recording', {
+            fetch( dynamic_url_from_backend , {
                 method: 'POST',
                 body: formData,
             })

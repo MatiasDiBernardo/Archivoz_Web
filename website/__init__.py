@@ -20,10 +20,14 @@ def create_app():
 
     from .models import Usuario, Texto, MapaVoces, Grabacion
 
+
     with app.app_context():
         db.create_all()
     
-        datos_actuales = Usuario.query.all()
-        print("Base de datos: ", datos_actuales)
+        datos_actuales_usuarios = Usuario.query.all()
+        print("Base de datos usuarios: ", datos_actuales_usuarios)
 
+        datos_actuales_textos = Texto.query.all()
+        print("Base de datos textos: ", datos_actuales_textos)
+    
     return app
