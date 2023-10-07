@@ -18,6 +18,20 @@ Cosas a validar:
 Si se te ocurre algún caso mas lo podes agregar (suma puntos extra para la nota)
 """
 
+def find_match_on_id(userID):
+    """Busca si el ID que el usuario ingreso es válido.
+
+    Args:
+        userID (int): ID del usuario.
+    """
+    val = True
+    idVal = Usuario.query.filter_by(id=userID).first()
+    if idVal:
+        val = False
+
+    return False
+
+
 def find_selected_text(userID, source, autor):
     """Esta función me devuelve un ID de texto según las preferencias del
     usuario entre las opciones que se le dan a elegir de textos a leer.
@@ -55,6 +69,10 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion):
 
     validate = True
     mensaje = ""
+
+    # if (int(edad) < 0):
+    #     validate = False 
+    #     mensaje = "Poner edad mayor a 0."
 
     return validate, mensaje
 

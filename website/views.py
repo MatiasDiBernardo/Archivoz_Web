@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .utils import validate_user_data, find_selected_text
+from .utils import validate_user_data, find_selected_text, find_match_on_id 
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
 import os
@@ -20,11 +20,14 @@ def obtener_datos():
         regionUsuario = request.form.get("region")
         mailUsuario = request.form.get("mail1")
         mailUsuarioConfirmacion = request.form.get("mail2")
+        idUsuarioAValidar = request.form.get("userID")
 
         data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, mailUsuario, mailUsuarioConfirmacion)
 
         if not data_validation:
             flash(error_msj, category='error')
+        elif (find_match_on_id(idUsuarioAValidar)):
+            return redirect(url_for("views.grabacion", id_user=idUsuarioAValidar))
         else:
             newUser = Usuario(nombre=nombreUsuario, edad=edadUsuario,
                               region=regionUsuario, mail=mailUsuario)
@@ -63,6 +66,7 @@ def grabacion(id_user):
         contador_frases += 0
         oracion = oraciones[contador_frases%len(oracion)]
         text_id = contador_frases
+        
         wav_filename = os.path.join('uploads', f'audio_{id_user}_{text_id}.wav')
         with open(wav_filename, 'wb') as wav_name:
             audio_file.save(wav_name)
