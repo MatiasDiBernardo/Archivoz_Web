@@ -47,7 +47,7 @@ def find_selected_text(userID, source, autor):
     #Averiguar como hacer para poder tener acá el valor del ID que necesito
     Texto.query.filter_by(autor=autor).first()
 
-def validate_user_data(nombre, edad, mail, mail_confirmacion):
+def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
     """Verifica si los datos que ingreso el usuario son válidos.
     Si algún dato no es válido devuelve False y un mensaje explicando
     cual es el error al ingresar el dato. Si todos los datos son
@@ -73,6 +73,13 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion):
     # if (int(edad) < 0):
     #     validate = False 
     #     mensaje = "Poner edad mayor a 0."
+
+    #Lo último es verificar si es que puso un ID, que ese ID exista
+    if (len(ID)) != 0:  #Si paso algo como ID
+        print("Aca el programa entendio que el user puso algo en la sección de ID")
+        if (not find_match_on_id(ID)):
+            validate = False
+            mensaje = "El ID de usuario ingresado no es válido."
 
     return validate, mensaje
 

@@ -14,19 +14,23 @@ def home():
 #Pagina donde el usuario pone sus datos para la grabación
 @views.route('/get-info', methods=['GET', 'POST'])
 def obtener_datos():
+    #Cuando el user pone "Confirmar datos" se ejecuta el POST
     if request.method == 'POST':
+        #Se guardan los datos que ingreso el usuario
         nombreUsuario = request.form.get("nombre")
         edadUsuario = request.form.get("edad")
         regionUsuario = request.form.get("region")
         mailUsuario = request.form.get("mail1")
         mailUsuarioConfirmacion = request.form.get("mail2")
+
+        #Validación de datos y de ID en caso de existir
         idUsuarioAValidar = request.form.get("userID")
+        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, mailUsuario, mailUsuarioConfirmacion, idUsuarioAValidar)
+        matchID = find_match_on_id(idUsuarioAValidar)
 
-        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, mailUsuario, mailUsuarioConfirmacion)
-
-        if not data_validation:
+        if not data_validation and not matchID:
             flash(error_msj, category='error')
-        elif (find_match_on_id(idUsuarioAValidar)):
+        elif (matchID):
             return redirect(url_for("views.grabacion", id_user=idUsuarioAValidar))
         else:
             newUser = Usuario(nombre=nombreUsuario, edad=edadUsuario,
@@ -34,7 +38,7 @@ def obtener_datos():
             db.session.add(newUser)
             db.session.commit()
 
-            id_user_for_session = newUser.id
+            id_user_for_session = newUser.user_id
 
             #Lugar para crear la db de texto cuando sea necesario.
             # from .text import create_text_db
@@ -45,12 +49,12 @@ def obtener_datos():
     return render_template('get_info.html')
 
 #Pagina donde se graba los audios
-@views.route('/recording/<int:id_user>', methods=['GET', 'POST'])
+@views.route('/recording/<string:id_user>', methods=['GET', 'POST'])
 def grabacion(id_user):
     print("Id del usuario creado", id_user)
     contador_frases = 0  #Opción para ir pasando las frases.
     oracion = "Asistente de grabación"
-    dynamic_url =  f"/recording/{str(id_user)}"
+    dynamic_url =  f"/recording/{id_user}"
 
     if request.method  == 'POST':
         if 'audioRecording' not in request.files:
