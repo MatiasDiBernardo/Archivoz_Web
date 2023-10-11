@@ -24,12 +24,14 @@ def find_match_on_id(userID):
     Args:
         userID (int): ID del usuario.
     """
-    val = True
-    idVal = Usuario.query.filter_by(id=userID).first()
-    if idVal:
-        val = False
+    val = False
+    idVal = Usuario.query.filter_by(user_id=userID).first()
+    print("El resultado de validar el ID es: ", idVal)
+    if idVal is not None:
+        print("Encontro que el id que hacer match es", idVal)
+        val = True
 
-    return False
+    return val
 
 
 def find_selected_text(userID, source, autor):
@@ -75,6 +77,7 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
     #     mensaje = "Poner edad mayor a 0."
 
     #Lo último es verificar si es que puso un ID, que ese ID exista
+    print("La Id ingresada es: ", ID)
     if (len(ID)) != 0:  #Si paso algo como ID
         print("Aca el programa entendio que el user puso algo en la sección de ID")
         if (not find_match_on_id(ID)):

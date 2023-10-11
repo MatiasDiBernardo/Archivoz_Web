@@ -5,7 +5,14 @@ from sqlalchemy.sql import func
 def random_ID():
     #Genero un ID random como string combinación de letras y numeros de 8 caracteres.
     id_ran = str(uuid.uuid4())
-    return id_ran[:7]  
+    id_ran = id_ran[:6].upper()
+
+    #Compruebo que el string generado sea único.
+    while Usuario.query.filter_by(user_id=id_ran).first() is not None:
+        id_ran = str(uuid.uuid4())
+        id_ran = id_ran[:6].upper()
+
+    return id_ran
 
 class MapaVoces(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,9 +31,7 @@ class Grabacion(db.Model):
         return f'<Grabacion: ID = {self.id} | Usuario asociado ID = {self.usuario_id}>'
 
 class Usuario(db.Model):
-    #Tengo que testear si funciona la implementación del ID random. 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String,  default=lambda: random_ID(), unique=True)
+    user_id = db.Column(db.String, default=lambda: random_ID(), unique=True, primary_key=True)
     nombre = db.Column(db.String(50))
     edad = db.Column(db.Integer)
     region = db.Column(db.String(100))
@@ -34,7 +39,7 @@ class Usuario(db.Model):
     grabaciones = db.relationship('Grabacion', backref='usuario')
 
     def __repr__(self):
-        return f'<Usuario: ID = {self.id} | Nombre = {self.nombre}> | User ID Real = {self.user_id} | Grabaciónes = {self.grabaciones}'
+        return f'User ID = {self.user_id} | Nombre = {self.nombre}> | Grabaciónes = {self.grabaciones}'
 
 class Texto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
