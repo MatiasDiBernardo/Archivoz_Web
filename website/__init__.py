@@ -12,11 +12,9 @@ def create_app():
     db.init_app(app)
 
     from .views import views
-    from .auth import auth
 
     #Asociamos el template que hago en views a el objeto app
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
 
     from .models import Usuario, Texto, MapaVoces, Grabacion
 

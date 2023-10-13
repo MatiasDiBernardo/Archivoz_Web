@@ -1,0 +1,211 @@
+.jumbotron {
+    height: 75vh;
+    position: static;
+}
+
+
+.formulario h3 {
+    font-family: 'Major Mono Display', monospace;
+    padding: 0.7em;
+    text-align: center;
+    font-weight: 600;
+}
+
+.formulario {
+    position: relative;
+    bottom: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background: #0DB39B;
+    border-radius: 6px;
+}
+
+.formulario form {
+    padding: 20px 40px;
+    box-sizing: border-box;
+
+}
+
+form .entrada {
+    position: relative;
+    border-bottom: 3px solid #224a4b;
+    margin: 30px 0;
+}
+
+.entrada input {
+    width: 100%;
+    padding: 0 5px;
+    height: 50px;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.entrada label {
+    position: absolute;
+    top: 1px;
+    left: 5px;
+    color: #224a4b;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.entrada span::before {
+    content: " ";
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #800080;
+    transition: .5s;
+}
+
+.entrada input:focus~label,
+.entrada input:focus~label {
+    top: -5px;
+    color: #800080;
+}
+
+.entrada input:focus~span::before,
+.entrada input:focus~span::before {
+    width: 100%;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #e7e7e7;
+    background-image: none;
+    flex: 1;
+    padding: 0 .5em;
+    color: #224a4b;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.seleccion {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #800080;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+.seleccion::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #800080;
+    cursor: pointer;
+    pointer-events: none;
+    transition: .25s all ease;
+}
+
+.seleccion:hover::after {
+    color: #23b499;
+}
+
+#Region {
+    font-family: "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.contenedor-boton {
+    text-align: right;
+}
+
+.boton-neon {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #224a4b;
+    letter-spacing: 2px;
+    font-size: 16px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: 0.2;
+}
+
+.boton-neon:hover {
+    background: #80358B;
+    color: #fff;
+    transition-delay: 1s;
+}
+
+.boton-neon span {
+    position: absolute;
+    display: block;
+}
+
+#span1 {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #80358B);
+}
+
+.boton-neon:hover #span1 {
+    left: 100%;
+    transition: 1s;
+}
+
+#span3 {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #80358B);
+}
+
+.boton-neon:hover #span3 {
+    right: 100%;
+    transition: 1s;
+    transition-delay: 0.5s;
+}
+
+#span2 {
+    top: -100%;
+    right: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, #80358B);
+}
+
+.boton-neon:hover #span2 {
+    top: 100%;
+    transition: 1s;
+    transition-delay: 0.25s;
+}
+
+#span4 {
+    bottom: -100%;
+    left: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(360deg, transparent, #80358B);
+}
+
+.boton-neon:hover #span4 {
+    bottom: 100%;
+    transition: 1s;
+    transition-delay: 0.72s;
+}

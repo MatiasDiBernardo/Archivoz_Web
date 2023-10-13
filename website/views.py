@@ -12,7 +12,7 @@ def home():
     return render_template('index.html')
 
 #Pagina donde el usuario pone sus datos para la grabación
-@views.route('/get-info', methods=['GET', 'POST'])
+@views.route('/registro_voces', methods=['GET', 'POST'])
 def obtener_datos():
     #Cuando el user pone "Confirmar datos" se ejecuta el POST
     if request.method == 'POST':
@@ -46,7 +46,7 @@ def obtener_datos():
 
             return redirect(url_for("views.grabacion", id_user=id_user_for_session))
 
-    return render_template('get_info.html')
+    return render_template('form.html')
 
 #Pagina donde se graba los audios
 @views.route('/recording/<string:id_user>', methods=['GET', 'POST'])
