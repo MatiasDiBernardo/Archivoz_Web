@@ -52,26 +52,24 @@ def obtener_datos():
 @views.route('/recording/<string:id_user>', methods=['GET', 'POST'])
 def grabacion(id_user):
     print("Id del usuario creado", id_user)
-    contador_frases = 0  #Opción para ir pasando las frases.
-    oracion = "Asistente de grabación"
     dynamic_url =  f"/recording/{id_user}"
 
     if request.method  == 'POST':
-        if 'audioRecording' not in request.files:
+        if 'file' not in request.files:
             return 'No audio file provided', 400
 
-        audio_file = request.files['audioRecording']
+        audio_file = request.files['file']
+        # La idea es que la parte de pasar el texto se maneje desde JS
+        # info_texto = request.files['title']
+        print("La info del title llego bien", request.form.get('texto'))
+        info_texto = request.form.get('texto')
+
+        print("Llego bien hasta el post")
 
         if audio_file.filename == '':
             return 'No selected file', 400
 
-        print("Estoy en el post de grabación")
-        oraciones = ["Hola como va", "No necesito las cosas", "Esto es una prueba"]
-        contador_frases += 0
-        oracion = oraciones[contador_frases%len(oracion)]
-        text_id = contador_frases
-        
-        wav_filename = os.path.join('uploads', f'audio_{id_user}_{text_id}.wav')
+        wav_filename = os.path.join('uploads', f'audio_{id_user}_{info_texto}.mp3')
         with open(wav_filename, 'wb') as wav_name:
             audio_file.save(wav_name)
         
@@ -81,4 +79,4 @@ def grabacion(id_user):
             db.session.add(newRecording)
             db.session.commit()
 
-    return render_template('rec_old.html', text_sentence=oracion, dynamic_url=dynamic_url)
+    return render_template('rec_old.html', dynamic_url=dynamic_url)
