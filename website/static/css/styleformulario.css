@@ -1,30 +1,73 @@
 .jumbotron {
-    height: 75vh;
+    height: 50vh;
     position: static;
 }
 
+.jumbotron h1 {
+    font-size: 3.75rem;
+}
+
+.jumbotron p {
+    font-size: 1.5rem;
+}
+
+.contenedor-externo {
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #800080;
+}
+
+.contenedor-externo-login {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #800080;
+}
+
+.formulario {
+    width: 550px;
+    height: 700px;
+    background: #0DB39B;
+    border-radius: 6px;
+}
+
+.formulario-login {
+    width: 550px;
+    height: 290px;
+    background: #0DB39B;
+    border-radius: 6px;
+}
 
 .formulario h3 {
     font-family: 'Major Mono Display', monospace;
+    font-size: 2rem;
     padding: 0.7em;
     text-align: center;
     font-weight: 600;
 }
 
-.formulario {
-    position: relative;
-    bottom: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px;
-    background: #0DB39B;
-    border-radius: 6px;
+.formulario-login h3 {
+    font-family: 'Major Mono Display', monospace;
+    font-size: 2rem;
+    padding: 0.7em;
+    text-align: center;
+    font-weight: 600;
 }
+
 
 .formulario form {
     padding: 20px 40px;
     box-sizing: border-box;
+}
 
+.formulario-login form {
+    padding: 20px 40px;
+    box-sizing: border-box;
 }
 
 form .entrada {
