@@ -93,6 +93,9 @@
             oracion.innerHTML = oraciones[cont];
             cont++;
 
+            // Hay un bug que se guardan en el back con retraso, osea el primer audio que aparece esta
+            // vacio y después aparecen los demás. Osea se puede usar igual pero hay que arreglarlo.
+            
             // Subir el audio a la web, probar usar ajax en vez de fetch
             const audioBlob2 = new Blob(audioChunks, { type: 'audio/mpeg-3' });
             var form = new FormData();
