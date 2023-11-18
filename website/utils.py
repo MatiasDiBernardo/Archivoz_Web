@@ -78,11 +78,13 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
 
     #Lo último es verificar si es que puso un ID, que ese ID exista
     print("La Id ingresada es: ", ID)
-    if (len(ID)) != 0:  #Si paso algo como ID
+    if ID is not None:  #Si paso algo como ID
         print("Aca el programa entendio que el user puso algo en la sección de ID")
         if (not find_match_on_id(ID)):
             validate = False
             mensaje = "El ID de usuario ingresado no es válido."
+    
+    print("El esto de validar es ", validate)
 
     return validate, mensaje
 
