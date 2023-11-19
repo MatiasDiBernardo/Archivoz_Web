@@ -35,6 +35,7 @@ def obtener_datos():
         else:
             newUser = Usuario(nombre=nombreUsuario, edad=edadUsuario,
                               region=regionUsuario, mail=mailUsuario)
+            
             db.session.add(newUser)
             db.session.commit()
 

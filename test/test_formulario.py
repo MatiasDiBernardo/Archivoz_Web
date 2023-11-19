@@ -29,10 +29,9 @@ def test_login_by_index(client, app):
     response = client.post("/registro_voces", data = 
         {"userID": ID_usuario})
 
-
     url = f"/recording/{ID_usuario}"
     print(response.history)
-    
+
     #Esta línea se asegura que si el cliente pasa un ID valido
     #ingrese a la sección de Grabación.
 

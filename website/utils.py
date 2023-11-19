@@ -66,25 +66,65 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
     """
 
     #Codigo para verificar si el mail que ingreso el usuario ya esta en la base de datos.
-    #email_en_uso = Usuario.query.filter_by(mail=mail).first()
     email_en_uso = False  #Asumir falso por ahora.
 
+    """
+    IMPORTANTE: Mirar las funciones de test es trampa. Se espera que el
+    alumno pueda resolver el problema con  sus conocimientos y creatividad. 
+    Para que la actividad se considere correcta al ejecutar el script todas las
+    pruebas tienen que ser válidas. Cuando todas las pruebas fueron superadas
+    exitosamente, aparecera el mensaje
+
+    Cosas a validar:
+    - Que el nombre no tenga ningún caracter raro 
+    - Que el nombre sea mayor a 4 caracteres y menor a 50.
+    Si se te ocurre algún caso mas lo podes agregar (suma puntos extra para la nota)
+    """
     validate = True
     mensaje = ""
 
-    # if (int(edad) < 0):
-    #     validate = False 
-    #     mensaje = "Poner edad mayor a 0."
-
-    #Lo último es verificar si es que puso un ID, que ese ID exista
-    print("La Id ingresada es: ", ID)
     if ID is not None:  #Si paso algo como ID
-        print("Aca el programa entendio que el user puso algo en la sección de ID")
         if (not find_match_on_id(ID)):
             validate = False
             mensaje = "El ID de usuario ingresado no es válido."
+        return validate, mensaje
+
+    email_en_uso = Usuario.query.filter_by(mail=mail).first()
+    if (email_en_uso is not None):
+        validate = False
+        mensaje = "El mail ingresado ya tiene un ID asociado. Por favor, ingrese su ID para retomar su sesión."
+        return validate, mensaje
     
-    print("El esto de validar es ", validate)
+    if (mail != mail_confirmacion):
+        validate = False
+        mensaje = "Los mail tienen que ser iguales."
+        return validate, mensaje
+    
+    if ("@" not in mail):
+        validate = False
+        mensaje = "Ingrese un mail válido."
+        return validate, mensaje
+    
+    if (len(mail) < 3 or len(mail) > 150):
+        validate = False
+        mensaje = "Ingrese un mail válido."
+        return validate, mensaje
+    
+    if (len(nombre) < 2 or len(nombre) > 120):
+        validate = False
+        mensaje = "Ingrese un nombre válido."
+        return validate, mensaje
+
+# Faltaría controlar si la edad no es un entero pero esta controlado en el campo creo
+    if (int(edad) < 0):
+        validate = False 
+        mensaje = "Poner edad mayor a 0."
+        return validate, mensaje
+
+    if (int(edad) > 200):
+        validate = False 
+        mensaje = "Poner una edad menor a 200."
+        return validate, mensaje
 
     return validate, mensaje
 
@@ -99,7 +139,7 @@ def test_caso_correcto():
     mail = "matias.di.bernardo@hotmail.com"
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
 
     return validate, msj
 
@@ -109,7 +149,7 @@ def test_caso_incorrecto1():
     mail = "matias.di.bernardo@hotmail.com"
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
     msj_error = "El nombre quedo vacio y no esta chequeado."
 
     return validate, msj, msj_error
@@ -120,7 +160,7 @@ def test_caso_incorrecto2():
     mail = "matias.di.bernardo@hotmail.com"
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
     msj_error = "El nombre es damasiado lago y no esta chequeado."
 
     return validate, msj, msj_error
@@ -131,7 +171,7 @@ def test_caso_incorrecto3():
     mail = "matias.di.bernardo@hotmail.com"
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
     msj_error = "La edad es negativa y no esta chequeado."
 
     return validate, msj, msj_error
@@ -142,7 +182,7 @@ def test_caso_incorrecto4():
     mail = "matias.di.bernardo@hotmail.com"
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
     msj_error = "La edad es demasiado grande y no esta chequeado."
 
     return validate, msj, msj_error
@@ -153,7 +193,7 @@ def test_caso_incorrecto5():
     mail = ""
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
     msj_error = "El mail esta vacío y no esta chequeado"
 
     return validate, msj, msj_error
@@ -164,7 +204,7 @@ def test_caso_incorrecto6():
     mail = "matias.di.bernrdo@hotmail.com"
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
     msj_error = "El mail de confirmación no es igual."
 
     return validate, msj, msj_error
@@ -175,7 +215,7 @@ def test_caso_incorrecto7():
     mail = "matias.di.bernrdohotmailcom"
     mail2 = "matias.di.bernardo@hotmail.com"
 
-    validate, msj = validate_user_data(nombre, edad, mail, mail2)
+    validate, msj = validate_user_data(nombre, edad, mail, mail2, None)
     msj_error = "El mail no tiene estructura de mail."
 
     return validate, msj, msj_error
@@ -189,7 +229,7 @@ def eval_test(func, cont):
         print(f"Paso Prueba {cont}/7")
 
 def test():
-    cont = 0
+    cont = 2
     eval_test(test_caso_incorrecto1, cont)
     eval_test(test_caso_incorrecto2, cont)
     eval_test(test_caso_incorrecto3, cont)
@@ -201,4 +241,3 @@ def test():
     if cont == 7 and val:
         print("Pasaron todas las pruebas exitosamente.")
     
-#test()
