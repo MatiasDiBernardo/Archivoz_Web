@@ -26,9 +26,7 @@ def find_match_on_id(userID):
     """
     val = False
     idVal = Usuario.query.filter_by(user_id=userID).first()
-    print("El resultado de validar el ID es: ", idVal)
     if idVal is not None:
-        print("Encontro que el id que hacer match es", idVal)
         val = True
 
     return val
