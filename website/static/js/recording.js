@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteBtn = document.getElementById('borrarGrabacion');
     const sendBtn = document.getElementById('enviarGrabacion');
 
+    const circulo = document.querySelector('section .contenedor-grab-cant .esta-grabando .circulo-rojo');
+
     const counterDisplay = document.getElementById('contador');
 
     let audioSentCount = localStorage.getItem('audioSentCount') || 0;
@@ -21,6 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
       audio.src = '';
       toggleDeleteButton();
     }
+
+    function mostrarCirculoRojo() {
+      circulo.style.opacity = '1';
+    }
+    
+    function ocultarCirculoRojo() {
+      circulo.style.opacity = '0';
+    }
   
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
@@ -32,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
   
         mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(chunks, { type: 'audio/mp3' });
+          const audioBlob = new Blob(chunks, { type: 'audio/wav' });
           const audioURL = URL.createObjectURL(audioBlob);
           audio.src = audioURL;
           toggleDeleteButton();
@@ -43,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   
     startBtn.addEventListener('click', () => {
+      mostrarCirculoRojo();
       clearRecording();
       mediaRecorder.start();
       startBtn.disabled = true;
@@ -52,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     stopBtn.addEventListener('click', () => {
+      ocultarCirculoRojo();
       mediaRecorder.stop();
       startBtn.disabled = false;
       stopBtn.disabled = true;
@@ -60,20 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     deleteBtn.addEventListener('click', () => {
-      if (mediaRecorder.state === 'inactive') {
-        clearRecording();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        deleteBtn.disabled = true
-        sendBtn.disabled = true;
-      } else {
+      ocultarCirculoRojo();
+      if (mediaRecorder.state != 'inactive') {
         mediaRecorder.stop();
-        clearRecording();
+      } 
+        mediaRecorder.stop();
         startBtn.disabled = false;
         stopBtn.disabled = true;
         deleteBtn.disabled = true;
         sendBtn.disabled = true;
-      }
+      clearRecording();
     });
   
     sendBtn.addEventListener('click', () => {
@@ -85,6 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
         counterDisplay.textContent = audioSentCount;
         clearRecording();
       }, 2000);
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      deleteBtn.disabled = true;
+      sendBtn.disabled = true;
     });
     clearRecording();
     startBtn.disabled = false;

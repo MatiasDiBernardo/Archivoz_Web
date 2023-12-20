@@ -129,7 +129,7 @@ section .contenedor-grab-cant .esta-grabando .circulo-rojo {
     top: 15px;
     background: #FF0000;
     border-radius: 9999px;
-
+    opacity: 0;
 }
 
 section .contenedor-grab-cant .cantidad-grabaciones {
@@ -243,4 +243,8 @@ section .contenedor-contenedor .contenedor-botones .enviar {
 button:disabled:hover {
     background-color: #ff4d4d;
     cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    cursor: pointer;
 }
