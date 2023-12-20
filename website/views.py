@@ -80,4 +80,4 @@ def grabacion(id_user):
             db.session.add(newRecording)
             db.session.commit()
 
-    return render_template('recording.html', dynamic_url=dynamic_url)
+    return render_template('recording.html')
