@@ -52,20 +52,14 @@ def obtener_datos():
 #Pagina donde se graba los audios
 @views.route('/recording/<string:id_user>', methods=['GET', 'POST'])
 def grabacion(id_user):
-    print("Id del usuario creado", id_user)
-    dynamic_url =  f"/recording/{id_user}"
 
     if request.method  == 'POST':
         if 'file' not in request.files:
             return 'No audio file provided', 400
 
-        audio_file = request.files['file']
         # La idea es que la parte de pasar el texto se maneje desde JS
-        # info_texto = request.files['title']
-        print("La info del title llego bien", request.form.get('texto'))
+        audio_file = request.files['file']
         info_texto = request.form.get('texto')
-
-        print("Llego bien hasta el post")
 
         if audio_file.filename == '':
             return 'No selected file', 400
@@ -76,7 +70,7 @@ def grabacion(id_user):
         
         good_audio_conditons = False # Hacer función que chequee que se grabo bién
         if good_audio_conditons:
-            newRecording = Grabacion(usuario_id=id_user, texto_id=2, audio_path=wav_filename)
+            newRecording = Grabacion(usuario_id=id_user, texto_id=info_texto, audio_path=wav_filename)
             db.session.add(newRecording)
             db.session.commit()
 
