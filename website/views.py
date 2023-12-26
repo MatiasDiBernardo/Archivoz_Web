@@ -41,10 +41,6 @@ def obtener_datos():
 
             id_user_for_session = newUser.user_id
 
-            #Lugar para crear la db de texto cuando sea necesario.
-            # from .text import create_text_db
-            # create_text_db()
-
             return redirect(url_for("views.grabacion", id_user=id_user_for_session))
 
     return render_template('form.html')
@@ -53,16 +49,28 @@ def obtener_datos():
 @views.route('/recording/<string:id_user>', methods=['GET', 'POST'])
 def grabacion(id_user):
 
+    # Se fija si el usario ya tiene un perfil de grabación.
+
+    # user_object = Usuario.query.filter_by(user_id=id_user).first()
+    # list_recordings = user_object.grabaciones
+    # if len(list_recordings) != 0:
+    #     last_recording = list_recordings[-1]
+    #     previous_recording = True
+    # previous_recording = False
+
     if request.method  == 'POST':
+
+        # # Me dice que autor selecionó
+        # autor_selecionado = request.form.get('autor')
+
         if 'file' not in request.files:
             return 'No audio file provided', 400
 
-        # La idea es que la parte de pasar el texto se maneje desde JS
-        audio_file = request.files['file']
-        info_texto = request.form.get('texto')
-
         if audio_file.filename == '':
             return 'No selected file', 400
+
+        audio_file = request.files['file']
+        info_texto = request.form.get('texto')
 
         wav_filename = os.path.join('uploads', f'audio_{id_user}_{info_texto}.mp3')
         with open(wav_filename, 'wb') as wav_name:

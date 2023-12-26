@@ -1,6 +1,6 @@
 import os
 
-# By design lonegest sentece could be UPPER_WPS + UNDER_WPS
+# By design lonegest sentece could contain up to (UPPER_WPS + UNDER_WPS) words
 UPPER_WPS = 40
 UNDER_WPS = 10
 
@@ -34,7 +34,8 @@ def split_by_dots(sentence):
 
 def split_by_commas(sentence):
     """If the lenght of the sentence is to long it split it 
-    by commas separation.
+    by commas separation. It algo add the commas for future 
+    reconstruiction.
 
     Args:
         s (list): List of sentences separated by dots.
@@ -107,9 +108,12 @@ def clean_white_space(norm_sentences):
     for s in norm_sentences:
         if s[0] == " ":
             final_norm_sentences.append(s[1:])
+        else:
+            final_norm_sentences.append(s)
+
     return final_norm_sentences
 
-def show_results(wps_original, norm_sentences):
+def show_results(norm_sentences, wps_original):
     print("Words per sentece before norm")
     print(wps_original)
     print("Average: ", sum(wps_original)/len(wps_original))
@@ -125,17 +129,23 @@ def show_results(wps_original, norm_sentences):
     print(" -------------- ")
     print(norm_sentences)
 
-filename_txt = "Octaedro-Julio_Cortazar-Liliana_Llorando.txt"
+def text_segmentation(path):
+    with open(path, encoding="utf8") as f:
+        content = f.read() # Read the whole file
+        sentence = content.split('.') # a list of all sentences
+        sentence.pop()  #En este caso el último estaba vacio, ver si generaliza o no
+
+        words_per_sentence_count, sentence_with_dots = split_by_dots(sentence)
+        words_per_sentence_count2, sentence_with_comma = split_by_commas(sentence_with_dots)
+        normalize_sentence = combine_micro_sentences(sentence_with_comma)
+        normalize_sentence = clean_white_space(normalize_sentence)
+    
+    return normalize_sentence, words_per_sentence_count
+
+# Change the txt path to see the words per sentence distribution
+
+filename_txt = "texto_prueba_archivoz.txt"
 path = os.path.join("text", "raw_data", filename_txt)
 
-with open(path, encoding="utf8") as f:
-    content = f.read() # Read the whole file
-    sentence = content.split('.') # a list of all sentences
-    sentence.pop()  #En este caso el último estaba vacio, ver si generaliza o no
-
-    words_per_sentence_count, sentence_with_dots = split_by_dots(sentence)
-    words_per_sentence_count2, sentence_with_comma = split_by_commas(sentence_with_dots)
-    normalize_sentence = combine_micro_sentences(sentence_with_comma)
-    normalize_sentence = clean_white_space(normalize_sentence)
-
-show_results(words_per_sentence_count, normalize_sentence)
+norm_sentence, wps_count = text_segmentation(path)
+show_results(norm_sentence, wps_count)

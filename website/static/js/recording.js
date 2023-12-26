@@ -97,15 +97,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     sendBtn.addEventListener('click', () => {
-      // El cambio del texto tiene que ir en esta sección. 
-      // Se puede manejar desde acá (JS) o desde el back con Jinja
-      let oracionID = audioSentCount.toString();
+      // textID es un string que tiene el siguiente formato
+      // "autor_libro_cuento_IdOracion" donde IdOracion corresponde al indice
+      // de la oración en el csv.
+      // Ejemplo: "Cortazar_Octaedro_Liliana LLorando_123"
+
+      // Cuando se registra un usuario nuevo, desde el back te llega la información
+      // de que ese usuario no tiene un estado previo de grabación, en este caso el 
+      // textID tiene que ser Archivoz_idOracion.
+      // Ejemplo: Archivoz_23
+      let textID = audioSentCount.toString();
 
       // POST to backend 
       const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
       var form = new FormData();
       form.append('file', audioBlob2, 'data.mp3');
-      form.append('texto', oracionID);
+      form.append('texto', textID);
       //Chrome inspector shows that the post data includes a file and a title.
       $.ajax({
           type: 'POST',
