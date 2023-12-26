@@ -1,14 +1,13 @@
 # Archivoz_Web
-Local host test for the Archivoz website.
 
 _Archivoz_ es un proyecto de [Intercambios Transorgánicos](https://intercambiostransorganicos.org/), equipo de diseño y desarrollo de interfaces.
 El interés principal de este proyecto es reinterpretar y colaborar con comprender problemáticas sociales, y en particular, del campo de la salud vocal.
 La App _“Archivoz”_ es un archivo de voces dinámico que funciona como un _sistema de visualización de datos y como una aplicación “text to speech”._
 
-![Intro](website\static\img\Intro_archivoz.PNG)
+![Intro](https://github.com/MatiasDiBernardo/Archivoz_Web/blob/master/website/static/img/Intro_archivoz.PNG)
 
 ### Instrucciones
-1. Descargar VS Code
+1. Descargar VS Code o el IDE de preferencia
 2. Descargar la última versión de python 
 3. Descargar Git
 4. Configurar Git (name and email)
