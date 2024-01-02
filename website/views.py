@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .utils import validate_user_data, find_selected_text, find_match_on_id 
+from .utils import validate_user_data, change_author_by_selection, find_match_on_id, update_text_on_screen 
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
 import os
@@ -50,18 +50,25 @@ def obtener_datos():
 def grabacion(id_user):
 
     # Se fija si el usario ya tiene un perfil de grabación.
+    user_object = Usuario.query.filter_by(user_id=id_user).first()
+    list_recordings = user_object.grabaciones
+    list_texts = [g.texto_id for g in list_recordings]  # List of string with texts ids
+    num_recordings = len(list_recordings)
 
-    # user_object = Usuario.query.filter_by(user_id=id_user).first()
-    # list_recordings = user_object.grabaciones
-    # if len(list_recordings) != 0:
-    #     last_recording = list_recordings[-1]
-    #     previous_recording = True
-    # previous_recording = False
+    print("El numero de grabaciones es de: ", num_recordings)
+
+    if num_recordings != 0:
+        # Acá estaría sobre escribiendo un audio (chequear que no se rompe nada.)
+        text_to_read = list_texts[-1]
+    else:
+        # If the user doesn't have recordings start with  Archivoz
+        text_to_read = "Archivoz_4_0"
+
+    # Cuando el user acceda a esta página que le salga su última grabación y el número de grabaciones
+    if request.method == 'GET':
+        return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_read)
 
     if request.method  == 'POST':
-
-        # # Me dice que autor selecionó
-        # autor_selecionado = request.form.get('autor')
 
         if 'file' not in request.files:
             return 'No audio file provided', 400
@@ -69,9 +76,25 @@ def grabacion(id_user):
         if audio_file.filename == '':
             return 'No selected file', 400
 
+        # Data access with the form
         audio_file = request.files['file']
         info_texto = request.form.get('texto')
+        author_selected = request.form.get('autor')
 
+        # Hice una implementación de la parte de texto sin base de datos porque creí que
+        # sería mas fácil y si bien fue mas rápido quedo bastante desprolijo a nivel código.
+        # Así que dejo esta sección para refactor mas adelante.
+        # Otra cosa a arreglar es que si cambias de autor se acualiza después de leer otra 
+        # frase del autor viejo.
+
+        # Update text to display on screen
+        current_author = info_texto.split("_")[0]  
+        if current_author != 'Archivoz' and current_author != author_selected:   
+            text_to_read = change_author_by_selection(author_selected, list_texts)
+        else:
+            text_to_read = update_text_on_screen(info_texto, author_selected, list_texts)
+
+        # Save audio file to local storage
         wav_filename = os.path.join('uploads', f'audio_{id_user}_{info_texto}.mp3')
         with open(wav_filename, 'wb') as wav_name:
             audio_file.save(wav_name)
@@ -82,4 +105,4 @@ def grabacion(id_user):
             db.session.add(newRecording)
             db.session.commit()
 
-    return render_template('recording.html')
+    return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_read)

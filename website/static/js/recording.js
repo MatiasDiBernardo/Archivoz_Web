@@ -97,16 +97,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     sendBtn.addEventListener('click', () => {
+      // Aclaración: Recordá que yo te paso desde el back número de grabaciones (int) y texto a leer (string), 
+      // lo que explico a continuación es para que entiendas como funciona, pero vos solo tenes que mandarme de
+      // vuelta el string text_to_read en el post asociado en esa variable textID.
+
       // textID es una variable string que me asocia la información del audio que se
-      // manda al back. El formato es "autor_libro_cuento_IdOración" donde autor libro y cuento
-      // viene especificado en la json en ese order con los textos y el IdOración es el indice 
+      // manda al back. El formato es "autor_libro_cuento_IdMax_IdOración" donde autor libro y cuento
+      // viene especificado en el json en ese order con los textos y el IdOración es el indice 
       // de la frase que se esta mostando cuando se grabó el audio.
-      // Ejemplo con indice 12: "Cortazar_Octaedro_Liliana LLorando_12"
+      // Ejemplo con indice 12: "Cortazar_Octaedro_Liliana LLorando_174_12"
 
       // Cuando se registra un usuario nuevo, desde el back te llega la información
       // de que ese usuario no tiene un estado previo de grabación, en este caso el texto a mostrar
-      // es Archivoz.json, y textID tiene que ser: Archivoz_IdOracion 
-      // Ejemplo: Archivoz_23
+      // es Archivoz.json, y textID tiene que ser: Archivoz_IdMax_IdOracion 
+      // Ejemplo para la primera oración: Archivoz_4_0
       let textID = audioSentCount.toString();
 
       // POST to backend 

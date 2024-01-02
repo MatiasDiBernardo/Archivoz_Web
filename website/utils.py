@@ -1,4 +1,6 @@
 from .models import Usuario, Texto
+import os
+import random 
 
 def find_match_on_id(userID):
     """Busca si el ID que el usuario ingreso es válido.
@@ -12,25 +14,6 @@ def find_match_on_id(userID):
         val = True
 
     return val
-
-
-def find_selected_text(userID, source, autor):
-    """Esta función me devuelve un ID de texto según las preferencias del
-    usuario entre las opciones que se le dan a elegir de textos a leer.
-    Esta función también compara que el texto que se le de para leer al usuario
-    no se repita.
-
-    Args:
-        userID (int): ID del usuario activo en la sesión.
-        source (string): Fuente de origen del texto.
-        autor (string): Autor del texto. 
-    """
-    # Una opción es hacear distintos csv por autor y según lo que el user elija
-    # se van a mostrar diferentes textos.
-
-    #Aca tengo que hacer los querys correspondientes y devolver un ID.
-    #Averiguar como hacer para poder tener acá el valor del ID que necesito
-    Texto.query.filter_by(autor=autor).first()
 
 def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
     """Verifica si los datos que ingreso el usuario son válidos.
@@ -102,3 +85,85 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
         return validate, mensaje
 
     return validate, mensaje
+
+def change_author_by_selection(target_author, list_texts):
+    return choose_random_text_by_autor(target_author, list_texts)
+    return "On hold"
+
+def choose_random_author(list_texts):
+    """Chooses a random author and makes sure that the choosen author is not 
+    already readed by the user.
+
+    Args:
+        list_texts (list): 
+    """
+    # Esta magia me tendría que dejar solo los autores que el user yá leyo.
+    already_readed_authors = list(set([a.split("_")[0] for a in list_texts]))
+    all_authors_avaliable = os.listdir(os.path.join("text", "process_data"))
+    all_authors_avaliable.remove("Archivoz")  # Por si acaso, en teoría se borraría igual con el for
+
+    for author in already_readed_authors:
+        if author in all_authors_avaliable:
+            all_authors_avaliable.remove(author)
+    
+    # Falta contemplar caso donde ya leyo todos los autores.
+    
+    return random.choice(all_authors_avaliable)
+
+def choose_random_text_by_autor(author, list_texts):
+    already_readed = []
+    for t in list_texts:
+        text_splitted = t.split("_")
+        if text_splitted[0] == author:
+            new_text = f"{text_splitted[0]}_{text_splitted[1]}_{text_splitted[2]}_{text_splitted[3]}.json"
+            already_readed.append(new_text)
+    
+    already_readed = list(set(already_readed))  #Lista de archivos que ya leyo
+
+    all_text_of_the_author = os.listdir(os.path.join("text", "process_data", author))
+
+    for read in already_readed:
+        if read in all_text_of_the_author:
+            all_text_of_the_author.remove(read)
+        
+    select_text = random.choice(all_text_of_the_author)
+    new_text = f"{select_text.split('.')[0]}_0"  # Delete .json and add cero index
+    
+    return new_text 
+
+def update_text_on_screen(current_text, target_author, list_texts):
+    text_splitted = current_text.split("_")
+    current_text_index = text_splitted[-1] 
+    max_text_index = text_splitted[-2] 
+
+    # Update the index until the user read all the content 
+    if current_text_index != max_text_index:
+        if text_splitted[0] == "Archivoz":
+            add_index = int(text_splitted[-1]) + 1
+            new_text = f"{text_splitted[0]}_{text_splitted[1]}_{str(add_index)}"
+
+        else:
+            add_index = int(text_splitted[-1]) + 1
+            new_text = f"{text_splitted[0]}_{text_splitted[1]}_{text_splitted[2]}_{text_splitted[3]}_{str(add_index)}"
+
+        return new_text
+    
+    # Choose randomly other book or author.
+    else:
+        # If not author selected, choose randomly 
+        if target_author is None:
+            new_author = choose_random_author(list_texts)
+            new_text = choose_random_text_by_autor(new_author, list_texts)
+
+            return new_text
+        
+        # Pick one text from the choosen author randomly
+        else:
+            new_text = change_author_by_selection(target_author, list_texts)
+
+            return new_text
+
+
+
+
+

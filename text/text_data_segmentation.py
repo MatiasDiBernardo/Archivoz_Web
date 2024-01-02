@@ -34,8 +34,8 @@ def split_by_dots(sentence):
 
 def split_by_commas(sentence):
     """If the lenght of the sentence is to long it split it 
-    by commas separation. It algo add the commas for future 
-    reconstruiction.
+    by commas separation. It also add the commas for future 
+    reconstruction.
 
     Args:
         s (list): List of sentences separated by dots.
@@ -148,4 +148,4 @@ filename_txt = "texto_prueba_archivoz.txt"
 path = os.path.join("text", "raw_data", filename_txt)
 
 norm_sentence, wps_count = text_segmentation(path)
-show_results(norm_sentence, wps_count)
+# show_results(norm_sentence, wps_count)

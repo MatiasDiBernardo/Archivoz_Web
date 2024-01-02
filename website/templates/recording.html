@@ -16,6 +16,17 @@
     <title>Asistente de grabacion</title>
 </head>
 
+<!-- Te dejo acá los dos valores que te paso desde el back. Movelos a donde los necesites -
+num_recorgins: Es un int que contiene el número de grabaciones del usuario
+text_to_read: Es un string que contiene el ID del texto a mostrar. El ID viene como Autor_Libro_Cuento_MaxIndex_Index 
+La idea es que con este indice puedas buscar en los archivos el JSON con la data y buscar la frase en la posición
+Index y así mostrar ese string en pantalla.
+Ejemplo de ID: "Cortazar_Octaedro_Liliana LLorando_174_12"
+-->
+
+<div>{{num_recordings}}</div>
+<div>{{text_to_read}}</div>
+
 <body>
     <header>
         <nav>
