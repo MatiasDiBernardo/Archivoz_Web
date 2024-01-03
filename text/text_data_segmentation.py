@@ -82,24 +82,35 @@ def combine_micro_sentences(sentence):
 
     final_sentence_list = []
     add_sentence = ""
+
     for i in range(len(sentence) - 1):
         s = sentence[i]
+        # Skip if a punctuation
         if s == "," or s == ".":
             continue 
 
         s = add_sentence + s
         wps = words_per_sentece(s)
 
+        # If is over the criteria adds the punctuation and appends it
         if wps > UNDER_WPS:
             if sentence[i + 1] != ".":
                 final_sentence_list.append(s)
                 add_sentence = ""
+                continue
             else:
                 final_sentence_list.append(s + ".")
                 add_sentence = ""
-        
-        if wps <= UNDER_WPS:
-            add_sentence += s + sentence[i + 1]
+                continue
+
+        # If its under the length criteria save it
+        if add_sentence == "":
+            if wps <= UNDER_WPS:
+                add_sentence += s + sentence[i + 1]
+        # Accouns for consecutive under wps
+        else:
+            if wps <= UNDER_WPS:
+                add_sentence = s + sentence[i + 1]
 
     return final_sentence_list 
 
@@ -132,20 +143,32 @@ def show_results(norm_sentences, wps_original):
 def text_segmentation(path):
     with open(path, encoding="utf8") as f:
         content = f.read() # Read the whole file
-        sentence = content.split('.') # a list of all sentences
-        sentence.pop()  #En este caso el último estaba vacio, ver si generaliza o no
+        content = content.replace("\n", " ")  # Replace the jumps in line
+        sentence = content.split('.') # List of all sentences
+        sentence.pop()  # En este caso el último estaba vacio, ver si generaliza o no
 
         words_per_sentence_count, sentence_with_dots = split_by_dots(sentence)
         words_per_sentence_count2, sentence_with_comma = split_by_commas(sentence_with_dots)
         normalize_sentence = combine_micro_sentences(sentence_with_comma)
         normalize_sentence = clean_white_space(normalize_sentence)
+
+        normalize_sentence = [n.replace("......", "...") for n in normalize_sentence] # By desing if ... appears it changes to ......
     
     return normalize_sentence, words_per_sentence_count
 
+def text_clean(file_path):
+    with open(file_path, 'r', encoding="utf8") as file:
+        content = file.read()
+
+    modified_content = content.replace('\n', ' ')
+
+    with open(file_path, 'w') as file:
+        file.write(modified_content)
+
 # Change the txt path to see the words per sentence distribution
 
-filename_txt = "texto_prueba_archivoz.txt"
-path = os.path.join("text", "raw_data", filename_txt)
+# filename_txt = "Jorge Luis Borges_El Aleph_El Aleph_olld.txt"
+# path = os.path.join("text", "raw_data", filename_txt)
 
-norm_sentence, wps_count = text_segmentation(path)
+# norm_sentence, wps_count = text_segmentation(path)
 # show_results(norm_sentence, wps_count)
