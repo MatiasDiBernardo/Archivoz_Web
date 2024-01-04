@@ -25,6 +25,7 @@ class Grabacion(db.Model):
     fecha = db.Column(db.DateTime(timezone=True), default=func.now())
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.user_id'))
     texto_id = db.Column(db.Integer, db.ForeignKey('texto.id'))
+    text_display = db.Column(db.String(200))
     audio_path = db.Column(db.String(200))
 
     def __repr__(self):

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const counterDisplay = document.getElementById('contador');
     // Estaría bueno que este dato se lo pasemos desde el back, así si un user entre de nuevo tiene
     // guardado la cantidad de audios que aportó. Es mejor que tenerlo en el local storage.
-    var audioSentCount = "{{ num_recordings }}";
+    var audioSentCount = "{{num_recorgins}}}}";
     counterDisplay.textContent = audioSentCount;
 
     // Backend var
@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
           contentType: false
       }).done(function(data) {
           console.log(data);
+
       });
   
       // Visual update
