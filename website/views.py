@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from .utils import validate_user_data, change_author_by_selection, find_match_on_id, update_text_on_screen 
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
@@ -66,7 +66,11 @@ def grabacion(id_user):
 
     # Cuando el user acceda a esta página que le salga su última grabación y el número de grabaciones
     if request.method == 'GET':
-        return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_read)
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({'num_recordings': num_recordings, 'text_to_read': text_to_read})
+        else:
+            return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_read, id_user=id_user)
+
 
     if request.method  == 'POST':
 
@@ -105,4 +109,7 @@ def grabacion(id_user):
             db.session.add(newRecording)
             db.session.commit()
 
-    return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_read)
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({'num_recordings': num_recordings, 'text_to_read': text_to_read})
+    else:
+        return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_read, id_user=id_user)

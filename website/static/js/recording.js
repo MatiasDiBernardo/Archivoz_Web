@@ -1,5 +1,28 @@
+function obtenerDatos(idUsuario) {
+  fetch(`/recording/${idUsuario}`, {
+      method: 'GET',
+      headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+      }
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Usa los datos JSON obtenidos
+      console.log(data);
+      // Realiza acciones con los datos obtenidos
+  })
+  .catch(error => {
+      console.error('Error al obtener datos JSON:', error);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Recording variables
+  const id_user = document.getElementById('id_user').textContent;
+  console.log(id_user);
+  let datos = obtenerDatos(id_user);
+  console.log(datos);  
+  
+  // Recording variables
     let mediaRecorder;
     let chunks = [];
     let audio = document.querySelector('audio');
@@ -15,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const counterDisplay = document.getElementById('contador');
     // Estaría bueno que este dato se lo pasemos desde el back, así si un user entre de nuevo tiene
     // guardado la cantidad de audios que aportó. Es mejor que tenerlo en el local storage.
-    let audioSentCount = localStorage.getItem('audioSentCount') || 0;
+    var audioSentCount = "{{ num_recordings }}";
     counterDisplay.textContent = audioSentCount;
 
     // Backend var
