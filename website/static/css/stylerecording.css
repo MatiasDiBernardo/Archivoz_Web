@@ -248,3 +248,178 @@ button:disabled:hover {
 button:hover:not(:disabled) {
     cursor: pointer;
 }
+
+.plyr {
+    --shadow-color: 197deg 32% 65%;
+    border-radius: 12px;
+    box-shadow: 0 .5px .6px hsl(var(--shadow-color)/.36), 0 1.7px 1.9px -.8px hsl(var(--shadow-color)/.36), 0 4.3px 4.8px -1.7px hsl(var(--shadow-color)/.36), -.1px 10.6px 11.9px -2.5px hsl(var(--shadow-color)/.36);
+    margin: 16px auto
+}
+
+.plyr.plyr--audio {
+    max-width: 480px
+}
+
+.plyr__video-wrapper:after {
+    border: 1px solid #00000026;
+    border-bottom-color: #00000040;
+    border-radius: inherit;
+    bottom: 0;
+    content: "";
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 3
+}
+
+.plyr__cite {
+    color: #728597
+}
+
+.plyr__cite .icon {
+    margin-right: 2.6666666667px
+}
+
+@keyframes plyr-progress {
+    to {
+        background-position: 25px 0;
+        background-position: var(--plyr-progress-loading-size, 25px) 0
+    }
+}
+
+@keyframes plyr-popup {
+    0% {
+        opacity: .5;
+        transform: translateY(10px)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+@keyframes plyr-fade-in {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.plyr {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    align-items: center;
+    direction: ltr;
+    display: flex;
+    flex-direction: column;
+    font-family: inherit;
+    font-family: var(--plyr-font-family, inherit);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    font-weight: var(--plyr-font-weight-regular, 400);
+    line-height: 1.7;
+    line-height: var(--plyr-line-height, 1.7);
+    max-width: 100%;
+    min-width: 200px;
+    position: relative;
+    text-shadow: none;
+    transition: box-shadow .3s ease;
+    z-index: 0
+}
+
+.plyr audio,
+.plyr iframe,
+.plyr video {
+    display: block;
+    height: 100%;
+    width: 100%
+}
+
+.plyr button {
+    font: inherit;
+    line-height: inherit;
+    width: auto
+}
+
+.plyr:focus {
+    outline: 0
+}
+
+.plyr--full-ui {
+    box-sizing: border-box
+}
+
+.plyr--full-ui *,
+.plyr--full-ui :after,
+.plyr--full-ui :before {
+    box-sizing: inherit
+}
+
+.plyr--full-ui a,
+.plyr--full-ui button,
+.plyr--full-ui input,
+.plyr--full-ui label {
+    touch-action: manipulation
+}
+
+.plyr__badge {
+    background: #4a5464;
+    background: var(--plyr-badge-background, #4a5464);
+    border-radius: 2px;
+    border-radius: var(--plyr-badge-border-radius, 2px);
+    color: #fff;
+    color: var(--plyr-badge-text-color, #fff);
+    font-size: 9px;
+    font-size: var(--plyr-font-size-badge, 9px);
+    line-height: 1;
+    padding: 3px 4px
+}
+
+.plyr--full-ui ::-webkit-media-text-track-container {
+    display: none
+}
+
+.plyr__captions {
+    animation: plyr-fade-in .3s ease;
+    bottom: 0;
+    display: none;
+    font-size: 12px;
+    font-size: var(--plyr-font-size-small, 13px);
+    left: 0;
+    padding: 10px;
+    padding: var(--plyr-control-spacing, 10px);
+    position: absolute;
+    text-align: center;
+    transition: transform .4s ease-in-out;
+    width: 100%
+}
+
+.plyr__captions span:empty {
+    display: none
+}
+
+@media(min-width: 480px) {
+    .plyr__captions {
+        font-size: 13px;
+        font-size: var(--plyr-font-size-base, 15px);
+        padding: 20px;
+        padding: calc(var(--plyr-control-spacing, 10px)*2)
+    }
+}
+
+@media(min-width: 768px) {
+    .plyr__captions {
+        font-size: 18px;
+        font-size: var(--plyr-font-size-large, 18px)
+    }
+}
+
+.plyr--captions-active .plyr__captions {
+    display: block
+}

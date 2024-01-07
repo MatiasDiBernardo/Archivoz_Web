@@ -49,6 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteBtn = document.getElementById('borrarGrabacion');
     const sendBtn = document.getElementById('enviarGrabacion');
 
+    // Inicializar Plyr
+    const player = new Plyr('audio', {
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+    });
+
     // UI display
     const circulo = document.querySelector('section .contenedor-grab-cant .esta-grabando .circulo-rojo');
     let counterDisplay = document.getElementById('contador');
