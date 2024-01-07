@@ -1,5 +1,6 @@
 from .models import Usuario, Texto
 import os
+import json
 import random 
 
 def find_match_on_id(userID):
@@ -88,14 +89,16 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
 
 def change_author_by_selection(target_author, list_texts):
     return choose_random_text_by_autor(target_author, list_texts)
-    return "On hold"
 
 def choose_random_author(list_texts):
     """Chooses a random author and makes sure that the choosen author is not 
     already readed by the user.
 
     Args:
-        list_texts (list): 
+        list_texts (list): ID list with the text that the usar already read.
+
+    Returns:
+        string: Next ID to read.
     """
     # Esta magia me tendría que dejar solo los autores que el user yá leyo.
     already_readed_authors = list(set([a.split("_")[0] for a in list_texts]))
@@ -111,6 +114,15 @@ def choose_random_author(list_texts):
     return random.choice(all_authors_avaliable)
 
 def choose_random_text_by_autor(author, list_texts):
+    """Choose a random text from an specific author.
+
+    Args:
+        author (string): Name of a valid author.
+        list_texts (list): ID list with the text that the usar already read.
+
+    Returns:
+        string: Next ID to read.
+    """
     already_readed = []
     for t in list_texts:
         text_splitted = t.split("_")
@@ -132,9 +144,19 @@ def choose_random_text_by_autor(author, list_texts):
     return new_text 
 
 def update_text_on_screen(current_text, target_author, list_texts):
+    """ Update the text ID in base of the user choise.
+
+    Args:
+        current_text (string): Text ID of the current text diplayed.
+        target_author (string): Name of the author election from the user.
+        list_texts (list): ID list with the text that the usar already read.
+
+    Returns:
+        string: Next ID to read.
+    """
     text_splitted = current_text.split("_")
     current_text_index = text_splitted[-1] 
-    max_text_index = text_splitted[-2] 
+    max_text_index = str(int(text_splitted[-2]) - 1)  #Accounting for 0 index on list
 
     # Update the index until the user read all the content 
     if current_text_index != max_text_index:
@@ -163,7 +185,32 @@ def update_text_on_screen(current_text, target_author, list_texts):
 
             return new_text
 
+def text_ID_to_text(text_id):
+    """Change the text ID to raw text to display on the screen.
 
+    Args:
+        text_id (string): String ID:
 
+    Returns:
+        string: Text associate with the string ID:
+    """
+    text_splitted = text_id.split("_")
+    path_to_json = os.path.join("text", "process_data", text_splitted[0], "_".join(text_splitted[:-1]) + ".json")
 
+    with open(path_to_json, 'r', encoding='utf8') as file:
+        data = json.load(file)
+    
+    return data[int(text_splitted[-1])]
 
+def text_ID_to_name(text_id):
+    """Shows only the text information from the text ID.
+
+    Args:
+        text_id (string): String ID
+
+    Returns:
+        string: Text name from the string ID:
+    """
+    text_splitted = text_id.split("_")
+    text_splitted = text_splitted[:-2]  # Removes ID and ID Max
+    return " - ".join(text_splitted)
