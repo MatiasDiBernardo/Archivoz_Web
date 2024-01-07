@@ -1,5 +1,6 @@
 let numRecordings = 0;
 let textToRead = "";
+let textToDisplay = "";
 
 function obtenerDatos(idUsuario) {
     return fetch(`/recording/${idUsuario}`, {
@@ -16,7 +17,8 @@ function obtenerDatos(idUsuario) {
         })
         .then(data => {
             numRecordings = data.num_recordings;
-            textToRead = data.text_to_read;
+            textToRead = data.name_of_text;
+            textToDisplay = data.text_to_display;
             console.log('Datos obtenidos:', data);
             return data;
         })
@@ -120,10 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Valores actualizados:');
             console.log(numRecordings);
             console.log(textToRead);
+            console.log(textToDisplay);
 
             // Aquí puedes realizar otras acciones que dependan de los valores actualizados
             actualizarContador(numRecordings);
-            actualizarFrase(textToRead);
+            actualizarFrase(textToDisplay);
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -202,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contentType: false
         }).done(function (data) {
             console.log(data);
-            actualizarFrase(data.text_to_read);
+            actualizarFrase(data.text_to_display);
             clearRecording();
         });
 
