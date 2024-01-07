@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from .utils import validate_user_data, change_author_by_selection, find_match_on_id, update_text_on_screen 
+from .utils import *
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
 
@@ -59,19 +59,22 @@ def grabacion(id_user):
     num_recordings = len(list_recordings)
 
     if num_recordings != 0:
-        # Acá estaría sobre escribiendo un audio (chequear que no se rompe nada.)
-        text_to_read = list_recordings[-1].text_display
+        text_id = list_recordings[-1].text_display
     else:
         # If the user doesn't have recordings start with  Archivoz
-        text_to_read = "Archivoz_4_0"
+        text_id = "Archivoz_4_0"
     
-    print("La cantidad de frasese grabadas es: ", num_recordings)
-    print("La frase que se guardo es: ", text_to_read)
-
     # Cuando el user acceda a esta página que le salga su última grabación y el número de grabaciones
     if request.method == 'GET':
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return jsonify({'num_recordings': num_recordings, 'text_to_read': text_to_read})
+            name_of_text = text_ID_to_name(text_id) 
+            text_to_display_on_front = text_ID_to_text(text_id)
+
+            data = {'num_recordings': num_recordings,
+                    'name_of_text': name_of_text,
+                    'text_to_display': text_to_display_on_front}
+
+            return jsonify(data)
         else:
             return render_template('recording.html', id_user=id_user)
 
@@ -91,22 +94,22 @@ def grabacion(id_user):
             return 'No selected file', 400
 
         # Save audio file to local storage
-        wav_filename = os.path.join('uploads', f'audio_{id_user}_{text_to_read}.mp3')
+        wav_filename = os.path.join('uploads', f'audio_{id_user}_{text_id}.mp3')
         with open(wav_filename, 'wb') as wav_name:
             audio_file.save(wav_name)
 
         # Defines next frase to display
-        current_author = text_to_read.split("_")[0]
+        current_author = text_id.split("_")[0]
         if current_author != 'Archivoz' and current_author != author_selected:   
             text_to_display = change_author_by_selection(author_selected, list_texts)
         else:
-            text_to_display = update_text_on_screen(text_to_read, author_selected, list_texts)
+            text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
         
         # Update the db with the current recording
         good_audio_conditons = True # Hacer función que chequee que se grabo bién
         if good_audio_conditons:
             newRecording = Grabacion(usuario_id=id_user, 
-                                     texto_id=text_to_read, 
+                                     texto_id=text_id, 
                                      text_display=text_to_display,
                                      audio_path=wav_filename,
                                      fecha=datetime.datetime.now())
@@ -116,11 +119,13 @@ def grabacion(id_user):
         # Hice una implementación de la parte de texto sin base de datos porque creí que
         # sería mas fácil y si bien fue mas rápido quedo bastante desprolijo a nivel código.
         # Así que dejo esta sección para refactor mas adelante.
-        # Otra cosa a arreglar es que si cambias de autor se acualiza después de leer otra 
-        # frase del autor viejo.
-        data = {'num_recordings': num_recordings,
-                'text_to_read': text_to_display}
 
+        name_of_text = text_ID_to_name(text_to_display) 
+        text_to_display_on_front = text_ID_to_text(text_to_display)
+
+        data = {'num_recordings': num_recordings + 1,
+                'name_of_text': name_of_text,
+                'text_to_display': text_to_display_on_front}
 
         return jsonify(data)
 
