@@ -73,7 +73,7 @@ def grabacion(id_user):
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return jsonify({'num_recordings': num_recordings, 'text_to_read': text_to_read})
         else:
-            return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_read, id_user=id_user)
+            return render_template('recording.html', id_user=id_user)
 
     if request.method  == 'POST':
 
@@ -82,7 +82,6 @@ def grabacion(id_user):
 
         # Data access with the form
         audio_file = request.files['file']
-        #info_texto = request.form.get('texto')
 
         # Esta variable va a tener el string de la selección del front
         author_selected = "Julio Cortázar"
@@ -119,8 +118,10 @@ def grabacion(id_user):
         # Así que dejo esta sección para refactor mas adelante.
         # Otra cosa a arreglar es que si cambias de autor se acualiza después de leer otra 
         # frase del autor viejo.
+        data = {'num_recordings': num_recordings,
+                'text_to_read': text_to_display}
 
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return jsonify({'num_recordings': num_recordings, 'text_to_read': text_to_display})
-    else:
-        return render_template('recording.html', num_recordings=num_recordings, text_to_read=text_to_display, id_user=id_user)
+
+        return jsonify(data)
+
+    return render_template('recording.html', id_user=id_user)

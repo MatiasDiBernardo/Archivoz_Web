@@ -16,6 +16,14 @@ function obtenerDatos(idUsuario) {
   });
 }
 
+function updateText(content) {
+    // Get the text element by its ID
+    var textElement = document.getElementById("dynamicText");
+
+    // Change the text content
+    textElement.textContent = content;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const id_user = document.getElementById('id_user').textContent;
   console.log(id_user);
@@ -120,27 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     sendBtn.addEventListener('click', () => {
-      // Aclaración: Recordá que yo te paso desde el back número de grabaciones (int) y texto a leer (string), 
-      // lo que explico a continuación es para que entiendas como funciona, pero vos solo tenes que mandarme de
-      // vuelta el string text_to_read en el post asociado en esa variable textID.
-
-      // textID es una variable string que me asocia la información del audio que se
-      // manda al back. El formato es "autor_libro_cuento_IdMax_IdOración" donde autor libro y cuento
-      // viene especificado en el json en ese order con los textos y el IdOración es el indice 
-      // de la frase que se esta mostando cuando se grabó el audio.
-      // Ejemplo con indice 12: "Cortazar_Octaedro_Liliana LLorando_174_12"
-
-      // Cuando se registra un usuario nuevo, desde el back te llega la información
-      // de que ese usuario no tiene un estado previo de grabación, en este caso el texto a mostrar
-      // es Archivoz.json, y textID tiene que ser: Archivoz_IdMax_IdOracion 
-      // Ejemplo para la primera oración: Archivoz_4_0
-      let textID = audioSentCount.toString();
-
       // POST to backend 
+
+      // Send audio file
       const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
       var form = new FormData();
       form.append('file', audioBlob2, 'data.mp3');
-      form.append('texto', textID);
       //Chrome inspector shows that the post data includes a file and a title.
       $.ajax({
           type: 'POST',
@@ -150,7 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
           processData: false,
           contentType: false
       }).done(function(data) {
-          console.log(data);
+        // Uppdate text on screen and number of recordings
+
+          // Esta función actualiza un elementro del html con la data que le llega del back
+          // lo que estaba pensando es que te puedo mandar directamente el texto, si total
+          // todo lo demás se maneja desde el back.
+          updateText(data.text_to_read);
+
+          // Hacer otra función que actualice el numero de grabaciones. Le vas a tener que sumar uno me parece 
+          // porque esta uno atrás, sería:
+          // updateNumRecordings(data.num_recordings + 1)
 
       });
   
