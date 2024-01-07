@@ -26,6 +26,14 @@ function obtenerDatos(idUsuario) {
         });
 }
 
+function updateText(content) {
+    // Get the text element by its ID
+    var textElement = document.getElementById("dynamicText");
+
+    // Change the text content
+    textElement.textContent = content;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const id_user = document.getElementById('id_user').textContent;
     console.log('ID de usuario:', id_user);
