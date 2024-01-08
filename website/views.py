@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, send_file
 from .utils import *
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
@@ -8,7 +8,7 @@ import datetime
 
 views = Blueprint("views", __name__)
 
-#Pagina principal (igual a como está ahora)
+#Pagina principal
 @views.route('/')
 def home():
     return render_template('index.html')
@@ -116,10 +116,6 @@ def grabacion(id_user):
             db.session.add(newRecording)
             db.session.commit()
 
-        # Hice una implementación de la parte de texto sin base de datos porque creí que
-        # sería mas fácil y si bien fue mas rápido quedo bastante desprolijo a nivel código.
-        # Así que dejo esta sección para refactor mas adelante.
-
         name_of_text = text_ID_to_name(text_to_display) 
         text_to_display_on_front = text_ID_to_text(text_to_display)
 
@@ -130,3 +126,22 @@ def grabacion(id_user):
         return jsonify(data)
 
     return render_template('recording.html', id_user=id_user)
+
+#Pagina donde el usuario pone sus datos para la grabación
+@views.route('/text-to-speech', methods=['GET', 'POST'])
+def interface_tts():
+    # Si llega una POST request
+    if request.method == 'POST':
+        # Guarda los valores enviados en el from
+        text_to_tts = request.form.get("textToAudio")
+        nombre_modelo = request.form.get("modeloTTS")
+
+        print(text_to_tts)
+        print(nombre_modelo)
+        nombre_modelo = "Cortazar"
+
+        audio_path = text_to_speech(text_to_tts, nombre_modelo)
+
+        return send_file(audio_path, as_attachment=False)
+
+    return render_template('TTS.html')

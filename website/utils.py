@@ -214,3 +214,20 @@ def text_ID_to_name(text_id):
     text_splitted = text_id.split("_")
     text_splitted = text_splitted[:-2]  # Removes ID and ID Max
     return " - ".join(text_splitted)
+
+def text_to_speech(text, model):
+    """Simula el comportamiento del tts donde se especifíca text y modelo
+    y el algorítmo generaría un archivo de audio.
+
+    Args:
+        text (string): Audio a procesar
+        model (string): Nombre del modelo
+
+    Returns:
+        string: Path del audio creado
+    """
+    path_audios = os.path.join("website" ,"audios_tts", model)
+    list_audios = os.listdir(path_audios)
+    choose_random = random.randint(0, len(list_audios) - 1)
+
+    return os.path.join("audios_tts", model, list_audios[choose_random])
