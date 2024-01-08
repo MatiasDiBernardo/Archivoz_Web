@@ -2,6 +2,7 @@ from .models import Usuario, Texto
 import os
 import json
 import random 
+import time
 
 def find_match_on_id(userID):
     """Busca si el ID que el usuario ingreso es válido.
@@ -229,5 +230,6 @@ def text_to_speech(text, model):
     path_audios = os.path.join("website" ,"audios_tts", model)
     list_audios = os.listdir(path_audios)
     choose_random = random.randint(0, len(list_audios) - 1)
+    time.sleep(3)
 
     return os.path.join("audios_tts", model, list_audios[choose_random])

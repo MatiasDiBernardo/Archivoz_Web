@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, send_file
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, send_file, abort
 from .utils import *
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
@@ -136,12 +136,14 @@ def interface_tts():
         text_to_tts = request.form.get("textToAudio")
         nombre_modelo = request.form.get("modeloTTS")
 
-        print(text_to_tts)
-        print(nombre_modelo)
-        nombre_modelo = "Cortazar"
+        if text_to_tts is None or text_to_tts == "":
+            abort(400, description="El texto a procesar es inválido.")
+        
+        if nombre_modelo != "Cortazar" and nombre_modelo != "Miguel":
+            abort(400, description=f"No se encuentra modelo con el nombre f{nombre_modelo}")
 
         audio_path = text_to_speech(text_to_tts, nombre_modelo)
 
-        return send_file(audio_path, as_attachment=False)
+        return send_file(audio_path, as_attachment=False, mimetype='audio/mp3')
 
     return render_template('TTS.html')
