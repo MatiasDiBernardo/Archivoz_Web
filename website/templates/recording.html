@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Actor&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="..\static\css\stylerecording.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Actor&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="..\static\css\stylerecording.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
-    <link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="..\static\img\favicon.ico" type="image/x-icon">
+    <link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="..\static\img\favicon.ico"
+      type="image/x-icon"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Asistente de grabacion</title>
-</head>
+  </head>
 
-<!-- Te dejo acá los dos valores que te paso desde el back. Movelos a donde los necesites -
+  <!-- Te dejo acá los dos valores que te paso desde el back. Movelos a donde los necesites -
 num_recorgins: Es un int que contiene el número de grabaciones del usuario
 text_to_read: Es un string que contiene el ID del texto a mostrar. El ID viene como Autor_Libro_Cuento_MaxIndex_Index 
 La idea es que con este especie de ID puedas buscar en los archivos el JSON con la data, pasar esa data a un array de
@@ -26,94 +38,104 @@ Ejemplo de ID: "Cortazar_Octaedro_Liliana LLorando_207_12"
 File asociado: "text\process_data\Julio Cortázar\Julio Cortázar_Octaedro_Liliana LLorando_207.json"
 -->
 
-<div id="id_user">{{id_user}}</div>
+  <div id="id_user">{{id_user}}</div>
 
-<body>
+  <body>
     <header>
-        <nav>
-            <ul>
-                <li>
-                    <a href="/">
-                        <spam>Volver al inicio</spam>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li>
+            <a href="/">
+              <spam>Volver al inicio</spam>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </header>
 
     <section>
-        <div class="welcome">
-            <h1>bienvenido a la grabadora de archivoz</h1>
-        </div>
+      <div class="welcome">
+        <h1>bienvenido a la grabadora de archivoz</h1>
+      </div>
 
-        <div class="introduction">
-            <p>¿Alguna vez has deseado donar tu voz para una causa significativa? Ahora puedes hacerlo con tan solo unos
-                clics. Encontrarás un rectángulo verde, simplemente lee el texto mostrado, graba tu voz y comparte tu
-                contribución.
-                <br>
-                <br>
-                Nuestra interfaz intuitiva te guiará paso a paso: inicia la grabación con un solo clic en el botón
-                "Iniciar", lee el texto visible, detén la grabación cuando estés listo y envía tu aporte con otro clic.
-                ¿Quieres grabar más de un audio? ¡Sin problema! Repite este proceso las veces que desees.
-                <br>
-                <br>
-                Mientras grabas, observarás un círculo rojo aparecer y llenarse en la parte superior del rectángulo
-                verde,
-                indicando que la grabación está activa.
-            </p>
-        </div>
+      <div class="introduction">
+        <p>
+          ¿Alguna vez has deseado donar tu voz para una causa significativa?
+          Ahora puedes hacerlo con tan solo unos clics. Encontrarás un
+          rectángulo verde, simplemente lee el texto mostrado, graba tu voz y
+          comparte tu contribución.
+          <br />
+          <br />
+          Nuestra interfaz intuitiva te guiará paso a paso: inicia la grabación
+          con un solo clic en el botón "Iniciar", lee el texto visible, detén la
+          grabación cuando estés listo y envía tu aporte con otro clic. ¿Quieres
+          grabar más de un audio? ¡Sin problema! Repite este proceso las veces
+          que desees.
+          <br />
+          <br />
+          Mientras grabas, observarás un círculo rojo aparecer y llenarse en la
+          parte superior del rectángulo verde, indicando que la grabación está
+          activa.
+        </p>
+      </div>
     </section>
     <section>
-        <div class="contenedor-grab-cant">
-            <div class="esta-grabando">
-                <div class="circulo-rojo"></div>
-            </div>
-            <div class="cantidad-grabaciones">
-                <div class="texto-cant-audios">
-                    Cantidad de audios enviados
-                </div>
-                <div class="contador-audios">
-                    <span id="contador"></span>
-                </div>
-            </div>
+      <div class="contenedor-grab-cant">
+        <div class="esta-grabando">
+          <div class="circulo-rojo"></div>
         </div>
+        <div class="cantidad-grabaciones">
+          <div class="texto-cant-audios">Cantidad de audios enviados</div>
+          <div class="contador-audios">
+            <span id="contador"></span>
+          </div>
+        </div>
+      </div>
     </section>
     <section>
-        <div class="contenedor-frases">
-            <div class="rectangulo-verde">
-                <div class="frases-leer">
-                    En el resplandor del atardecer, el cielo se tiñó de un exquisito tono de azul profundo,
-                    un azul que se desvanecía sutilmente en un verde sereno y etéreo,
-                    como el matiz encantado de un jardín secreto. Las nubes,
-                    adornadas con pinceladas rosadas y doradas,
-                    danzaban en armonía con esta paleta celestial,
-                    pintando un paisaje que parecía sacado de un sueño.
-                    El mundo se sumergía en la calidez de la transición del día a la noche,
-                    envuelto en la magia cromática que solo el ocaso podía ofrecer.
-                </div>
-            </div>
+      <div class="contenedor-frases">
+        <div class="rectangulo-verde">
+          <div class="frases-leer">
+            En el resplandor del atardecer, el cielo se tiñó de un exquisito
+            tono de azul profundo, un azul que se desvanecía sutilmente en un
+            verde sereno y etéreo, como el matiz encantado de un jardín secreto.
+            Las nubes, adornadas con pinceladas rosadas y doradas, danzaban en
+            armonía con esta paleta celestial, pintando un paisaje que parecía
+            sacado de un sueño. El mundo se sumergía en la calidez de la
+            transición del día a la noche, envuelto en la magia cromática que
+            solo el ocaso podía ofrecer.
+          </div>
         </div>
+      </div>
     </section>
     <section>
-        <div class="contenedor-contenedor">
-            <div class="contenedor-botones">
-                <div><button id="iniciarGrabacion" class="iniciar">Iniciar
-                        grabacion</button></div>
-                <div><button id="detenerGrabacion" class="detener">Detener
-                        grabacion</button></div>
-                <div><button id="borrarGrabacion" class="borrar">Borrar
-                        grabacion</button></div>
-                <div><button id="enviarGrabacion" class="enviar">Enviar</button></div>
-            </div>
+      <div class="contenedor-contenedor">
+        <div class="contenedor-botones">
+          <div>
+            <button id="iniciarGrabacion" class="iniciar">
+              Iniciar grabacion
+            </button>
+          </div>
+          <div>
+            <button id="detenerGrabacion" class="detener">
+              Detener grabacion
+            </button>
+          </div>
+          <div>
+            <button id="borrarGrabacion" class="borrar">
+              Borrar grabacion
+            </button>
+          </div>
+          <div><button id="enviarGrabacion" class="enviar">Enviar</button></div>
         </div>
+      </div>
     </section>
 
     <div class="div-audio">
-        <audio controls></audio>
+      <audio controls></audio>
     </div>
 
     <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
     <script src="..\static\js\recording.js"></script>
-</body>
-
+  </body>
 </html>
