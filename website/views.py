@@ -94,7 +94,7 @@ def grabacion(id_user):
             return 'No selected file', 400
 
         # Save audio file to local storage
-        wav_filename = os.path.join('uploads', f'audio_{id_user}_{text_id}.mp3')
+        wav_filename = os.path.join('uploads', f'{id_user}_{text_id}.mp3')
         with open(wav_filename, 'wb') as wav_name:
             audio_file.save(wav_name)
 
@@ -106,7 +106,7 @@ def grabacion(id_user):
             text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
         
         # Update the db with the current recording
-        good_audio_conditons = True # Hacer función que chequee que se grabo bién
+        good_audio_conditons = check_audio_conditions(wav_filename)
         if good_audio_conditons:
             newRecording = Grabacion(usuario_id=id_user, 
                                      texto_id=text_id, 
@@ -123,6 +123,7 @@ def grabacion(id_user):
         name_of_text = text_ID_to_name(text_to_display) 
         text_to_display_on_front = text_ID_to_text(text_to_display)
 
+        # Data sended to the front
         data = {'num_recordings': num_recordings + 1,
                 'name_of_text': name_of_text,
                 'text_to_display': text_to_display_on_front}
