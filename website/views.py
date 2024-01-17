@@ -24,7 +24,6 @@ def obtener_datos():
         regionUsuario = request.form.get("region")
         mailUsuario = request.form.get("mail1")
         mailUsuarioConfirmacion = request.form.get("mail2")
-        print("La región del usuario es: ", regionUsuario)
 
         #Validación de datos y de ID en caso de existir
         idUsuarioAValidar = request.form.get("userID")
@@ -55,7 +54,7 @@ def grabacion(id_user):
     # Se fija si el usario ya tiene un perfil de grabación.
     user_object = Usuario.query.filter_by(user_id=id_user).first()
     list_recordings = user_object.grabaciones
-    list_texts = [g.texto_id for g in list_recordings]  # List of string with texts ids
+    list_texts = [g.text_id for g in list_recordings]  # List of string with texts ids
     num_recordings = len(list_recordings)
 
     if num_recordings != 0:
@@ -109,7 +108,7 @@ def grabacion(id_user):
         good_audio_conditons = check_audio_conditions(wav_filename)
         if good_audio_conditons:
             newRecording = Grabacion(usuario_id=id_user, 
-                                     texto_id=text_id, 
+                                     text_id=text_id, 
                                      text_display=text_to_display,
                                      audio_path=wav_filename,
                                      fecha=datetime.datetime.now())
