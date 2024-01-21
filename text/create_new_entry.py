@@ -3,9 +3,9 @@ import os
 from text_data_segmentation import text_segmentation
 
 # Campos a completar
-author = "Ernesto Sabato"
-book = "Uno y el Universo"
-story_or_chapter = "Sentido Común"
+author = "Jorge Luis Borges"
+book = "Ficciones"
+story_or_chapter = "Las ruinas circulares"
 
 # Create folder if necesary
 author_folder = os.path.join("text", "process_data", author)
