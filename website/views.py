@@ -86,8 +86,10 @@ def grabacion(id_user):
         audio_file = request.files['file']
 
         # Esta variable va a tener el string de la selección del front
-        author_selected = "Julio Cortázar"
-        # author_selected = request.form.get('autor')
+        author_selected = request.form.get('author')
+        if author_selected == "None":
+            author_selected = None
+        print(author_selected)
 
         if audio_file.filename == '':
             return 'No selected file', 400
@@ -98,11 +100,16 @@ def grabacion(id_user):
             audio_file.save(wav_name)
 
         # Defines next frase to display
-        current_author = text_id.split("_")[0]
-        if current_author != 'Archivoz' and current_author != author_selected:   
-            text_to_display = change_author_by_selection(author_selected, list_texts)
-        else:
-            text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
+            
+        # This implementation changes the text based on author at any moment
+        # current_author = text_id.split("_")[0]
+        # if current_author != 'Archivoz' and current_author != author_selected and author_selected is not None:   
+        #     text_to_display = change_author_by_selection(author_selected, list_texts)
+        # else:
+        #     text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
+
+        # This implementation only changes when the text finish
+        text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
         
         # Update the db with the current recording
         good_audio_conditons = check_audio_conditions(wav_filename)

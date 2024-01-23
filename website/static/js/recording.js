@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stopBtn = document.getElementById('detenerGrabacion');
     const deleteBtn = document.getElementById('borrarGrabacion');
     const sendBtn = document.getElementById('enviarGrabacion');
+    const autorSelector = document.getElementById('autorSelection');
 
     // Inicializar Plyr
     const player = new Plyr('audio', {
@@ -60,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const circulo = document.querySelector('section .contenedor-grab-cant .esta-grabando .circulo-rojo');
     let counterDisplay = document.getElementById('contador');
     let fraseLeerElement = document.querySelector('.frases-leer');
+    let autorTextDisplay = document.querySelector('.nombre-texto');
 
     // Backend var
     var pathnameURL = window.location.pathname;
@@ -87,6 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function actualizarFrase(frase) {
         fraseLeerElement.textContent = frase;
+    }
+
+    function actualizarTextDisplay(name){
+        autorTextDisplay.textContent = name;
     }
 
     function actualizarContador(numRecordings) {
@@ -127,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Aquí puedes realizar otras acciones que dependan de los valores actualizados
             actualizarContador(numRecordings);
             actualizarFrase(textToDisplay);
+            actualizarTextDisplay(textToRead);
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -174,27 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     sendBtn.addEventListener('click', () => {
-        // Aclaración: Recordá que yo te paso desde el back número de grabaciones (int) y texto a leer (string), 
-        // lo que explico a continuación es para que entiendas como funciona, pero vos solo tenes que mandarme de
-        // vuelta el string text_to_read en el post asociado en esa variable textID.
-
-        // textID es una variable string que me asocia la información del audio que se
-        // manda al back. El formato es "autor_libro_cuento_IdMax_IdOración" donde autor libro y cuento
-        // viene especificado en el json en ese order con los textos y el IdOración es el indice 
-        // de la frase que se esta mostando cuando se grabó el audio.
-        // Ejemplo con indice 12: "Cortazar_Octaedro_Liliana LLorando_174_12"
-
-        // Cuando se registra un usuario nuevo, desde el back te llega la información
-        // de que ese usuario no tiene un estado previo de grabación, en este caso el texto a mostrar
-        // es Archivoz.json, y textID tiene que ser: Archivoz_IdMax_IdOracion 
-        // Ejemplo para la primera oración: Archivoz_4_0
-        let textID = numRecordings.toString();
-
         // POST to backend 
+        let author = autorSelector.value;
         const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
         var form = new FormData();
         form.append('file', audioBlob2, 'data.mp3');
-        form.append('texto', textID);
+        form.append('author', author);
         //Chrome inspector shows that the post data includes a file and a title.
         $.ajax({
             type: 'POST',
@@ -206,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).done(function (data) {
             console.log(data);
             actualizarFrase(data.text_to_display);
+            actualizarTextDisplay(data.name_of_text);
             clearRecording();
         });
 
