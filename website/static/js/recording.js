@@ -1,7 +1,9 @@
+// Variables globales para almacenar información de grabación y texto
 let numRecordings = 0;
 let textToRead = "";
 let textToDisplay = "";
 
+// Función para obtener datos del usuario desde el backend
 function obtenerDatos(idUsuario) {
     return fetch(`/recording/${idUsuario}`, {
         method: 'GET',
@@ -29,23 +31,24 @@ function obtenerDatos(idUsuario) {
 }
 
 function updateText(content) {
-    // Get the text element by its ID
     var textElement = document.getElementById("dynamicText");
-
-    // Change the text content
     textElement.textContent = content;
 }
 
+// Evento que se dispara cuando el contenido HTML se ha cargado completamente
 document.addEventListener('DOMContentLoaded', () => {
+    // Obtener el ID de usuario del elemento HTML
+    // Esta es la solucion que se me ocurrio para no depender de una
+    // funcion asincrona
     const id_user = document.getElementById('id_user').textContent;
     console.log('ID de usuario:', id_user);
 
-    // Recording variables
+    // Variables de grabación
     let mediaRecorder;
     let chunks = [];
     let audio = document.querySelector('audio');
 
-    // Buttons
+    // Botones
     const startBtn = document.getElementById('iniciarGrabacion');
     const stopBtn = document.getElementById('detenerGrabacion');
     const deleteBtn = document.getElementById('borrarGrabacion');
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
     });
 
-    // UI display
+    // Elementos de interfaz de usuario
     const circulo = document.querySelector('section .contenedor-grab-cant .esta-grabando .circulo-rojo');
     let counterDisplay = document.getElementById('contador');
     let fraseLeerElement = document.querySelector('.frases-leer');
@@ -66,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Backend var
     var pathnameURL = window.location.pathname;
 
+    // Contador de envíos de audio
     var audioSentCount = 0;
     counterDisplay.textContent = audioSentCount;
 
@@ -91,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fraseLeerElement.textContent = frase;
     }
 
-    function actualizarTextDisplay(name){
+    function actualizarTextDisplay(name) {
         autorTextDisplay.textContent = name;
     }
 
@@ -99,7 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
         counterDisplay.textContent = numRecordings;
     }
 
-    // Inicialzation of the mediaRecorder obj that handels recording 
+    // Inicialización del objeto mediaRecorder para manejar la grabación
+    // Recomiendo no modificar mucho, en el caso de que se necesite grabar a una
+    // cierta tasa de bits o cambiar la tasa de muestreo, entonces agregar lo siguiente:
+    /* 
+     const audioConstraints = {
+         audio: {
+             sampleRate: 44100,  
+             channelCount: 1,    // 1 mono, 2 estereo
+             bitrate: 128000     
+         }
+     };
+    */
+
+    // Remplazar la linea [ navigator.mediaDevices.getUserMedia({ audio: true }) ] por:
+
+    /*
+    navigator.mediaDevices.getUserMedia(audioConstraints)
+    */
+
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
             mediaRecorder = new MediaRecorder(stream);
@@ -109,12 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleDeleteButton();
             };
 
-            // This section parse the data to the audio object when media recorder is stopped
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(chunks, { type: 'audio/wav' });
                 const audioURL = URL.createObjectURL(audioBlob);
-                // Si ya esta agregado esto, podes tratar de mandarlo abajo de los botones y que quede
-                // porque esta bueno que el user pueda escuchar lo que grabó
                 audio.src = audioURL;
                 toggleDeleteButton();
             };
@@ -123,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Permiso denegado o no se soporta la grabación:', err);
         });
 
+    // Obtener datos del usuario desde el backend
     obtenerDatos(id_user)
         .then(data => {
             console.log('Valores actualizados:');
@@ -130,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(textToRead);
             console.log(textToDisplay);
 
-            // Aquí puedes realizar otras acciones que dependan de los valores actualizados
             actualizarContador(numRecordings);
             actualizarFrase(textToDisplay);
             actualizarTextDisplay(textToRead);
@@ -139,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error en la solicitud:', error);
         });
 
-
+    // Configuración inicial de la interfaz de usuario
     clearRecording();
     startBtn.disabled = false;
     stopBtn.disabled = true;
@@ -168,10 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     deleteBtn.addEventListener('click', () => {
         ocultarCirculoRojo();
-        // Porque este check si abajo pones mediaRecorder igual?
-        if (mediaRecorder.state != 'inactive') {
-            mediaRecorder.stop();
-        }
         mediaRecorder.stop();
         startBtn.disabled = false;
         stopBtn.disabled = true;
@@ -181,13 +196,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     sendBtn.addEventListener('click', () => {
-        // POST to backend 
         let author = autorSelector.value;
+
+        // Realizar una solicitud POST al backend con el audio y el ID del texto
         const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
         var form = new FormData();
         form.append('file', audioBlob2, 'data.mp3');
         form.append('author', author);
-        //Chrome inspector shows that the post data includes a file and a title.
+
         $.ajax({
             type: 'POST',
             url: pathnameURL,
@@ -197,13 +213,16 @@ document.addEventListener('DOMContentLoaded', () => {
             contentType: false
         }).done(function (data) {
             console.log(data);
+
+            // Actualizar la interfaz con el texto obtenido del backend
             actualizarFrase(data.text_to_display);
             actualizarTextDisplay(data.name_of_text);
             clearRecording();
         });
 
-        // Visual update
         clearRecording();
+
+        // Visual update
         numRecordings++;
         actualizarContador(numRecordings);
         startBtn.disabled = false;
