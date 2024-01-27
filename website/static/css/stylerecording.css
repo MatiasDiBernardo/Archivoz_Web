@@ -427,3 +427,75 @@ button:hover:not(:disabled) {
 .plyr--captions-active .plyr__captions {
     display: block
 }
+
+
+
+
+
+
+
+/* Este es el CSS del selection (similar al del formulario pero con los colores invertidos) */
+
+.contenedor-aux {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-aux .contenedor-seleccion {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 725px;
+}
+
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #e7e7e7;
+    background-image: none;
+    flex: 1;
+    padding: 0 .5em;
+    color: #224a4b;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.seleccion {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #23b499;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+.seleccion::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #23b499;
+    cursor: pointer;
+    pointer-events: none;
+    transition: .25s all ease;
+}
+
+.seleccion:hover::after {
+    color: #800080;
+}
