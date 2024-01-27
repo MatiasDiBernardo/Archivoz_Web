@@ -2,6 +2,16 @@ import json
 import os
 
 def pathToTranscript(path):
+    """Maps the audio to the transcript. Reads the
+    json file with the information and return it as
+    string.
+
+    Args:
+        path (str): Path to traget audio.
+
+    Returns:
+        str: Transcription of the audio.
+    """
     split_path = path.split("_")
 
     if split_path[1] == "Archivoz":
@@ -18,6 +28,28 @@ def pathToTranscript(path):
     
     return data[int(indice)]
 
+def removeUnknowChar(frase):
+    """The IA model has characters that are not recognized. To avoid
+    error we change the unknown characters.
+
+    Args:
+        frase (str): Frase with potential unknown chars.
+
+    Returns:
+        str: Frase without unknown chars.
+    """
+    
+    if "”" in frase:
+        frase = frase.replace("”", "")
+
+    if "“" in frase:
+        frase = frase.replace("“", "")
+
+    if "—" in frase:
+        frase = frase.replace("—", "")
+    
+    return frase
+
 ID_target = "6AD0C6"
 
 #audios_path = os.listdir(os.path.join("uploads", ID_target))
@@ -26,7 +58,8 @@ data = []
 for path in audios_path:
     audio = "audios/" + path
     transcript = pathToTranscript(path)
-    text = audio + "|" + transcript
+    transcript_clean = removeUnknowChar(transcript)
+    text = audio + "|" + transcript_clean
     data.append(text)
 
 audios_transcript_file="\n".join(data)
