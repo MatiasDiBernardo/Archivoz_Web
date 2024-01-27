@@ -89,7 +89,6 @@ def grabacion(id_user):
         author_selected = request.form.get('author')
         if author_selected == "None":
             author_selected = None
-        print(author_selected)
 
         if audio_file.filename == '':
             return 'No selected file', 400

@@ -22,9 +22,6 @@ def create_app(database_uri = f'sqlite:///{DB_NAME}'):
         db.create_all()
     
         datos_actuales_usuarios = Usuario.query.all()
-        # print("Base de datos usuarios: ", datos_actuales_usuarios)
-
-        datos_actuales_textos = Texto.query.all()
-        # print("Base de datos textos: ", datos_actuales_textos)
+        #print("Base de datos usuarios: ", datos_actuales_usuarios)
     
     return app
