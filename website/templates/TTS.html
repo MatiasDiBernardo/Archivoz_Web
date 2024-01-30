@@ -1,0 +1,62 @@
+{% extends "./base.html" %}
+
+{% block tittle %}Actividad TTS{% endblock %}
+<!-- <title>Actividad TTS</title> -->
+{% block links %}
+<!-- Lugar para importar links -->
+<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="..\static\img\favicon.ico" type="image/x-icon">
+{% endblock %}
+
+{% block customCSS %}
+<!-- Lugar para importar css -->
+<link rel="stylesheet" type="text/css" href="..\static\css\styleTTS.css">
+{% endblock %}
+
+{% block body %}
+<!-- Aca va el body -->
+<body>
+  <div id="main-container">
+    <div class="tts-container">
+        <div>
+          <h1 class="display-4 text-center">TeXtO a Voz</h1>
+          <p class="lead text-center subAnim">Convierte texto escrito en voz audible.</p>
+        </div>
+        <div id="form-container">
+          <div id="select-container">
+            <select id="select-model">
+              <option value="" disabled selected>Selecciona la voz</option>
+              <option value="Laura">Laura</option>
+              <option value="Miguel">Miguel</option>
+              <option value="Claudia">Claudia</option>
+              <option value="Rodrigo">Rodrigo</option>
+              <option value="Graciela">Graciela</option>
+            </select>
+          </div>
+          <textarea id="textarea-TTS"
+            placeholder="Escribe el texto" maxlength="1000"></textarea>
+          <button id="submit-TTS" type="submit">PROCESAR</button>
+          <span id="error-TTS"></span>
+        </div>
+        <div id="audio-wrapper">
+          <div id="loader-wrapper">
+            <div id="custom-loader"></div>
+            <span>Cargando...</span>
+          </div>
+          <div id="audio-container">
+            <h1 class="display-4 text-center">audIo</h1>
+            <audio controls id="tts-audio">
+          </div>
+        </div>
+    </div>
+  </div>
+
+</body>
+{% endblock %}
+
+{% block scripts %}
+<!-- Lugar para importar scripts -->
+<script src="..\static\js\TTS.js"></script>
+{% endblock %}

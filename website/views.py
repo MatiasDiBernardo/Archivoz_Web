@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, send_file, abort
 from .utils import *
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db
 
 import os
 import datetime
+import zipfile
 
 views = Blueprint("views", __name__)
 
@@ -92,9 +93,14 @@ def grabacion(id_user):
 
         if audio_file.filename == '':
             return 'No selected file', 400
+        
+        # Creates the user audio folder if needed
+        user_folder_path = os.path.join('uploads', id_user)
+        if not os.path.exists(user_folder_path):
+            os.makedirs(user_folder_path)
 
         # Save audio file to local storage
-        wav_filename = os.path.join('uploads', f'{id_user}_{text_id}.mp3')
+        wav_filename = os.path.join(user_folder_path, f'{id_user}_{text_id}.mp3')
         with open(wav_filename, 'wb') as wav_name:
             audio_file.save(wav_name)
 
@@ -136,3 +142,41 @@ def grabacion(id_user):
         return jsonify(data)
 
     return render_template('recording.html', id_user=id_user)
+
+#Pagina donde el usuario pone sus datos para la grabación
+@views.route('/text-to-speech', methods=['GET', 'POST'])
+def interface_tts():
+    # Si llega una POST request
+    if request.method == 'POST':
+        # Guarda los valores enviados en el form
+        text_to_tts = request.form.get("textToAudio")
+        nombre_modelo = request.form.get("modeloTTS")
+
+        if text_to_tts is None or text_to_tts == "":
+            abort(400, description="El texto a procesar es inválido.")
+
+        audio_path = text_to_speech(text_to_tts, nombre_modelo)
+
+        return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
+
+    return render_template('TTS.html')
+
+
+@views.route('/download-data', methods=['GET', 'POST'])
+def get_the_data():
+
+    directory_to_zip = "uploads"
+    zip_filename = "data.zip"
+
+    with zipfile.ZipFile(zip_filename, 'w') as zip_file:
+        # Walk through all the directories and files in the specified directory
+        for foldername, subfolders, filenames in os.walk(directory_to_zip):
+            # Add each file to the zip file
+            for filename in filenames:
+                file_path = os.path.join(foldername, filename)
+                arcname = os.path.relpath(file_path, directory_to_zip)  # Relative path to preserve directory structure
+                zip_file.write(file_path, arcname=arcname)
+    
+    return send_file(zip_filename, as_attachment=True)
+    
+
