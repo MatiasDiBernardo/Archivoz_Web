@@ -1,3 +1,4 @@
 /uploads
 /website/__pycache__
 /website/tts/models
+/.env

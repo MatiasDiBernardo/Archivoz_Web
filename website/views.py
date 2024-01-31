@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, send_file, abort
+from flask_mail import Message
 from .utils import *
 from .models import Usuario, Grabacion, Texto, MapaVoces
-from . import db
+from . import db, mail
 
 import os
 import datetime
@@ -36,6 +37,7 @@ def obtener_datos():
         elif (matchID):
             return redirect(url_for("views.grabacion", id_user=idUsuarioAValidar))
         else:
+            # Si se crea un nuevo usuario se guarda en la base de datos.
             newUser = Usuario(nombre=nombreUsuario, edad=edadUsuario,
                               region=regionUsuario, mail=mailUsuario)
             
@@ -43,6 +45,32 @@ def obtener_datos():
             db.session.commit()
 
             id_user_for_session = newUser.user_id
+            mail_usuario = newUser.mail
+
+            # Y se le manda un mail con su id
+            msg_title = "Registro ArchiVoz"
+            sender = "noreply@app.com"
+            msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
+            msg_body = """ Gracias por registrarte en nuestro arhivo de voces. Con el ID que te asignamos
+            podes retomar tu sesión de grabación en cualquier momento desde el punto donde la dejaste.
+            Además, con tu ID vas a poder acceder a las funcionalidades de texto a voz personalizado y a ubicar
+            tu voz dentro del mapa de voces, ambos proyectos en los que estamos trabajando. Así que no lo pierdas.
+            Este es tu ID:
+            """
+            msg.body = ""
+            data = {
+                'app_name': "REBWAR AI",
+                'title': msg_title,
+                'body': msg_body,
+                'id':id_user_for_session,
+            }
+
+            msg.html = render_template("email.html",data=data)
+
+            try:
+                mail.send(msg)
+            except Exception as e:
+                print(e)
 
             return redirect(url_for("views.grabacion", id_user=id_user_for_session))
 
