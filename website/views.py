@@ -49,9 +49,9 @@ def obtener_datos():
 
             # Y se le manda un mail con su id
             msg_title = "Registro ArchiVoz"
-            sender = "noreply@app.com"
+            sender = "ArchiVoz Bot"
             msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
-            msg_body = """ Gracias por registrarte en nuestro arhivo de voces. Con el ID que te asignamos
+            msg_body = """ Gracias por registrarte en nuestro archivo de voces. Con el ID que te asignamos
             podes retomar tu sesión de grabación en cualquier momento desde el punto donde la dejaste.
             Además, con tu ID vas a poder acceder a las funcionalidades de texto a voz personalizado y a ubicar
             tu voz dentro del mapa de voces, ambos proyectos en los que estamos trabajando. Así que no lo pierdas.
@@ -59,10 +59,10 @@ def obtener_datos():
             """
             msg.body = ""
             data = {
-                'app_name': "REBWAR AI",
+                'app_name': "ArchiVoz",
                 'title': msg_title,
                 'body': msg_body,
-                'id':id_user_for_session,
+                'id': id_user_for_session,
             }
 
             msg.html = render_template("email.html",data=data)
@@ -175,17 +175,17 @@ def grabacion(id_user):
 @views.route('/text-to-speech', methods=['GET', 'POST'])
 def interface_tts():
     # Si llega una POST request
-    if request.method == 'POST':
-        # Guarda los valores enviados en el form
-        text_to_tts = request.form.get("textToAudio")
-        nombre_modelo = request.form.get("modeloTTS")
+    # if request.method == 'POST':
+    #     # Guarda los valores enviados en el form
+    #     text_to_tts = request.form.get("textToAudio")
+    #     nombre_modelo = request.form.get("modeloTTS")
 
-        if text_to_tts is None or text_to_tts == "":
-            abort(400, description="El texto a procesar es inválido.")
+    #     if text_to_tts is None or text_to_tts == "":
+    #         abort(400, description="El texto a procesar es inválido.")
 
-        audio_path = text_to_speech(text_to_tts, nombre_modelo)
+    #     audio_path = text_to_speech(text_to_tts, nombre_modelo)
 
-        return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
+    #     return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
 
     return render_template('TTS.html')
 

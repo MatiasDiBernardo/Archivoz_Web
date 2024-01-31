@@ -16,7 +16,7 @@ def create_app(database_uri = f'sqlite:///{DB_NAME}'):
     app.config['MAIL_SERVER'] = "smtp.googlemail.com"
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = "your_gmail@gmail.com"
+    app.config['MAIL_USERNAME'] = "archivoz.noreplay@gmail.com"
     app.config['MAIL_PASSWORD'] = os.environ.get("PASSWORD_MAIL")
 
     mail = Mail(app)
