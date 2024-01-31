@@ -197,6 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sendBtn.addEventListener('click', () => {
         let author = autorSelector.value;
+        // Acá se podría implementar una fución que en base al valor rms que esta almacenado en el array chunks
+        // me deje guardar o no el audio. Es mas rápido hacerlo desde acá que guardarlo, mandarlo y recién ahi
+        // decidir si ese audio eso bueno o no.
 
         // Realizar una solicitud POST al backend con el audio y el ID del texto
         const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });

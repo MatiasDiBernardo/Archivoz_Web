@@ -12,7 +12,3 @@ def create_text_db():
 
     db.session.add_all([t1, t2, t3])
     db.session.commit()
-
-
-
-

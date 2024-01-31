@@ -1,5 +1,5 @@
 from .models import Usuario, Texto
-#from .tts.inference import infer
+from .tts.inference import infer
 
 import os
 import json
@@ -237,9 +237,11 @@ def text_to_speech(text, model, id):
         string: Path del audio creado
     """
 
-    #audio_infer = infer(text, model)
-    save_path = os.path.join("website", "tts", "audios", id + ".wav")
+    audio_infer = infer(text, model)
+    dirname = os.path.dirname(__file__)
 
-    #scipy.io.wavfile.write(save_path, 44100, audio_infer)
+    save_path = os.path.join(dirname, "tts", "audios", id + ".wav")
+
+    scipy.io.wavfile.write(save_path, 44100, audio_infer)
 
     return save_path

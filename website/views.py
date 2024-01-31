@@ -128,9 +128,9 @@ def grabacion(id_user):
             os.makedirs(user_folder_path)
 
         # Save audio file to local storage
-        wav_filename = os.path.join(user_folder_path, f'{id_user}_{text_id}.mp3')
-        with open(wav_filename, 'wb') as wav_name:
-            audio_file.save(wav_name)
+        mp3_filename = os.path.join(user_folder_path, f'{id_user}_{text_id}.mp3')
+        with open(mp3_filename, 'wb') as mp3_name:
+            audio_file.save(mp3_name)
 
         # Defines next frase to display
             
@@ -145,12 +145,12 @@ def grabacion(id_user):
         text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
         
         # Update the db with the current recording
-        good_audio_conditons = check_audio_conditions(wav_filename)
+        good_audio_conditons = check_audio_conditions(mp3_filename)
         if good_audio_conditons:
             newRecording = Grabacion(usuario_id=id_user, 
                                      text_id=text_id, 
                                      text_display=text_to_display,
-                                     audio_path=wav_filename,
+                                     audio_path=mp3_filename,
                                      fecha=datetime.datetime.now())
             db.session.add(newRecording)
             db.session.commit()
@@ -175,17 +175,17 @@ def grabacion(id_user):
 @views.route('/text-to-speech', methods=['GET', 'POST'])
 def interface_tts():
     # Si llega una POST request
-    # if request.method == 'POST':
-    #     # Guarda los valores enviados en el form
-    #     text_to_tts = request.form.get("textToAudio")
-    #     nombre_modelo = request.form.get("modeloTTS")
+    if request.method == 'POST':
+        # Guarda los valores enviados en el form
+        text_to_tts = request.form.get("textToAudio")
+        nombre_modelo = request.form.get("modeloTTS")
 
-    #     if text_to_tts is None or text_to_tts == "":
-    #         abort(400, description="El texto a procesar es inválido.")
+        if text_to_tts is None or text_to_tts == "":
+            abort(400, description="El texto a procesar es inválido.")
 
-    #     audio_path = text_to_speech(text_to_tts, nombre_modelo)
+        audio_path = text_to_speech(text_to_tts, nombre_modelo)
 
-    #     return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
+        return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
 
     return render_template('TTS.html')
 
@@ -194,7 +194,8 @@ def interface_tts():
 def get_the_data():
 
     directory_to_zip = "uploads"
-    zip_filename = "data.zip"
+    dirname = os.path.dirname(__file__)
+    zip_filename = os.path.join(dirname, "data.zip")
 
     with zipfile.ZipFile(zip_filename, 'w') as zip_file:
         # Walk through all the directories and files in the specified directory
