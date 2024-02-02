@@ -1,7 +1,6 @@
 from nemo.collections.tts.models import HifiGanModel
 from nemo.collections.tts.models import FastPitchModel
 import torch
-import soundfile as sf
 import scipy
 
 text = "A ver que pasa si hago algo como esto"
