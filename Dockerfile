@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-# Dependencies of the enviroment
+# Dependencies of the environment
 RUN apt-get update && apt-get install -y libsndfile1 ffmpeg
 RUN apt install python3-pip -y
 

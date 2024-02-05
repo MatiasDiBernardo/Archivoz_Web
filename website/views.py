@@ -47,7 +47,7 @@ def obtener_datos():
             id_user_for_session = newUser.user_id
             mail_usuario = newUser.mail
 
-            # Y se le manda un mail con su id
+            # It sends a mail notifying the user the assigned ID (it doesn't work without the env password_mail key)
             msg_title = "Registro ArchiVoz"
             sender = "ArchiVoz Bot"
             msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
@@ -183,13 +183,17 @@ def interface_tts():
         if text_to_tts is None or text_to_tts == "":
             abort(400, description="El texto a procesar es inválido.")
 
-        audio_path = text_to_speech(text_to_tts, nombre_modelo)
+        # To test the real TTS install all dependencies on the docker file and
+        # uncommend the inference.py file and the text_to_speech function in utils.
+
+        #audio_path = text_to_speech(text_to_tts, nombre_modelo)
+        audio_path = ""
 
         return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
 
-    return render_template('TTS.html')
+    return render_template('TTS_demo.html')
 
-
+# To access the data from a remote server without SSH connection to local files
 @views.route('/download-data', methods=['GET', 'POST'])
 def get_the_data():
 
