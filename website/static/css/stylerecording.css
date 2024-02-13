@@ -8,7 +8,6 @@ body {
             rgba(128, 0, 128, 0.89) 35.22%,
             rgba(128, 0, 128, 0.89) 100%);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    height: 180vh;
     width: 100%;
     color: #fff;
     position: relative;
@@ -257,7 +256,7 @@ button:hover:not(:disabled) {
     --shadow-color: 197deg 32% 65%;
     border-radius: 12px;
     box-shadow: 0 .5px .6px hsl(var(--shadow-color)/.36), 0 1.7px 1.9px -.8px hsl(var(--shadow-color)/.36), 0 4.3px 4.8px -1.7px hsl(var(--shadow-color)/.36), -.1px 10.6px 11.9px -2.5px hsl(var(--shadow-color)/.36);
-    margin: 16px auto
+    margin: auto
 }
 
 .plyr.plyr--audio {
@@ -498,4 +497,9 @@ select::-ms-expand {
 
 .seleccion:hover::after {
     color: #800080;
+}
+
+.nombre-texto{
+    text-align: center;
+    margin: 10px;
 }
