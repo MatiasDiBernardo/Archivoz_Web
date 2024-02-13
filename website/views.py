@@ -90,7 +90,7 @@ def grabacion(id_user):
         text_id = list_recordings[-1].text_display
     else:
         # If the user doesn't have recordings start with  Archivoz
-        text_id = "Archivoz_4_0"
+        text_id = "Archivoz_6_0"
     
     # Cuando el user acceda a esta página que le salga su última grabación y el número de grabaciones
     if request.method == 'GET':
