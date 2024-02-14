@@ -13,115 +13,115 @@
 
 
 {% block body %}
-
-<div class="jumbotron" id="jumbo-canvas">
-
-  <h1 class="display-4 text-center titleAnim">¿ComO pArTiciPar?</h1>
-  <p class="lead text-center subAnim">
-    Para poder donar tu voz en ArchiVoz tenes que completar un formulario.
-    ¿Porqué necesitamos estos datos? Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. 
-    ¿Se comparten estos datos? La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, 
-    esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. 
-    El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página. 
-    Mas información en Terminos y Condiciones.
-  </p>
-
-</div>
-<div class="contenedor-externo">
-  <div class="formulario">
-
-    <h3>FormULarIo</h3>
-
-    <form id="signin" method="POST">
-
-      <div class="entrada">
-        <input type="text" id="nombre" name="nombre" required />
-        <label for="Nombre Completo">Nombre completo</label>
-      </div>
-
-      <div class="entrada">
-        <input type="number" id="edad" name="edad" required />
-        <label for="Edad">Edad</label>
-      </div>
-
-      <div class="seleccion">
-        <select id="region" name="region">
-
-          <option selected disabled>Selecciona la provincia</option>
-          <option value="Bs As">Buenos Aires</option>
-          <option value="Catamarca">Catamarca</option>
-          <option value="Chaco">Chaco</option>
-          <option value="Chubut">Chubut</option>
-          <option value="Cordoba">Cordoba</option>
-          <option value="Corrientes">Corrientes</option>
-          <option value="Entre rios">Entre rios</option>
-          <option value="Formosa">Formosa</option>
-          <option value="Jujuy">Jujuy</option>
-          <option value="La Pampa">La Pampa</option>
-          <option value="La Rioja">La Rioja</option>
-          <option value="Mendoza">Mendoza</option>
-          <option value="Misiones">Misiones</option>
-          <option value="Neuquen">Neuquen</option>
-          <option value="Rio Negro">Rio Negro</option>
-          <option value="Salta">Salta</option>
-          <option value="San Juan">San Juan</option>
-          <option value="San Luis">San Luis</option>
-          <option value="Santa Cruz">Santa Cruz</option>
-          <option value="Santa Fe">Santa Fe</option>
-          <option value="Santiago del Estero">Santiago del Estero</option>
-          <option value="Tierra del Fuego">Tierra del Fuego</option>
-          <option value="Tucuman">Tucuman</option>
-
-        </select>
-      </div>
-
-      <div class="entrada">
-        <input type="email" id="mail1" name="mail1" required />
-        <label for="Mail">Email</label>
-      </div>
-
-      <div class="entrada">
-        <input type="email" id="mail2" name="mail2" required />
-        <label for="Mail">Confirmar email</label>
-      </div>
-
-      <div class="contenedor-boton">
-        <button class="boton-neon" type="submit">
-          <span id="span1"></span>
-          <span id="span2"></span>
-          <span id="span3"></span>
-          <span id="span4"></span>
-          Enviar
-        </button>
-      </div>
-    </form>
-
+<div class="contenedor-externo-general">
+  <div class="jumbotron" id="jumbo-canvas">
+  
+    <h1 class="display-4 text-center titleAnim">¿ComO pArTiciPar?</h1>
+    <p class="lead text-center subAnim">Para poder donar tu voz en ArchiVoz tenes que completar un formulario.
+      ¿Porqué necesitamos estos datos? Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. 
+      ¿Se comparten estos datos? La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, 
+      esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. 
+      El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página. 
+      Mas información en Terminos y Condiciones.</p>
   </div>
-</div>
-
-<div class="contenedor-externo-login">
-
-  <div class="formulario-login">
-
-    <h3>REtomAr SeSIón</h3>
-
-    <form id="login" method="POST">
-
-      <div class="entrada">
-        <input type="text" id="userID" name="userID" />
-        <label for="ID">Retoma tu sesión con tu ID</label>
+  <div id="contenedor-formularios">
+    <div class="contenedor-externo">
+      <div class="formulario">
+    
+        <h3>FormULarIo</h3>
+    
+        <form id="signin" method="POST">
+    
+          <div class="entrada">
+            <input type="text" id="nombre" name="nombre" required />
+            <label for="Nombre Completo">Nombre completo</label>
+          </div>
+    
+          <div class="entrada">
+            <input type="number" id="edad" name="edad" required />
+            <label for="Edad">Edad</label>
+          </div>
+    
+          <div class="seleccion">
+            <select id="region" name="region">
+    
+              <option selected disabled>Selecciona la provincia</option>
+              <option value="Bs As">Buenos Aires</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Cordoba">Cordoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre rios">Entre rios</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquen">Neuquen</option>
+              <option value="Rio Negro">Rio Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego">Tierra del Fuego</option>
+              <option value="Tucuman">Tucuman</option>
+    
+            </select>
+          </div>
+    
+          <div class="entrada">
+            <input type="email" id="mail1" name="mail1" required />
+            <label for="Mail">Email</label>
+          </div>
+    
+          <div class="entrada">
+            <input type="email" id="mail2" name="mail2" required />
+            <label for="Mail">Confirmar email</label>
+          </div>
+    
+          <div class="contenedor-boton">
+            <button class="boton-neon" type="submit">
+              <span id="span1"></span>
+              <span id="span2"></span>
+              <span id="span3"></span>
+              <span id="span4"></span>
+              Enviar
+            </button>
+          </div>
+        </form>
+    
       </div>
-
-      <div class="contenedor-boton">
-        <button class="boton-neon" type="submit">
-          <span id="span1"></span>
-          <span id="span2"></span>
-          <span id="span3"></span>
-          <span id="span4"></span>
-          Enviar
-        </button>
+    </div>
+    <div class="contenedor-externo-login">
+    
+      <div class="formulario-login">
+        
+        <h4>O SI nO</h4>
+        <h3>REtomAr SeSIón</h3>
+    
+        <form id="login" method="POST">
+    
+          <div class="entrada">
+            <input type="text" id="userID" name="userID" />
+            <label for="ID">Retoma tu sesión con tu ID</label>
+          </div>
+    
+          <div class="contenedor-boton">
+            <button class="boton-neon" type="submit">
+              <span id="span1"></span>
+              <span id="span2"></span>
+              <span id="span3"></span>
+              <span id="span4"></span>
+              Enviar
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 
