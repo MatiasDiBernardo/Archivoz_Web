@@ -17,8 +17,8 @@ $(document).ready(function(){
     var infoContainer2 = $(".svg-over");
     var info = $("#info");
     var tl2 = gsap.timeline({});
-    tl2.fromTo(infoContainer, {x: -1800}, {display: "flex", x:0, duration:1})
-       .fromTo(infoContainer2, {x: -1800}, {display: "flex", x:0, duration:1}, ">-1")
+    tl2.fromTo(infoContainer, {x: -2500}, {display: "grid", x:0, duration:1})
+        .fromTo(infoContainer2, {x: -2500}, {display: "grid", x:0, duration:1}, ">-1")
     tl2.pause();
 
     //Info    
@@ -76,9 +76,9 @@ $(document).ready(function(){
       $(function(){
         $('.tlt').textillate({ 
           
-           in : {
+          in : {
                 effect:'fadeIn'
-               
+              
             },
             out: {
                 effect: 'fadeOut'
@@ -89,6 +89,5 @@ $(document).ready(function(){
     });
     })
 
- 
 
 })
