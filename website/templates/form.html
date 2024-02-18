@@ -3,6 +3,7 @@
 {% block tittle %}ArchiVoz Formulario{% endblock %}
 
 {% block links %}
+
 <link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="..\static\img\favicon.ico" type="image/x-icon">
 {% endblock %}
@@ -15,14 +16,9 @@
 {% block body %}
 <div class="contenedor-externo-general">
   <div class="jumbotron" id="jumbo-canvas">
-  
     <h1 class="display-4 text-center titleAnim">¿ComO pArTiciPar?</h1>
-    <p class="lead text-center subAnim">Para poder donar tu voz en ArchiVoz tenes que completar un formulario.
-      ¿Porqué necesitamos estos datos? Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. 
-      ¿Se comparten estos datos? La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, 
-      esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. 
-      El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página. 
-      Mas información en Terminos y Condiciones.</p>
+    <p class="lead text-center subAnim">Para poder donar tu voz en ArchiVoz tenes que completar un formulario.</p>
+    <button href="#" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#infoModal">Más información</button>
   </div>
   <div id="contenedor-formularios">
     <div class="contenedor-externo">
@@ -123,6 +119,33 @@
       </div>
     </div>
   </div>
+  <!-- Modal info -->
+  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content ">
+      <div class="modal-header bg-col">
+        <h5 class="modal-title">#Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-info-body bg-col">
+        <div>
+          <h6>¿Porqué necesitamos estos datos?</h6>
+          <p>Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
+        </div>
+        <div>
+          <h6>¿Se comparten estos datos? </h6>
+          <p>La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página.</p>
+        </div>
+        <h6>Mas info en Terminos y Condiciones.</h6>
+      </div>
+      <div class="modal-footer bg-col">
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 {% endblock %}
