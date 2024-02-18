@@ -131,18 +131,19 @@
 </div>
 
 <!-- INFO CONTAINER    -->
-<div class=" info-container row " id="infosection">
+<div class=" info-container" id="infosection">
+  <div class = "contenedor-imagen">
+    <div class="svg_container col-md-8 ">
 
-  <div class="svg_container col-md-8 ">
-
-    <img class=" laringe" src="..\static\SVG\laringe.svg" alt="">
-    <img class=" capas flor3" src="..\static\SVG\flor3.svg" alt="">
-    <img class=" capas flor2" src="..\static\SVG\flor2.svg" alt="">
-    <img class=" capas flor1" src="..\static\SVG\flor1.svg" alt="">
-
-    <i id="lg_tooltip" class=" capas fas fa-play-circle" data-toggle="tooltip" data-placement="top" title="Click!"></i>
-
-
+      <img class=" laringe" src="..\static\SVG\laringe.svg" alt="">
+      <img class=" capas flor3" src="..\static\SVG\flor3.svg" alt="">
+      <img class=" capas flor2" src="..\static\SVG\flor2.svg" alt="">
+      <img class=" capas flor1" src="..\static\SVG\flor1.svg" alt="">
+  
+      <i id="lg_tooltip" class=" capas fas fa-play-circle" data-toggle="tooltip" data-placement="top" title="Click!"></i>
+  
+  
+    </div>
   </div>
 
   <div class="info-text col-md-8">
@@ -165,29 +166,15 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/textillate/0.4.0/jquery.textillate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
 <script src="https://unpkg.com/wavesurfer.js"></script>
-
-<script src="https://kit.fontawesome.com/d6cd842b44.js" crossorigin="anonymous"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
   integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
 <script src="..\static\js\data.js"></script>
 <script src="..\static\js\script.js" charset="utf-8"></script>
 <script src="..\static\js\req.js"></script>
-<script src="..\static\js\gsapAnim.js"></script>
 
 
 {% endblock %}
