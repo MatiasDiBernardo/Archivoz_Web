@@ -311,6 +311,30 @@ hr {
   height: 200px;
 }
 
+/*GENERAL MODAL*/
+.modal-dialog{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.75rem auto;
+}
+
+.modal-content{
+  max-width: 500px;
+  border-radius: .5rem;
+}
+
+/*CONTACT MODAL*/
+.modal-contact-body{
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 /*TOOLTIPS*/
 
 #lg_tooltip {
@@ -322,6 +346,17 @@ hr {
 
 /* MOVILE */
 
+@media (min-width: 400px) {
+  .modal-contact-body {
+    grid-template-columns: repeat(4, 1fr); /* Paso de un 2x2 a una linea de 4 columnas */
+  }
+}
+
+@media (max-width: 500px){
+  .modal-dialog{
+    margin: 0;
+  }
+}
 
 @media (max-width: 980px) {
   .nav-container {
@@ -333,43 +368,12 @@ hr {
     height: 100%;
   }
 
-  .bg-col {
-    font-size: 2.5em;
-
-  }
-
-  .bg-col h1 {
-    font-size: 2.5em;
-
-  }
-
-  .bg-col h3 {
-    font-size: 2.5em;
-
-  }
-
-  .modal-dialog {
-    max-width: 100vw;
-    margin: 0;
-
-  }
-
-  .modal-title {
-    font-size: 1em;
-    margin-top: 0.5em;
-  }
-
   #loader {
     width: 0vw;
     height: 0vh;
   }
 
-  .close {
-    font-size: 5.5rem;
-  }
-
   .form-control {
-
     font-size: 1em;
   }
 

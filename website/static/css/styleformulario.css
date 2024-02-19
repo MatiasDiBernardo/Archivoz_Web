@@ -1,3 +1,7 @@
+#info{
+    display: none;
+}
+
 .contenedor-externo-general{
     min-height: 100vh;
 }
@@ -5,6 +9,10 @@
 .jumbotron {
     height:auto;
     position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .jumbotron h1 {
@@ -319,4 +327,12 @@ select::-ms-expand {
     bottom: 100%;
     transition: 1s;
     transition-delay: 0.72s;
+}
+
+.modal-info-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+    padding: 1rem;
 }
