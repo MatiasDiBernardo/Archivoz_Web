@@ -1,4 +1,5 @@
 from website.models import Usuario
+import shutil
 
 def create_user(client, app):
     response = client.post("/registro_voces", data = 
@@ -30,6 +31,9 @@ def test_new_user_correctly_adds_to_db(client, app):
         assert rec_object[0].text_id == "Archivoz_6_0"
         assert rec_object[0].usuario_id == id_user
         assert rec_object[0].audio_path == created_audio_path
+    
+    # Delete test audio
+    shutil.rmtree(f"uploads\{id_user}")
 
 def test_bad_input_by_the_user(client, app):
     id_user = create_user(client, app)

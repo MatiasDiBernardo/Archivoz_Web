@@ -4,12 +4,13 @@ from website import create_app, db
 
 @pytest.fixture()
 def app():
-    app = create_app("sqlite://")
+    app_test = create_app("sqlite://")
+    app_test.config["TESTING"] = True
 
-    with app.app_context():
+    with app_test.app_context():
         db.create_all()
 
-    yield app
+    yield app_test
 
 @pytest.fixture()
 def client(app):
