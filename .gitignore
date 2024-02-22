@@ -1,6 +1,6 @@
 /uploads
 /website/__pycache__
 /website/tts/models
+/test/__pycache__
+/text/__pycache__
 /.env
-/test
-/instance/data_base.db
