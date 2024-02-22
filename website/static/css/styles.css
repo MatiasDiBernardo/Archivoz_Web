@@ -99,8 +99,10 @@ h1 h3 h5 p {
   background: #6dffa8;
   background: linear-gradient(var(--colorVerdeFluor) 0%, var(--colorMorado) 100%);
   border-radius: 0 !important;
-  height: 80vh;
-  min-height: 100px;
+  /*
+    height: 80vh;
+    min-height: 100px;
+  */
   padding-top: 150px;
   margin: 0;
 }
@@ -320,8 +322,10 @@ hr {
 .info-text {
   padding: 30px 20px;
   background-color: #0db39b;
-  max-width: 700px;
-  min-width: 300px;
+  /*
+    max-width: 700px;
+    min-width: 300px;
+  */
   opacity: 0;
   color: var(--colorBlanco);
   font-family: var(--fuenteTitulos), var(--fuenteTitulosAlternativa);
@@ -342,8 +346,43 @@ footer {
   /* border-top: solid black; */
 }
 
+/*GENERAL MODAL*/
+.modal-dialog{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.75rem auto;
+}
+
+.modal-content{
+  max-width: 500px;
+  border-radius: .5rem;
+}
+
+/*CONTACT MODAL*/
+.modal-contact-body{
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 /* MOVILE */
 
+@media (min-width: 400px) {
+  .modal-contact-body {
+    grid-template-columns: repeat(4, 1fr); /* Paso de un 2x2 a una linea de 4 columnas */
+  }
+}
+
+@media (max-width: 500px){
+  .modal-dialog{
+    margin: 0;
+  }
+}
 
 @media (max-width: 991px) {
 
@@ -351,43 +390,12 @@ footer {
     height: 100%;
   }
 
-  .bg-col {
-    font-size: 2.5em;
-
-  }
-
-  .bg-col h1 {
-    font-size: 2.5em;
-
-  }
-
-  .bg-col h3 {
-    font-size: 2.5em;
-
-  }
-
-  .modal-dialog {
-    max-width: 100vw;
-    margin: 0;
-
-  }
-
-  .modal-title {
-    font-size: 1em;
-    margin-top: 0.5em;
-  }
-
   #loader {
     width: 0vw;
     height: 0vh;
   }
 
-  .close {
-    font-size: 5.5rem;
-  }
-
   .form-control {
-
     font-size: 1em;
   }
 
@@ -408,13 +416,6 @@ footer {
     opacity: 1;
 
     cursor: pointer;
-  }
-
-  .info-container {
-    padding-top: 15em;
-    background-image: url("");
-    background-color: #0db39b;
-    height: auto;
   }
 
   .info-text {
@@ -516,6 +517,26 @@ footer {
   .nav-conteiner__navegacion__link::after {
     content: "";
     background: none;
+  }
+
+  /*
+    SECCION DE INFORMACION
+  */
+  .info-container {
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: repeat(1, 1fr);
+    background-color: var(--colorMorado);
+    gap: 4rem;
+    padding-bottom: 0;
+  }
+
+  .contenedor-imagen {
+      grid-row: 1/2;
+  }
+
+  .info-text {
+    grid-row: 2/3;
   }
 
 }
