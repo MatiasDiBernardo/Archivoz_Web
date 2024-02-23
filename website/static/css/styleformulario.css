@@ -1,44 +1,89 @@
+#info{
+    display: none;
+}
+
+.contenedor-externo-general{
+    min-height: 100vh;
+}
+
 .jumbotron {
-    height: 50vh;
+    height:auto;
     position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .jumbotron h1 {
-    font-size: 3.75rem;
+    font-size: 2rem;
+}
+
+@media (min-width: 350px) {
+    .jumbotron h1{
+        font-size: 2.5rem;
+    }
+}
+
+@media (min-width: 410px) {
+    .jumbotron h1{
+        font-size: 3rem;
+    }
+}
+
+@media (min-width: 510px) {
+    .jumbotron h1{
+        font-size: 3.75rem;
+    }
 }
 
 .jumbotron p {
     font-size: 1.5rem;
 }
 
+#contenedor-formularios{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+    margin-bottom: 50px;
+}
+
+@media (min-width: 1200px) {
+    #contenedor-formularios{
+        flex-direction: row;
+    }
+}
+
 .contenedor-externo {
-    width: 100%;
-    height: 85vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     background: #800080;
+    width: 100%;
+    max-width: 550px;
 }
 
 .contenedor-externo-login {
-    width: 100%;
-    height: 50vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     background: #800080;
+    width: 100%;
+    max-width: 550px;
 }
 
 .formulario {
-    width: 550px;
+    width: 100%;
     height: 625px;
     background: #0DB39B;
     border-radius: 6px;
 }
 
 .formulario-login {
-    width: 550px;
-    height: 290px;
+    width: 100%;
+    height: max-content;
     background: #0DB39B;
     border-radius: 6px;
 }
@@ -51,18 +96,48 @@
     font-weight: 600;
 }
 
+.formulario-login h4{
+    display: none;
+    font-family: 'Major Mono Display', monospace;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    padding-top: 0.7em;
+}
+
 .formulario-login h3 {
     font-family: 'Major Mono Display', monospace;
     font-size: 2rem;
-    padding: 0.7em;
+    margin: 0.7em;
     text-align: center;
     font-weight: 600;
+}
+
+@media (min-width: 1200px){
+    .formulario-login h4{
+        display: block;
+    }
+    
+    .formulario-login h3 {
+        padding: 0;
+    }
 }
 
 
 .formulario form {
     padding: 20px 40px;
     box-sizing: border-box;
+}
+
+@media (max-width: 550px){
+    .formulario form {
+        padding: 10px 10px !important;
+    }
+
+    .formulario-login form {
+        padding: 20px 10px !important;
+    }
+    
 }
 
 .formulario-login form {
@@ -143,7 +218,8 @@ select::-ms-expand {
 .seleccion {
     position: relative;
     display: flex;
-    width: 20em;
+    width: 100%;
+    max-width: 20em;
     height: 3em;
     line-height: 3;
     background: #800080;
@@ -251,4 +327,12 @@ select::-ms-expand {
     bottom: 100%;
     transition: 1s;
     transition-delay: 0.72s;
+}
+
+.modal-info-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+    padding: 1rem;
 }
