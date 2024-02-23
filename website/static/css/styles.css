@@ -99,10 +99,8 @@ h1 h3 h5 p {
   background: #6dffa8;
   background: linear-gradient(var(--colorVerdeFluor) 0%, var(--colorMorado) 100%);
   border-radius: 0 !important;
-  /*
-    height: 80vh;
-    min-height: 100px;
-  */
+  height: 80vh;
+  min-height: 100px;
   padding-top: 150px;
   margin: 0;
 }
@@ -322,10 +320,8 @@ hr {
 .info-text {
   padding: 30px 20px;
   background-color: #0db39b;
-  /*
-    max-width: 700px;
-    min-width: 300px;
-  */
+  max-width: 700px;
+  min-width: 300px;
   opacity: 0;
   color: var(--colorBlanco);
   font-family: var(--fuenteTitulos), var(--fuenteTitulosAlternativa);
@@ -416,6 +412,13 @@ footer {
     opacity: 1;
 
     cursor: pointer;
+  }
+
+  .info-container {
+    padding-top: 15em;
+    background-image: url("");
+    background-color: #0db39b;
+    height: auto;
   }
 
   .info-text {
@@ -517,26 +520,6 @@ footer {
   .nav-conteiner__navegacion__link::after {
     content: "";
     background: none;
-  }
-
-  /*
-    SECCION DE INFORMACION
-  */
-  .info-container {
-    display: grid;
-    grid-template-columns: none;
-    grid-template-rows: repeat(1, 1fr);
-    background-color: var(--colorMorado);
-    gap: 4rem;
-    padding-bottom: 0;
-  }
-
-  .contenedor-imagen {
-      grid-row: 1/2;
-  }
-
-  .info-text {
-    grid-row: 2/3;
   }
 
 }
