@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function actualizarTextDisplay(name) {
-        autorTextDisplay.textContent = name;
+        // autorTextDisplay.textContent = name;
     }
 
     function actualizarContador(numRecordings) {
