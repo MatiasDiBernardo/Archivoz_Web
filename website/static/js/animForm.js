@@ -20,3 +20,17 @@ document.querySelector(".nav-conteiner__boton-menu").addEventListener("click", (
       boton.setAttribute("aria-label", "Abrir menú")
   }
 });
+
+// Al presionar el enlace de info en la vista de movil desplaza el menu para cerrarlo.
+document.querySelector("#info").addEventListener("click", () => {
+  // Elemento de navegacion donde se encuentran los enlaces del navbar.
+  const navegacion = document.querySelector(".nav-conteiner__navegacion")
+  navegacion.classList.remove("nav-conteiner__navegacion-visible");
+});
+
+// Al presionar el enlace de info en la vista de movil desplaza el menu para cerrarlo.
+document.querySelector("#contactos").addEventListener("click", () => {
+  // Elemento de navegacion donde se encuentran los enlaces del navbar.
+  const navegacion = document.querySelector(".nav-conteiner__navegacion")
+  navegacion.classList.remove("nav-conteiner__navegacion-visible");
+});
