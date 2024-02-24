@@ -243,6 +243,25 @@ button:hover:not(:disabled) {
     margin: auto
 }
 
+.plyr__controls {
+    background:#000 !important;
+}
+
+.plyr__control {
+    color:#4a5464!important;
+    background: white !important;
+    border-radius: 50% !important;
+    width: 38px !important;
+    padding: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.plyr__control:hover{
+    color: #0062FF !important;
+}
+
 .plyr.plyr--audio {
     width: 100%;
 }
@@ -411,8 +430,13 @@ button:hover:not(:disabled) {
     display: block
 }
 
+.plyr__progress__buffer{
+    background: white !important;
+}
 
-
+.plyr__time--current{
+    color: white !important;
+}
 
 
 
