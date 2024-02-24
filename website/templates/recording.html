@@ -38,82 +38,62 @@
         <div class="welcome">
             <h1>bienvenido a la grabadora de archivoz</h1>
         </div>
-
-        <div class="introduction">
-            <p>
-                Para donar su voz con el asistente de grabación tiene que tocar el botón "Iniciar" y leer el texto que aparece en pantalla. 
-                Cuando terminé de leer debe presionar el botón "Detener", y si el audio se grabó correctamente presionar "Enviar". 
-                Tiene que repetir el proceso para seguir dondando, mientras mas audios envie mejor será el proceso de analisis de datos con su voz. 
-                Para que podamos aprovechar al máximo tu esfuerzo necesitamos que realices la grabación en el entorno con menos ruido posible y que leas las frases con tranquilidad, priorizando hablar con claridad y pronunciando correctamente.
-
-            </p>
-        </div>
     </section>
 
-    <div class="contenedor-aux">
-        <div class="contenedor-seleccion">
-            <div class="seleccion">
-                <select id="autorSelection" name="autorSel">
-
-                    <option selected disabled value="None">Selecciona un autor (opcional)</option>
-                    <option value="Julio Cortázar">Julio Cortázar</option>
-                    <option value="Jorge Luis Borges">Jorge Luis Borges</option>
-                    <option value="Ernesto Sabato">Ernesto Sabato</option>
-
-                </select>
-            </div>
-        </div>
-    </div>
-    <section>
-        <div class="contenedor-grab-cant">
-            <div class="esta-grabando">
-                <div class="circulo-rojo"></div>
-            </div>
-            <div class="cantidad-grabaciones">
-                <div class="texto-cant-audios">
-                    Cantidad de audios enviados
-                </div>
-                <div class="contador-audios">
-                    <span id="contador"></span>
+    <section class="contenedor-contenido">
+        <div class="contenedor-aux">
+            <div class="contenedor-seleccion">
+                <div class="seleccion">
+                    <select id="autorSelection" name="autorSel">
+    
+                        <option selected disabled value="None">Selecciona un autor (opcional)</option>
+                        <option value="Julio Cortázar">Julio Cortázar</option>
+                        <option value="Jorge Luis Borges">Jorge Luis Borges</option>
+                        <option value="Ernesto Sabato">Ernesto Sabato</option>
+    
+                    </select>
                 </div>
             </div>
+            <div class="contenedor-microfono">
+                <img src="../static/SVG/microfono.svg" alt="">
+            </div>
         </div>
-    </section>
-    <section>
         <div class="contenedor-frases">
-            <div class="rectangulo-verde">
-                <div class="frases-leer">
-                    En el resplandor del atardecer, el cielo se tiñó de un exquisito tono de azul profundo,
-                    un azul que se desvanecía sutilmente en un verde sereno y etéreo,
-                    como el matiz encantado de un jardín secreto. Las nubes,
-                    adornadas con pinceladas rosadas y doradas,
-                    danzaban en armonía con esta paleta celestial,
-                    pintando un paisaje que parecía sacado de un sueño.
-                    El mundo se sumergía en la calidez de la transición del día a la noche,
-                    envuelto en la magia cromática que solo el ocaso podía ofrecer.
+                <div class="rectangulo-verde">
+                    <div class="frases-leer">
+                        En el resplandor del atardecer, el cielo se tiñó de un exquisito tono de azul profundo,
+                        un azul que se desvanecía sutilmente en un verde sereno y etéreo,
+                        como el matiz encantado de un jardín secreto. Las nubes,
+                        adornadas con pinceladas rosadas y doradas,
+                        danzaban en armonía con esta paleta celestial,
+                        pintando un paisaje que parecía sacado de un sueño.
+                        El mundo se sumergía en la calidez de la transición del día a la noche,
+                        envuelto en la magia cromática que solo el ocaso podía ofrecer.
+                    </div>
+                </div>
+        </div>
+        <div class="contenedor-grabacion">
+            <div class="sub-contenedor-grabacion">
+                <h2 class="nombre-texto">grabación</h2>
+                <div class="contenedor-audio">
+                    <audio controls></audio>
+                </div>
+                <div class="contenedor-botones">
+                    <div><button id="borrarGrabacion" class="borrar">Borrar
+                        grabacion</button></div>
+                    <div class="cantidad-grabaciones">
+                        <div class="texto-cant-audios">
+                            Cantidad de audios enviados
+                        </div>
+                        <div class="contador-audios">
+                            <span id="contador"></span>
+                        </div>
+                    </div>
+                    <div><button id="enviarGrabacion" class="enviar">Enviar</button></div>
                 </div>
             </div>
         </div>
     </section>
-    <section>
-        <div class="contenedor-contenedor">
-            <div class="contenedor-botones">
-                <div><button id="iniciarGrabacion" class="iniciar">Iniciar
-                        grabacion</button></div>
-                <div><button id="detenerGrabacion" class="detener">Detener
-                        grabacion</button></div>
-                <div><button id="borrarGrabacion" class="borrar">Borrar
-                        grabacion</button></div>
-                <div><button id="enviarGrabacion" class="enviar">Enviar</button></div>
-            </div>
-        </div>
-    </section>
-
-    <h2 class="nombre-texto">ArchiVoz</h2>
-
-    <div class="div-audio">
-        <audio controls></audio>
-    </div>
 
     <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
     <script src="..\static\js\recording.js"></script>

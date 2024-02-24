@@ -10,6 +10,10 @@
   --fuenteParrafos: Apple-system;
 }
 
+.scrollpos {
+  background-color: var(--colorMorado);
+  overflow: hidden;
+}
 
 h1 {
   /* font-family: 'Press Start 2P', cursive; */
