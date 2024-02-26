@@ -1,27 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "./base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Actor&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="..\static\css\stylerecording.css">
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
-    <link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="..\static\img\favicon.ico" type="image/x-icon">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title>Asistente de grabacion</title>
-</head>
+{% block tittle %}Asistente de grabacion{% endblock%}
 
-<body>
+{% block links %}
+<link href="https://fonts.googleapis.com/css2?family=Actor&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="..\static\css\stylerecording.css">
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
+<link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="..\static\img\favicon.ico" type="image/x-icon">
+{% endblock %}
+
+{% block body %}
+<div class="contenedor-externo-general">
     <div class="invisible-div">
         <div id="id_user">{{ id_user }}</div>
     </div>
-
+    
     <header>
         <nav>
             <ul>
@@ -33,13 +27,13 @@
             </ul>
         </nav>
     </header>
-
-    <section>
+    
+    <section class="contenedor-titulo">
         <div class="welcome">
             <h1>bienvenido a la grabadora de archivoz</h1>
         </div>
     </section>
-
+    
     <section class="contenedor-contenido">
         <div class="contenedor-aux">
             <div class="contenedor-seleccion">
@@ -79,7 +73,7 @@
                     <audio controls></audio>
                 </div>
                 <div class="contenedor-botones">
-                    <div class = "borrarGrabacion"><button id="borrarGrabacion" class="borrar">Borrar
+                    <div class = "borrarGrabacion"><button id="borrarGrabacion" class="borrar  boton-grabacion">Borrar
                         grabacion</button></div>
                     <div class="cantidad-grabaciones">
                         <div class="texto-cant-audios">
@@ -89,14 +83,17 @@
                             <span id="contador"></span>
                         </div>
                     </div>
-                    <div class = "enviarGrabacion"><button id="enviarGrabacion" class="enviar">Enviar</button></div>
+                    <div class = "enviarGrabacion"><button id="enviarGrabacion" class="enviar  boton-grabacion">Enviar</button></div>
                 </div>
             </div>
         </div>
     </section>
+</div>
 
-    <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
-    <script src="..\static\js\recording.js"></script>
-</body>
+{% endblock %}
 
-</html>
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
+<script src="..\static\js\recording.js"></script>
+{% endblock %}
