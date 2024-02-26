@@ -48,29 +48,30 @@ def obtener_datos():
             mail_usuario = newUser.mail
 
             # It sends a mail notifying the user the assigned ID (it doesn't work without the env password_mail key)
-            msg_title = "Registro ArchiVoz"
-            sender = "ArchiVoz Bot"
-            msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
-            msg_body = """ Gracias por registrarte en nuestro archivo de voces. Con el ID que te asignamos
-            podes retomar tu sesión de grabación en cualquier momento desde el punto donde la dejaste.
-            Además, con tu ID vas a poder acceder a las funcionalidades de texto a voz personalizado y a ubicar
-            tu voz dentro del mapa de voces, ambos proyectos en los que estamos trabajando. Así que no lo pierdas.
-            Este es tu ID:
-            """
-            msg.body = ""
-            data = {
-                'app_name': "ArchiVoz",
-                'title': msg_title,
-                'body': msg_body,
-                'id': id_user_for_session,
-            }
+            if not os.environ.get("DEBUG"):
+                msg_title = "Registro ArchiVoz"
+                sender = "ArchiVoz Bot"
+                msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
+                msg_body = """ Gracias por registrarte en nuestro archivo de voces. Con el ID que te asignamos
+                podes retomar tu sesión de grabación en cualquier momento desde el punto donde la dejaste.
+                Además, con tu ID vas a poder acceder a las funcionalidades de texto a voz personalizado y a ubicar
+                tu voz dentro del mapa de voces, ambos proyectos en los que estamos trabajando. Así que no lo pierdas.
+                Este es tu ID:
+                """
+                msg.body = ""
+                data = {
+                    'app_name': "ArchiVoz",
+                    'title': msg_title,
+                    'body': msg_body,
+                    'id': id_user_for_session,
+                }
 
-            msg.html = render_template("email.html",data=data)
+                msg.html = render_template("email.html",data=data)
 
-            try:
-                mail.send(msg)
-            except Exception as e:
-                print(e)
+                try:
+                    mail.send(msg)
+                except Exception as e:
+                    print(e)
 
             return redirect(url_for("views.grabacion", id_user=id_user_for_session))
 

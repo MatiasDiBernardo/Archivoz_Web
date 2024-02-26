@@ -1,4 +1,5 @@
 /uploads
+/instance
 /website/__pycache__
 /website/tts/models
 /test/__pycache__
