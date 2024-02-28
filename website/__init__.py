@@ -33,14 +33,17 @@ def create_app(database_uri = f'sqlite:///{DB_NAME}'):
         db.create_all()
 
         if os.environ.get("DEBUG"):
-            testUser = Usuario(nombre="Test", edad=20,
-                                region="Buenos Aires", mail="test@gmail.com", user_id="000000")
-            print("Se agrego el user")
-            
-            db.session.add(testUser)
-            db.session.commit()
+            # Add test user if the db is empty
+            if Usuario.query.filter_by(user_id="000000").first() is None:
+                testUser = Usuario(nombre="Test", edad=20,
+                                    region="Buenos Aires", mail="test@gmail.com", user_id="000000")
+                print("Se agrego el user test con ID: 000000")
+                
+                db.session.add(testUser)
+                db.session.commit()
     
-        datos_actuales_usuarios = Usuario.query.all()
+        # Mostrar los datos de la db actual
+        #datos_actuales_usuarios = Usuario.query.all()
         #print("Base de datos usuarios: ", datos_actuales_usuarios)
     
     return app

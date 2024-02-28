@@ -78,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function clearRecording() {
+        console.log("Chunks before deleted")
+        console.log(chunks)
         chunks = [];
         audio.src = '';
         toggleDeleteButton();
@@ -103,6 +105,29 @@ document.addEventListener('DOMContentLoaded', () => {
         counterDisplay.textContent = numRecordings;
     }
 
+    function nivelRMSAudio(array_audio){
+
+        const normalize_array = Array.from(array_audio).map(value => value / 128);
+        // console.log("Normalice to float");
+        // console.log(normalize_array);
+
+        const squaredValues = normalize_array.map(value => value * value);
+
+        // console.log("Chunks squared");
+        // console.log(squaredValues);
+
+        // Step 2: Calculate the mean of the squared values
+        const meanSquared = squaredValues.reduce((sum, value) => sum + value, 0) / squaredValues.length;
+
+        // console.log("Sum and normalize");
+        // console.log(meanSquared);
+
+        const rms = Math.sqrt(meanSquared); 
+
+        // Step 3: Take the square root of the mean
+        return rms;
+    }
+
     // Inicialización del objeto mediaRecorder para manejar la grabación
     // Recomiendo no modificar mucho, en el caso de que se necesite grabar a una
     // cierta tasa de bits o cambiar la tasa de muestreo, entonces agregar lo siguiente:
@@ -124,11 +149,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=pcm' });
 
             mediaRecorder.ondataavailable = event => {
-                chunks.push(event.data);
+                const audioBlob = event.data;
+                const reader = new FileReader();
+
+                reader.onload = function() {
+                    // Porque la data se guarda en Int8, di es PCM tendría que ser Int16. REVISAR
+                    const audioData = new Int8Array(this.result);
+                    // console.log(audioData);
+
+                    // Calculate the RMS value using your custom function
+                    const rmsValue = nivelRMSAudio(audioData);
+                    console.log("RMS Value:", 20 * Math.log10(rmsValue));
+
+                    // Continue processing the audio data or update UI based on the RMS value
+                };
+
+                reader.readAsArrayBuffer(audioBlob);
+                chunks.push(audioBlob);
                 toggleDeleteButton();
+                // chunks.push(event.data);
+                // toggleDeleteButton();
             };
 
             mediaRecorder.onstop = () => {
