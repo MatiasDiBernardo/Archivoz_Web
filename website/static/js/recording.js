@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function actualizarFrase(frase) {
-        fraseLeerElement.textContent = frase;
+        // fraseLeerElement.textContent = frase;
     }
 
     function actualizarTextDisplay(name) {

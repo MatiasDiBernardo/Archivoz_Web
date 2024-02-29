@@ -140,8 +140,6 @@ section p {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
-    border-radius: 20px;
 }
 
 .contenedor-frases .rectangulo-verde {
@@ -152,10 +150,11 @@ section p {
     justify-content: center;
     align-items: center;
     border-radius: 20px;
+    border: 1px solid black;
 }
 
 section .contenedor-frases .rectangulo-verde .frases-leer {
-    width: 577px;
+    max-width: 577px;
     text-align: center;
     color: rgba(0, 0, 0, 0.75);
     font-size: 22px;
@@ -516,6 +515,19 @@ select::-ms-expand {
     margin: 10px;
 }
 
+.contenedor-microfono-mobile {
+    width: 100%;
+    display: flex;
+    max-width: 800px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#microfono-mobile {
+    display: none;
+}
+
 .contenedor-microfono{
     display: flex;
     justify-content: center;
@@ -585,29 +597,16 @@ select::-ms-expand {
     .welcome h1 {
         font-size: 30px;
     }
+
+    .rectangulo-verde{
+        height: 500px !important;
+    }
 }
 
 
 @media (max-width: 500px){
     .welcome h1{
         font-size: 25px;
-    }
-}
-
-
-@media(max-width: 400px) {
-
-    .contenedor-contenido {
-        display: grid;
-        grid-template-rows: repeat(1, 1fr);
-        gap: 10px;
-        position: relative;
-        margin: 0;
-    }
-
-    .welcome h1 {
-        font-size: 20px;
-        font-weight: 800;
     }
 
     /*
@@ -616,24 +615,48 @@ select::-ms-expand {
 
     .contenedor-aux {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin: 0;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .contenedor-seleccion {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 
     .seleccion {
-        max-width: 400px;
+        max-width: 20em;
+        width: 100%;
     }
 
-    .contenedor-microfono {
-        width: max-content;
+    #microfono-desktop{
+        display: none;
+    }
+
+    #microfono-mobile {
+        display: flex;
+    }
+
+    /* CONTENEDOR GENERAL */
+    .contenedor-contenido {
+        display: grid;
+        grid-template-rows: 1fr;
+        gap: 10px;
+        position: relative;
+        margin: 0;
     }
 
     /*
         CONTENEDOR DE FRASES
     */
-    .contenedor-frases {
-        max-width: 400px;
+    .contenedor-frases .rectangulo-verde {
+        height: auto !important;
+        min-height: 500px;
+        background: #74F9D8;
+        padding: 10px;
+        border-radius: 0px;
     }
 
     /*
@@ -684,6 +707,15 @@ select::-ms-expand {
     .cantidad-grabaciones {
         grid-row: 2/3;
         grid-column: 1/3;
+    }
+}
+
+
+@media(max-width: 400px) {
+
+    .welcome h1 {
+        font-size: 20px;
+        font-weight: 800;
     }
 }
 

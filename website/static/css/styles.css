@@ -71,6 +71,7 @@ h1 {
 
 .close {
   color: #6dffa8;
+  outline: none !important;
 }
 
 .contactClose {
