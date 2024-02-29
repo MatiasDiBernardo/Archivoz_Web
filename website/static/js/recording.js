@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Variables de grabación
     let mediaRecorder;
     let chunks = [];
+    let audio_condition = true;
+    let error_message = "";
     let audio = document.querySelector('audio');
 
     // Botones
@@ -78,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function clearRecording() {
-        console.log("Chunks before deleted")
-        console.log(chunks)
         chunks = [];
         audio.src = '';
         toggleDeleteButton();
@@ -105,27 +105,38 @@ document.addEventListener('DOMContentLoaded', () => {
         counterDisplay.textContent = numRecordings;
     }
 
-    function nivelRMSAudio(array_audio){
+    function measureNoiseLevel(audioBlob) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const reader = new FileReader();
 
-        const normalize_array = Array.from(array_audio).map(value => value / 128);
-        // console.log("Normalice to float");
-        // console.log(normalize_array);
+        reader.onload = async function () {
+          const buffer = await audioContext.decodeAudioData(reader.result);
+          const dataArray = buffer.getChannelData(0);
 
-        const squaredValues = normalize_array.map(value => value * value);
+          // Calculate average amplitude as a measure of noise level
+          const sumOfSquares = dataArray.reduce((acc, val) => acc + (val * val), 0);
+          const rms = Math.sqrt(sumOfSquares / dataArray.length);
+          const rms_db = 20 * Math.log10(rms);
 
-        // console.log("Chunks squared");
-        // console.log(squaredValues);
+          // Audio error conditions
+          audio_condition = true;
+          error_message = "";
 
-        // Step 2: Calculate the mean of the squared values
-        const meanSquared = squaredValues.reduce((sum, value) => sum + value, 0) / squaredValues.length;
+          // Control audio length
+          if (buffer.duration > 45){
+            audio_condition = false;
+            error_message = "La grabación supero el tiempo máximo. Asegúrate de leer la oración en pantalla en menos de 45 segundos.";
+          } 
 
-        // console.log("Sum and normalize");
-        // console.log(meanSquared);
+          // Noise control
+          let threshold_db = -45;
+          if (rms_db < threshold_db){
+            audio_condition = false;
+            error_message = "El audio no tiene el suficiente volúmen para reconocer tu voz. Asegúrate de que tu micrófono esta conectado o hable a un mayor volumen o mas cerca del micrófono.";
+          }
+        }
 
-        const rms = Math.sqrt(meanSquared); 
-
-        // Step 3: Take the square root of the mean
-        return rms;
+        reader.readAsArrayBuffer(audioBlob);
     }
 
     // Inicialización del objeto mediaRecorder para manejar la grabación
@@ -151,33 +162,26 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(stream => {
             mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=pcm' });
 
+            // console.log("Data?");
+            // console.log(mediaRecorder.stream);
+
+            // console.log("Tipo de encod");
+            // console.log(mediaRecorder.mimeType);
+
+            // console.log("Bits por seg");
+            // console.log(mediaRecorder.audioBitsPerSecond);
+
             mediaRecorder.ondataavailable = event => {
-                const audioBlob = event.data;
-                const reader = new FileReader();
-
-                reader.onload = function() {
-                    // Porque la data se guarda en Int8, di es PCM tendría que ser Int16. REVISAR
-                    const audioData = new Int8Array(this.result);
-                    // console.log(audioData);
-
-                    // Calculate the RMS value using your custom function
-                    const rmsValue = nivelRMSAudio(audioData);
-                    console.log("RMS Value:", 20 * Math.log10(rmsValue));
-
-                    // Continue processing the audio data or update UI based on the RMS value
-                };
-
-                reader.readAsArrayBuffer(audioBlob);
-                chunks.push(audioBlob);
+                chunks.push(event.data);
                 toggleDeleteButton();
-                // chunks.push(event.data);
-                // toggleDeleteButton();
             };
 
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(chunks, { type: 'audio/wav' });
                 const audioURL = URL.createObjectURL(audioBlob);
                 audio.src = audioURL;
+
+                measureNoiseLevel(audioBlob);
                 toggleDeleteButton();
             };
         })
@@ -207,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
     stopBtn.disabled = true;
     deleteBtn.disabled = true;
     sendBtn.disabled = true;
-
 
     startBtn.addEventListener('click', () => {
         mostrarCirculoRojo();
@@ -239,41 +242,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     sendBtn.addEventListener('click', () => {
-        let author = autorSelector.value;
-        // Acá se podría implementar una fución que en base al valor rms que esta almacenado en el array chunks
-        // me deje guardar o no el audio. Es mas rápido hacerlo desde acá que guardarlo, mandarlo y recién ahi
-        // decidir si ese audio eso bueno o no.
+        // Se podría usar el mismo blob para mandar al back y para escuchar, al principio probamos eso
+        // pero había un bug que no me acuerdo, si se necesita mas performance se puede mejorar.
 
-        // Realizar una solicitud POST al backend con el audio y el ID del texto
-        const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
-        var form = new FormData();
-        form.append('file', audioBlob2, 'data.mp3');
-        form.append('author', author);
+        // If the audio is in good conditions
+        if (audio_condition){
+            // Realizar una solicitud POST al backend con el audio y el ID del texto
+            const audioBlobMP3 = new Blob(chunks, { type: 'audio/mpeg-3' });
+            var form = new FormData();
+            form.append('file', audioBlobMP3, 'data.mp3');
+            form.append('author', autorSelector.value);
 
-        $.ajax({
-            type: 'POST',
-            url: pathnameURL,
-            data: form,
-            cache: false,
-            processData: false,
-            contentType: false
-        }).done(function (data) {
-            console.log(data);
+            $.ajax({
+                type: 'POST',
+                url: pathnameURL,
+                data: form,
+                cache: false,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                console.log(data);
 
-            // Actualizar la interfaz con el texto obtenido del backend
-            actualizarFrase(data.text_to_display);
-            actualizarTextDisplay(data.name_of_text);
+                // Actualizar la interfaz con el texto obtenido del backend
+                actualizarFrase(data.text_to_display);
+                actualizarTextDisplay(data.name_of_text);
+                clearRecording();
+            });
+
             clearRecording();
-        });
 
-        clearRecording();
+            // Visual update
+            numRecordings++;
+            actualizarContador(numRecordings);
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            deleteBtn.disabled = true;
+            sendBtn.disabled = true;
+        }
+        else{
+            // Warnings when audio is not good
+            console.log("Error en su grabación")
+            console.log(error_message)
 
-        // Visual update
-        numRecordings++;
-        actualizarContador(numRecordings);
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        deleteBtn.disabled = true;
-        sendBtn.disabled = true;
+            clearRecording();
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            deleteBtn.disabled = true;
+            sendBtn.disabled = true;
+        }
     });
 });
