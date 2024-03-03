@@ -169,7 +169,7 @@ section .contenedor-frases .rectangulo-verde .frases-leer {
     width: 100%;
     max-width: 800px;
     background: #90DACC;
-    margin: 50px;
+    margin: 50px 0;
     padding-bottom: 20px;
     display: flex;
     justify-content: center;
@@ -521,7 +521,6 @@ select::-ms-expand {
     max-width: 800px;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
 }
 
 #microfono-mobile {
@@ -535,6 +534,8 @@ select::-ms-expand {
     background: white;
     border-radius: 50%;
     padding: 10px;
+    position: relative;
+    z-index: 0;
 }
 
 @media(max-width: 820px) { 
@@ -663,20 +664,17 @@ select::-ms-expand {
         CONTENEDOR DE GRABACION
     */
     .contenedor-grabacion {
-        max-width: 400px;
+        max-width: 577px;
         height: 350px;
-        background: #74F9D8;
         display: flex;
         justify-content: center;
-        align-items: center;
-        margin: 50px 0 0 0;
+        margin: 0 0 50px 0;
         padding: 0;
     }
 
     .sub-contenedor-grabacion {
-        max-width: 400px;
+        max-width: 577px;
         height: 250px;
-        background: #74F9D8;
         display: grid;
         grid-template-rows: repeat(3, 1fr);
         grid-template-columns: repeat(2, 1fr);
@@ -685,14 +683,14 @@ select::-ms-expand {
 
     /*    TEXTO DE GRABACION    */
     .nombre-texto {
-        max-width: 400px;
+        max-width: 577px;
         grid-row: 1/2;
         grid-column: 1/3;
     }
 
     /*    AUDIO    */
     .contenedor-audio {
-        max-width: 400px;
+        max-width: 577px;
         grid-row: 2/3;
         grid-column: 1/3;
     }
@@ -701,6 +699,7 @@ select::-ms-expand {
     .contenedor-botones {
         grid-row: 3/4;
         grid-column: 1/3;
+        gap: 20px;
     }
 
     /*    CANTIDAD DE GRABACIONES    */
@@ -717,6 +716,127 @@ select::-ms-expand {
         font-size: 20px;
         font-weight: 800;
     }
+
+    /*
+        CONTENEDOR DE GRABACION
+    */
+    .contenedor-grabacion {
+        height: 400px;
+        margin-bottom: 50px;
+    }
+
+    /* BOTON DE ENVIAR */
+    .enviarGrabacion {
+        grid-row: 1/2;
+        grid-column: 1/3;
+    }
+
+    /* BOTON DE BORRAR */
+    .borrarGrabacion {
+        grid-row: 2/3;
+        grid-column: 1/3;
+    }
+
+    /* CANTIDAD DE GRABACIONES */
+    .cantidad-grabaciones {
+        grid-row: 3/4;
+        grid-column: 1/3;
+    }
+
+    .plyr__controls {
+        position: relative;
+        height: 100px;
+    }
+
+    .plyr__controls__item,
+    .plyr__control {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 40px;
+    }
+
+    .plyr__controls button,
+    .plyr__progress__container,
+    .plyr__time {
+        position: absolute;
+        top: 10px;
+    }
+
+    .plyr__controls button {
+        left: 10px;
+    }
+
+    .plyr__progress__container {
+        left: 50px;
+        width: 70%;
+    }
+
+    .plyr__progress {
+        width: 100%;
+    }
+
+    .plyr__volume {
+        max-width: none !important;
+        width: 100% !important;
+        position: absolute !important;
+        top: 55px;
+        left: 0px;
+        margin: 0 !important;
+    }
+
+    .plyr__volume button {
+        top: 0;
+        left: 10px;
+    }
+
+    .plyr__volume input {
+        left: 2px;
+        width: 70% !important;
+        margin: 0 !important;
+    }
+
+}
+
+@media(max-width: 370px) {
+
+    .plyr__progress__container {
+        left: 50px;
+        width: calc(70% - 10px);
+    }
+
+    .plyr__time {
+        left: calc(100% - 45px);
+    }
+
+    .plyr__volume input {
+        left: 5px;
+        margin-left: 2.5px !important;
+    }
+
+}
+
+@media(max-width: 340px) {
+
+    .plyr__volume input {
+        left: 10px;
+        margin-left: 2.5px !important;
+    }
+
+}
+
+@media(max-width: 300px) {
+
+    .plyr__time {
+        left: calc(100% - 40px);
+    }
+
+    .plyr__volume input {
+        left: 15px;
+        margin-left: 2.5px !important;
+    }
+
 }
 
 /* OCULTO LINKS DE NAVBAR */
@@ -726,4 +846,39 @@ select::-ms-expand {
 
 #participar{
     display: none;
+}
+
+/* Animacion para el microfono */
+
+.contenedor-microfono::after,
+.contenedor-microfono::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.7;
+    z-index: -1;
+}
+
+.contenedor-microfono::before {
+    animation: pulso 2s ease-out infinite;
+}
+
+.contenedor-microfono::after {
+    animation: pulso 2s 1s ease-out infinite;
+}
+
+.contenedor-microfono--activo::before,
+.contenedor-microfono--activo::after {
+    animation: none;
+}
+
+
+@keyframes pulso {
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
 }
