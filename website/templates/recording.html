@@ -95,6 +95,30 @@
             </div>
         </div>
     </section>
+    <!-- Modal Error (no tiene trigger por ahora) -->
+  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header modal-error-header">
+            <h5 class="modal-title">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-error-body">
+            <div>
+                <p>Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
+            </div>
+            <div>
+                <button data-dismiss="modal" aria-label="Close">Cerrar</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+        </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

@@ -882,3 +882,44 @@ select::-ms-expand {
         opacity: 0;
     }
 }
+
+/* MODAL ERROR */
+.modal-error-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+    padding: 1rem;
+}
+
+.modal-error-body:has(button){
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.modal-error-body button{
+    width: 100px;
+    height: 38px;
+    border-radius: 4.8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 19px;
+    font-family: Segoe UI;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-feature-settings: 'clig' off, 'liga' off;
+}
+
+.modal-error-body button:hover{
+    background: #FF4545;
+    color: white;
+   
+}
+
+.modal-error-header{
+    background:#FF4545;
+    color: white;
+}
