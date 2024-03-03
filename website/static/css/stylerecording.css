@@ -4,7 +4,7 @@
 }
 
 .contenedor-externo-general {
-    background: linear-gradient(180deg, rgba(116,249,216,1) 0%, rgba(13,179,155,1) 20%, rgba(128,0,128,1) 100%) !important;;
+    background: linear-gradient(180deg, var(--colorVerdeFluor) 0%, var(--colorVerdeOscuro) 20%, var(--colorMorado) 100%) !important;;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     width: 100%;
     position: relative;
@@ -488,7 +488,7 @@ select::-ms-expand {
     width: 20em;
     height: 3em;
     line-height: 3;
-    background: #23b499;
+    background: #800080;
     overflow: hidden;
     border-radius: .25em;
 }
@@ -499,14 +499,14 @@ select::-ms-expand {
     top: 0;
     right: 0;
     padding: 0 1em;
-    background: #23b499;
+    background: #800080;
     cursor: pointer;
     pointer-events: none;
     transition: .25s all ease;
 }
 
 .seleccion:hover::after {
-    color: #800080;
+    color: #23b499;
 }
 
 .nombre-texto{

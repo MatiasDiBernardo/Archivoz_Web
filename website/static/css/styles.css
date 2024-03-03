@@ -375,6 +375,14 @@ footer {
   gap: 10px;
 }
 
+/* ALERTAS */
+.alert{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
 /* MOVILE */
 
 @media (min-width: 400px) {
