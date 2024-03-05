@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let mediaRecorder;
     let chunks = [];
     let audio = document.querySelector('audio'); // <audio>
-    
+   
     // Botones
     // Como tenemos el boton de arriba y el boton de abajo, tenemos que agarrar 2 elementos
     const recordingButtonDesktop = document.getElementsByClassName('contenedor-microfono')[0]
@@ -148,8 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function actualizarContador(numRecordings) {
         counterDisplay.textContent = numRecordings;
     }
-
-   
 
     // Inicialización del objeto mediaRecorder para manejar la grabación
     // Recomiendo no modificar mucho, en el caso de que se necesite grabar a una
@@ -295,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 contentType: false
             }).done(function (data) {
                 console.log(data);
-    
+              
                 // Actualizar la interfaz con el texto obtenido del backend
                 actualizarFrase(data.text_to_display);
                 actualizarTextDisplay(data.name_of_text);
