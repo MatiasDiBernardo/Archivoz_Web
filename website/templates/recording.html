@@ -73,6 +73,10 @@
                 <img src="../static/SVG/microfono.svg" alt="">
             </div>
         </div>
+        <div id="loader-recording" class="loader-wrapper">
+            <div id="custom-loader"></div>
+            <span>Procesando grabación...</span>
+        </div>
         <div class = "contenedor-grabacion">
             <div class="sub-contenedor-grabacion">
                 <h2 class="nombre-texto">grabación</h2>
@@ -90,7 +94,14 @@
                             <span id="contador"></span>
                         </div>
                     </div>
-                    <div class = "enviarGrabacion"><button id="enviarGrabacion" class="enviar  boton-grabacion">Enviar</button></div>
+                    <div class = "enviarGrabacion">
+                        <button id="enviarGrabacion" class="enviar  boton-grabacion">
+                            <span id="texto-envio">Enviar</span>
+                            <div id="loader-send" class="loader-wrapper">
+                                <div id="custom-loader"></div>
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
