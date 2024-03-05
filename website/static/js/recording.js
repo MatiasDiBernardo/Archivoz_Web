@@ -18,9 +18,9 @@ function obtenerDatos(idUsuario) {
             return response.json();
         })
         .then(data => {
-            numRecordings = data.num_recordings;
-            textToRead = data.name_of_text;
-            textToDisplay = data.text_to_display;
+            numRecordings = data.num_recordings; // Numero de grabaciones
+            textToRead = data.name_of_text; //Archivoz
+            textToDisplay = data.text_to_display; //Texto aleatorio
             console.log('Datos obtenidos:', data);
             return data;
         })
@@ -46,14 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Variables de grabación
     let mediaRecorder;
     let chunks = [];
-    let audio = document.querySelector('audio');
-
+    let audio = document.querySelector('audio'); // <audio>
+    
     // Botones
-    const startBtn = document.getElementById('iniciarGrabacion');
-    const stopBtn = document.getElementById('detenerGrabacion');
-    const deleteBtn = document.getElementById('borrarGrabacion');
-    const sendBtn = document.getElementById('enviarGrabacion');
-    const autorSelector = document.getElementById('autorSelection');
+    // Como tenemos el boton de arriba y el boton de abajo, tenemos que agarrar 2 elementos
+    const recordingButtonDesktop = document.getElementsByClassName('contenedor-microfono')[0]
+    const recordingButtonMobile = document.getElementsByClassName('contenedor-microfono')[1]
+    const deleteBtn = document.getElementById('borrarGrabacion'); // borrarGrabacion
+    const sendBtn = document.getElementById('enviarGrabacion'); // enviarGrabacion
+    const autorSelector = document.getElementById('autorSelection'); // autorSelection
 
     // Inicializar Plyr
     const player = new Plyr('audio', {
@@ -62,9 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elementos de interfaz de usuario
     const circulo = document.querySelector('section .contenedor-grab-cant .esta-grabando .circulo-rojo');
-    let counterDisplay = document.getElementById('contador');
-    let fraseLeerElement = document.querySelector('.frases-leer');
-    let autorTextDisplay = document.querySelector('.nombre-texto');
+    let counterDisplay = document.getElementById('contador'); //contador
+    let fraseLeerElement = document.querySelector('.frases-leer'); //frases-leer
+    let autorTextDisplay = document.querySelector('.nombre-texto'); //Es el texto de Grabación
+    let grabacionResultado = document.querySelector('.contenedor-grabacion');
+    let loaderGrabacion = document.querySelector('#loader-recording')
+    let loaderEnvio = document.querySelector('#loader-send')
+    let textoEnvio = document.getElementById('texto-envio')
 
     // Backend var
     var pathnameURL = window.location.pathname;
@@ -83,16 +88,57 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleDeleteButton();
     }
 
-    function mostrarCirculoRojo() {
-        circulo.style.opacity = '1';
+    // Alternamos entre icono de 'empezar a grabar' e icono de 'grabando'
+    function cambiarIcono(img){
+        if(!recording){
+            img.src = '../static/SVG/grabando.svg'
+        } else{
+            img.src = '../static/SVG/microfono.svg'
+        }
     }
 
-    function ocultarCirculoRojo() {
-        circulo.style.opacity = '0';
+    function deshabilitarGrabar() {
+        recordingButtonDesktop.style.pointerEvents = 'none';
+        recordingButtonDesktop.style.opacity = '0.5';
+        recordingButtonMobile.style.pointerEvents = 'none';
+        recordingButtonMobile.style.opacity = '0.5';
     }
+
+    function habilitarGrabar() {
+        recordingButtonDesktop.style.pointerEvents = 'all';
+        recordingButtonDesktop.style.opacity = '1';
+        recordingButtonMobile.style.pointerEvents = 'all';
+        recordingButtonMobile.style.opacity = '1';
+    }
+
+    function iniciarLoaderGrabacion(){
+        loaderGrabacion.style.display = 'flex';
+        loaderGrabacion.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+
+    function mostrarAudioResultado(){
+        loaderGrabacion.style.display = 'none';
+        grabacionResultado.style.display = 'flex';
+        grabacionResultado.scrollIntoView({ block: "end", behavior: "smooth" });
+    }
+
+    function iniciarLoaderEnvio(){
+        textoEnvio.style.display = 'none';
+        loaderEnvio.style.display = 'flex';
+    }
+
+    function detenerLoaderEnvio(){
+        textoEnvio.style.display = 'flex';
+        loaderEnvio.style.display = 'none';
+    }
+
+    function ocultarAudioResultado(){
+        grabacionResultado.style.display = 'none';
+    }
+
 
     function actualizarFrase(frase) {
-        // fraseLeerElement.textContent = frase;
+        fraseLeerElement.textContent = frase;
     }
 
     function actualizarTextDisplay(name) {
@@ -102,6 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function actualizarContador(numRecordings) {
         counterDisplay.textContent = numRecordings;
     }
+
+   
 
     // Inicialización del objeto mediaRecorder para manejar la grabación
     // Recomiendo no modificar mucho, en el caso de que se necesite grabar a una
@@ -125,17 +173,27 @@ document.addEventListener('DOMContentLoaded', () => {
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
             mediaRecorder = new MediaRecorder(stream);
-
+            
+            // Cuando nota que empezamos a grabar
             mediaRecorder.ondataavailable = event => {
-                chunks.push(event.data);
-                toggleDeleteButton();
+                chunks.push(event.data); //Ingresa los datos al chunk
+                toggleDeleteButton(); //Habilita el boton para detener
             };
-
+            
+            // Cuando paramos de grabar, es decir, de meter audio
             mediaRecorder.onstop = () => {
+                // Mostramos loader
+                iniciarLoaderGrabacion();
+                // Crea un Blob con el resultado
                 const audioBlob = new Blob(chunks, { type: 'audio/wav' });
+                // Lo convierte en una URL
                 const audioURL = URL.createObjectURL(audioBlob);
+                // Y lo pasa al reproductor
                 audio.src = audioURL;
+                // Habilita el boton para borrar la pista
                 toggleDeleteButton();
+                // Mostramos resultado
+                setTimeout(mostrarAudioResultado, 3000) //Agrego un tiemout para poder apreciar el loader
             };
         })
         .catch(err => {
@@ -160,39 +218,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Configuración inicial de la interfaz de usuario
     clearRecording();
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
     deleteBtn.disabled = true;
     sendBtn.disabled = true;
 
-
-    startBtn.addEventListener('click', () => {
-        mostrarCirculoRojo();
-        clearRecording();
-        mediaRecorder.start();
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        deleteBtn.disabled = false;
-        sendBtn.disabled = true;
+    let recording = false;
+    recordingButtonDesktop.addEventListener('click', (e) => {
+        
+        if(!recording){
+            // cambiarAnimacion(); // Alternar entre animaciones
+            clearRecording();
+            mediaRecorder.start(); //Empezamos a grabar
+            deleteBtn.disabled = true;
+            sendBtn.disabled = true;
+            cambiarIcono(e.srcElement.children[0]);
+            recording = true;
+        } else{
+            // cambiarAnimacion();
+            mediaRecorder.stop(); //Paramos de grabar
+            deleteBtn.disabled = false;
+            sendBtn.disabled = false;
+            deshabilitarGrabar()
+            cambiarIcono(e.srcElement.children[0]);
+            recording = false;
+        }
     });
 
-    stopBtn.addEventListener('click', () => {
-        ocultarCirculoRojo();
-        mediaRecorder.stop();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        startBtn.disabled = false;
-        sendBtn.disabled = false;
+    recordingButtonMobile.addEventListener('click', (e) => {
+       
+        if(!recording){
+            // cambiarAnimacion(); // Alternar entre animaciones
+            clearRecording();
+            mediaRecorder.start(); //Empezamos a grabar
+            deleteBtn.disabled = true;
+            sendBtn.disabled = true;
+            cambiarIcono(e.srcElement.children[0]);
+            recording = true;
+        } else{
+            // cambiarAnimacion();
+            mediaRecorder.stop(); //Paramos de grabar
+            deleteBtn.disabled = false;
+            sendBtn.disabled = false;
+            deshabilitarGrabar()
+            cambiarIcono(e.srcElement.children[0]);
+            recording = false;
+        }
     });
 
     deleteBtn.addEventListener('click', () => {
-        ocultarCirculoRojo();
-        mediaRecorder.stop();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
         deleteBtn.disabled = true;
         sendBtn.disabled = true;
         clearRecording();
+        ocultarAudioResultado();
+        habilitarGrabar();
     });
 
     sendBtn.addEventListener('click', () => {
@@ -207,30 +284,35 @@ document.addEventListener('DOMContentLoaded', () => {
         form.append('file', audioBlob2, 'data.mp3');
         form.append('author', author);
 
-        $.ajax({
-            type: 'POST',
-            url: pathnameURL,
-            data: form,
-            cache: false,
-            processData: false,
-            contentType: false
-        }).done(function (data) {
-            console.log(data);
-
-            // Actualizar la interfaz con el texto obtenido del backend
-            actualizarFrase(data.text_to_display);
-            actualizarTextDisplay(data.name_of_text);
+        iniciarLoaderEnvio();
+        setTimeout(() => {
+            $.ajax({
+                type: 'POST',
+                url: pathnameURL,
+                data: form,
+                cache: false,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                console.log(data);
+    
+                // Actualizar la interfaz con el texto obtenido del backend
+                actualizarFrase(data.text_to_display);
+                actualizarTextDisplay(data.name_of_text);
+                clearRecording();
+                ocultarAudioResultado();
+            });
+    
             clearRecording();
-        });
-
-        clearRecording();
-
-        // Visual update
-        numRecordings++;
-        actualizarContador(numRecordings);
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        deleteBtn.disabled = true;
-        sendBtn.disabled = true;
+            detenerLoaderEnvio();
+            ocultarAudioResultado();
+    
+            // Visual update
+            numRecordings++;
+            actualizarContador(numRecordings);
+            deleteBtn.disabled = true;
+            sendBtn.disabled = true;
+            habilitarGrabar();
+        }, 3000)
     });
 });
