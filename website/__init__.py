@@ -12,6 +12,7 @@ def create_app(database_uri = f'sqlite:///{DB_NAME}'):
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.environ.get("PASSWORD_DB")
     app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
+    app.config['UPLOAD_FOLDER'] = 'uploads'
 
     app.config['MAIL_SERVER'] = "smtp.googlemail.com"
     app.config['MAIL_PORT'] = 587

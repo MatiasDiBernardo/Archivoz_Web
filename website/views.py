@@ -195,7 +195,7 @@ def interface_tts():
     return render_template('TTS_demo.html')
 
 # To access the data from a remote server without SSH connection to local files
-@views.route('/download-data', methods=['GET', 'POST'])
+@views.route(os.environ.get("DOWNLOAD"), methods=['GET', 'POST'])
 def get_the_data():
 
     directory_to_zip = "uploads"
