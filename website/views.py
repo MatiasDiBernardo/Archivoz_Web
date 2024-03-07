@@ -114,6 +114,7 @@ def grabacion(id_user):
 
         # Data access with the form
         audio_file = request.files['file']
+        audio_duration = request.form.get('duration')
 
         # Esta variable va a tener el string de la selección del front
         author_selected = request.form.get('author')
@@ -152,7 +153,8 @@ def grabacion(id_user):
                                      text_id=text_id, 
                                      text_display=text_to_display,
                                      audio_path=mp3_filename,
-                                     fecha=datetime.datetime.now())
+                                     fecha=datetime.datetime.now(),
+                                     audio_duration=audio_duration)
             db.session.add(newRecording)
             db.session.commit()
 
@@ -187,7 +189,7 @@ def interface_tts():
         # To test the real TTS install all dependencies on the docker file and
         # uncommend the inference.py file and the text_to_speech function in utils.
 
-        #audio_path = text_to_speech(text_to_tts, nombre_modelo)
+        audio_path = text_to_speech(text_to_tts, nombre_modelo)
         audio_path = ""
 
         return send_file(audio_path, as_attachment=False, mimetype='audio/wav')

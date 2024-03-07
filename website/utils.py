@@ -1,10 +1,10 @@
 from .models import Usuario, Texto
-# from .tts.inference import infer
+from .tts.inference import infer
 
 import os
 import json
 import random 
-# import scipy
+#import scipy
 
 def find_match_on_id(userID):
     """Busca si el ID que el usuario ingreso es válido.
@@ -224,23 +224,23 @@ def check_audio_conditions(audio_path):
     # Probar en local y en prod, pero este es un punto fuerte para optimizar.
     return True
 
-# def text_to_speech(text, model):
-#     """Simula el comportamiento del tts donde se especifíca text y modelo
-#     y el algorítmo generaría un archivo de audio.
+def text_to_speech(text, model):
+    """Simula el comportamiento del tts donde se especifíca text y modelo
+    y el algorítmo generaría un archivo de audio.
 
-#     Args:
-#         text (string): Audio a procesar
-#         model (string): Nombre del modelo
+    Args:
+        text (string): Audio a procesar
+        model (string): Nombre del modelo
 
-#     Returns:
-#         string: Path del audio creado
-#     """
+    Returns:
+        string: Path del audio creado
+    """
 
-#     audio_infer = infer(text, model)
-#     dirname = os.path.dirname(__file__)
+    audio_infer = infer(text, model)
+    dirname = os.path.dirname(__file__)
 
-#     save_path = os.path.join(dirname, "tts", "audios", "audio.wav")
+    save_path = os.path.join(dirname, "tts", "audios", "audio.wav")
 
-#     scipy.io.wavfile.write(save_path, 44100, audio_infer)
+    #scipy.io.wavfile.write(save_path, 44100, audio_infer)
 
-#     return save_path
+    return save_path

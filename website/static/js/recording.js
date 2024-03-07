@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Variables de grabación
     let mediaRecorder;
     let chunks = [];
+    let audio_condition = true;
+    let error_message = "";
+    let audio_duration;
     let audio = document.querySelector('audio'); // <audio>
     
     // Botones
@@ -134,6 +137,41 @@ document.addEventListener('DOMContentLoaded', () => {
         counterDisplay.textContent = numRecordings;
     }
 
+    function measureNoiseLevel(audioBlob) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const reader = new FileReader();
+
+        reader.onload = async function () {
+          const buffer = await audioContext.decodeAudioData(reader.result);
+          const dataArray = buffer.getChannelData(0);
+
+          // Calculate average amplitude as a measure of noise level
+          const sumOfSquares = dataArray.reduce((acc, val) => acc + (val * val), 0);
+          const rms = Math.sqrt(sumOfSquares / dataArray.length);
+          const rms_db = 20 * Math.log10(rms);
+
+          // Audio error conditions
+          audio_condition = true;
+          error_message = "";
+          audio_duration = buffer.duration;  // In seconds
+
+          // Noise control
+          let threshold_db = -45;
+          if (rms_db < threshold_db){
+            audio_condition = false;
+            error_message = "El audio grabado no tiene el suficiente volúmen para reconocer una voz. Asegúrate de que tu micrófono esta conectado. Si esta correctamente conectado, intenté hablar mas fuerte o mas cerca del micrófono.";
+          }
+
+          // Control audio length
+          if (buffer.duration > 60){
+            audio_condition = false;
+            error_message = "La grabación supero el tiempo máximo. Asegúrate de leer la oración en pantalla en menos de 60 segundos.";
+          } 
+        }
+
+        reader.readAsArrayBuffer(audioBlob);
+    }
+
     // Obtener datos del usuario desde el backend
     obtenerDatos(id_user)
         .then(data => {
@@ -189,8 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const audioURL = URL.createObjectURL(audioBlob);
                 // Y lo pasa al reproductor
                 audio.src = audioURL;
+                // Calcular valor RMS del audio
+                measureNoiseLevel(audioBlob);
+
+                // TODO: delete timeout for deploy
                 // Mostramos resultado
-                setTimeout(mostrarAudioResultado, 3000) //Agrego un tiemout para poder apreciar el loader
+                setTimeout(mostrarAudioResultado, 1);
             };
         })
         .catch(err => {
@@ -252,48 +294,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sendBtn.addEventListener('click', () => {
         let author = autorSelector.value;
-        // Acá se podría implementar una fución que en base al valor rms que esta almacenado en el array chunks
-        // me deje guardar o no el audio. Es mas rápido hacerlo desde acá que guardarlo, mandarlo y recién ahi
-        // decidir si ese audio eso bueno o no.
 
-        // Realizar una solicitud POST al backend con el audio y el ID del texto
+        // Realizar una solicitud POST al backend con el audio, el ID del texto y la duración
         const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
         var form = new FormData();
         form.append('file', audioBlob2, 'data.mp3');
         form.append('author', author);
+        form.append('duration', audio_duration);
 
-        iniciarLoaderEnvio();
-        setTimeout(() => { // Agregué timeoout para ver el loader
-            fetch(pathnameURL, {
-                method: 'POST',
-                body: form,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud fetch: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Actualizar la interfaz con el texto obtenido del backend
-                actualizarFrase(data.text_to_display);
-                actualizarNombreDeTexto(data.name_of_text);
-                actualizarContador(data.num_recordings);
-            })
-            .catch(error => {
-                console.error('Error al obtener datos JSON:', error);
-            })
-            .finally(() => {
-                borrarGrabacion();
-                detenerLoaderEnvio();
-                ocultarAudioResultado();
-                deleteBtn.disabled = true;
-                sendBtn.disabled = true;
-                habilitarGrabar();
-            })
-        }, 3000)
+        if (audio_condition){
+            iniciarLoaderEnvio();
+            setTimeout(() => { // Agregué timeoout para ver el loader
+                fetch(pathnameURL, {
+                    method: 'POST',
+                    body: form,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud fetch: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Actualizar la interfaz con el texto obtenido del backend
+                    actualizarFrase(data.text_to_display);
+                    actualizarNombreDeTexto(data.name_of_text);
+                    actualizarContador(data.num_recordings);
+                })
+                .catch(error => {
+                    console.error('Error al obtener datos JSON:', error);
+                })
+                .finally(() => {
+                    borrarGrabacion();
+                    detenerLoaderEnvio();
+                    ocultarAudioResultado();
+                    deleteBtn.disabled = true;
+                    sendBtn.disabled = true;
+                    habilitarGrabar();
+                })
+            }, 1)
+        }
+        else {
+            // Warnings when audio is not good
+            var modalElement = document.getElementById("errorModal");
+
+            // Get the paragraph element within the modal body by its class
+            var paragraphElement = modalElement.querySelector(".modal-error-body p");
+
+            // Update the content of the paragraph
+            paragraphElement.textContent = error_message;
+
+            // Show the modal
+            $(modalElement).modal('show');
+
+            borrarGrabacion();
+            detenerLoaderEnvio();
+            ocultarAudioResultado();
+            deleteBtn.disabled = true;
+            sendBtn.disabled = true;
+            habilitarGrabar();
+        }
     });
 });
