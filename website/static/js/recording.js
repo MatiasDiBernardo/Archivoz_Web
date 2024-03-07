@@ -1,8 +1,3 @@
-// Variables globales para almacenar información de grabación y texto
-let numRecordings = 0;
-let textToRead = "";
-let textToDisplay = "";
-
 // Función para obtener datos del usuario desde el backend
 function obtenerDatos(idUsuario) {
     return fetch(`/recording/${idUsuario}`, {
@@ -18,9 +13,6 @@ function obtenerDatos(idUsuario) {
             return response.json();
         })
         .then(data => {
-            numRecordings = data.num_recordings; // Numero de grabaciones
-            textToRead = data.name_of_text; //Archivoz
-            textToDisplay = data.text_to_display; //Texto aleatorio
             console.log('Datos obtenidos:', data);
             return data;
         })
@@ -28,11 +20,6 @@ function obtenerDatos(idUsuario) {
             console.error('Error al obtener datos JSON:', error);
             throw error;
         });
-}
-
-function updateText(content) {
-    var textElement = document.getElementById("dynamicText");
-    textElement.textContent = content;
 }
 
 // Evento que se dispara cuando el contenido HTML se ha cargado completamente
@@ -43,26 +30,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const id_user = document.getElementById('id_user').textContent;
     console.log('ID de usuario:', id_user);
 
+    
     // Variables de grabación
     let mediaRecorder;
     let chunks = [];
     let audio = document.querySelector('audio'); // <audio>
-   
+    
     // Botones
-    // Como tenemos el boton de arriba y el boton de abajo, tenemos que agarrar 2 elementos
-    const recordingButtonDesktop = document.getElementsByClassName('contenedor-microfono')[0]
-    const recordingButtonMobile = document.getElementsByClassName('contenedor-microfono')[1]
     const deleteBtn = document.getElementById('borrarGrabacion'); // borrarGrabacion
     const sendBtn = document.getElementById('enviarGrabacion'); // enviarGrabacion
     const autorSelector = document.getElementById('autorSelection'); // autorSelection
-
-    // Inicializar Plyr
+    // Como tenemos el boton de escritorio y el boton de celular, tenemos que agarrar 2 elementos
+    const recordingButtonDesktop = document.getElementsByClassName('contenedor-microfono')[0]
+    const recordingButtonMobile = document.getElementsByClassName('contenedor-microfono')[1]
+    
+    // Inicializamos Plyr (no aparece en la pagino sino)
     const player = new Plyr('audio', {
         controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
     });
 
     // Elementos de interfaz de usuario
-    const circulo = document.querySelector('section .contenedor-grab-cant .esta-grabando .circulo-rojo');
     let counterDisplay = document.getElementById('contador'); //contador
     let fraseLeerElement = document.querySelector('.frases-leer'); //frases-leer
     let autorTextDisplay = document.querySelector('.nombre-texto'); //Es el texto de Grabación
@@ -74,25 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Backend var
     var pathnameURL = window.location.pathname;
 
-    // Contador de envíos de audio
-    var audioSentCount = 0;
-    counterDisplay.textContent = audioSentCount;
-
-    function toggleDeleteButton() {
-        deleteBtn.disabled = chunks.length === 0;
-    }
-
-    function clearRecording() {
+    function borrarGrabacion() {
         chunks = [];
         audio.src = '';
-        toggleDeleteButton();
     }
 
     // Alternamos entre icono de 'empezar a grabar' e icono de 'grabando'
     function cambiarIcono(img){
         const root = document.querySelector(":root");
         if(!recording){
-            img.src = '../static/img/grabando2.jpg'
+            img.src = '../static/img/grabando.jpg'
             root.style.setProperty("--background-mic", '#FF0000');
             root.style.setProperty("--color-animacion", 'red');
             img.style.height = "33px";
@@ -104,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Deshabilitamos y habilitamos botón para grabar
     function deshabilitarGrabar() {
         recordingButtonDesktop.style.pointerEvents = 'none';
         recordingButtonDesktop.style.opacity = '0.5';
@@ -143,12 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
         grabacionResultado.style.display = 'none';
     }
 
-
     function actualizarFrase(frase) {
         fraseLeerElement.textContent = frase;
     }
 
-    function actualizarTextDisplay(name) {
+    function actualizarNombreDeTexto(name) {
         // autorTextDisplay.textContent = name;
     }
 
@@ -156,6 +134,22 @@ document.addEventListener('DOMContentLoaded', () => {
         counterDisplay.textContent = numRecordings;
     }
 
+    // Obtener datos del usuario desde el backend
+    obtenerDatos(id_user)
+        .then(data => {
+            console.log('Valores actualizados:');
+            console.log(data.num_recordings);
+            console.log(data.text_to_display);
+            console.log(data.name_of_text);
+
+            actualizarContador(data.num_recordings); // Numero de grabaciones
+            actualizarFrase(data.text_to_display); ///Texto aleatorio
+            actualizarNombreDeTexto(data.name_of_text);  //Archivoz
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        });
+        
     // Inicialización del objeto mediaRecorder para manejar la grabación
     // Recomiendo no modificar mucho, en el caso de que se necesite grabar a una
     // cierta tasa de bits o cambiar la tasa de muestreo, entonces agregar lo siguiente:
@@ -174,7 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
     /*
     navigator.mediaDevices.getUserMedia(audioConstraints)
     */
-
+   
+    // Evento para controlar la entrada de audio
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
             mediaRecorder = new MediaRecorder(stream);
@@ -182,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Cuando nota que empezamos a grabar
             mediaRecorder.ondataavailable = event => {
                 chunks.push(event.data); //Ingresa los datos al chunk
-                toggleDeleteButton(); //Habilita el boton para detener
             };
             
             // Cuando paramos de grabar, es decir, de meter audio
@@ -195,8 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const audioURL = URL.createObjectURL(audioBlob);
                 // Y lo pasa al reproductor
                 audio.src = audioURL;
-                // Habilita el boton para borrar la pista
-                toggleDeleteButton();
                 // Mostramos resultado
                 setTimeout(mostrarAudioResultado, 3000) //Agrego un tiemout para poder apreciar el loader
             };
@@ -205,39 +197,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Permiso denegado o no se soporta la grabación:', err);
         });
 
-    // Obtener datos del usuario desde el backend
-    obtenerDatos(id_user)
-        .then(data => {
-            console.log('Valores actualizados:');
-            console.log(numRecordings);
-            console.log(textToRead);
-            console.log(textToDisplay);
-
-            actualizarContador(numRecordings);
-            actualizarFrase(textToDisplay);
-            actualizarTextDisplay(textToRead);
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-        });
-
-    // Configuración inicial de la interfaz de usuario
-    clearRecording();
-    deleteBtn.disabled = true;
-    sendBtn.disabled = true;
+    // EVENTOS DE CADA BOTÓN
 
     let recording = false;
     recordingButtonDesktop.addEventListener('click', (e) => {
         
-        if(!recording){
+        if(!recording){ //Si no estamos grabando
             // cambiarAnimacion(); // Alternar entre animaciones
-            clearRecording();
+            borrarGrabacion();
             mediaRecorder.start(); //Empezamos a grabar
             deleteBtn.disabled = true;
             sendBtn.disabled = true;
             cambiarIcono(e.srcElement.children[0]);
             recording = true;
-        } else{
+        } else{ //Si estamos grabando
             // cambiarAnimacion();
             mediaRecorder.stop(); //Paramos de grabar
             deleteBtn.disabled = false;
@@ -250,15 +223,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     recordingButtonMobile.addEventListener('click', (e) => {
        
-        if(!recording){
+        if(!recording){ //Si no estamos grabando
             // cambiarAnimacion(); // Alternar entre animaciones
-            clearRecording();
+            borrarGrabacion();
             mediaRecorder.start(); //Empezamos a grabar
             deleteBtn.disabled = true;
             sendBtn.disabled = true;
             cambiarIcono(e.srcElement.children[0]);
             recording = true;
-        } else{
+        } else{ //Si estamos grabando
             // cambiarAnimacion();
             mediaRecorder.stop(); //Paramos de grabar
             deleteBtn.disabled = false;
@@ -272,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     deleteBtn.addEventListener('click', () => {
         deleteBtn.disabled = true;
         sendBtn.disabled = true;
-        clearRecording();
+        borrarGrabacion();
         ocultarAudioResultado();
         habilitarGrabar();
     });
@@ -290,34 +263,37 @@ document.addEventListener('DOMContentLoaded', () => {
         form.append('author', author);
 
         iniciarLoaderEnvio();
-        setTimeout(() => {
-            $.ajax({
-                type: 'POST',
-                url: pathnameURL,
-                data: form,
-                cache: false,
-                processData: false,
-                contentType: false
-            }).done(function (data) {
-                console.log(data);
-              
+        setTimeout(() => { // Agregué timeoout para ver el loader
+            fetch(pathnameURL, {
+                method: 'POST',
+                body: form,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud fetch: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
                 // Actualizar la interfaz con el texto obtenido del backend
                 actualizarFrase(data.text_to_display);
-                actualizarTextDisplay(data.name_of_text);
-                clearRecording();
+                actualizarNombreDeTexto(data.name_of_text);
+                actualizarContador(data.num_recordings);
+            })
+            .catch(error => {
+                console.error('Error al obtener datos JSON:', error);
+            })
+            .finally(() => {
+                borrarGrabacion();
+                detenerLoaderEnvio();
                 ocultarAudioResultado();
-            });
-    
-            clearRecording();
-            detenerLoaderEnvio();
-            ocultarAudioResultado();
-    
-            // Visual update
-            numRecordings++;
-            actualizarContador(numRecordings);
-            deleteBtn.disabled = true;
-            sendBtn.disabled = true;
-            habilitarGrabar();
+                deleteBtn.disabled = true;
+                sendBtn.disabled = true;
+                habilitarGrabar();
+            })
         }, 3000)
     });
 });
