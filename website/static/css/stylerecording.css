@@ -722,38 +722,11 @@ select::-ms-expand {
     }
 }
 
+@media(max-width: 600px) { 
 
-@media(max-width: 400px) {
-
-    .welcome h1 {
-        font-size: 20px;
-        font-weight: 800;
-    }
-
-    /*
-        CONTENEDOR DE GRABACION
-    */
     .contenedor-grabacion {
         height: 400px;
         margin-bottom: 50px;
-    }
-
-    /* BOTON DE ENVIAR */
-    .enviarGrabacion {
-        grid-row: 1/2;
-        grid-column: 1/3;
-    }
-
-    /* BOTON DE BORRAR */
-    .borrarGrabacion {
-        grid-row: 2/3;
-        grid-column: 1/3;
-    }
-
-    /* CANTIDAD DE GRABACIONES */
-    .cantidad-grabaciones {
-        grid-row: 3/4;
-        grid-column: 1/3;
     }
 
     .plyr__controls {
@@ -777,13 +750,17 @@ select::-ms-expand {
         top: 10px;
     }
 
+    .plyr__time {
+        left: 90%;
+    }
+
     .plyr__controls button {
         left: 10px;
     }
 
     .plyr__progress__container {
         left: 50px;
-        width: 70%;
+        width: 80%;
     }
 
     .plyr__progress {
@@ -805,18 +782,115 @@ select::-ms-expand {
     }
 
     .plyr__volume input {
-        left: 2px;
-        width: 70% !important;
+        left: 5px;
+        width: 80% !important;
         margin: 0 !important;
     }
 
 }
 
-@media(max-width: 370px) {
+@media(max-width: 580px) {
 
     .plyr__progress__container {
         left: 50px;
-        width: calc(70% - 10px);
+        width: calc(80% - 5px);
+    }
+
+    .plyr__volume input {
+        left: 8px !important;
+    }
+}
+
+@media(max-width: 540px) {
+
+    .plyr__progress__container {
+        left: 50px;
+        width: calc(80% - 5px);
+    }
+
+    .plyr__volume input {
+        left: 10px !important;
+    }
+}
+
+@media(max-width: 500px) { 
+    .contenedor-grabacion {
+        border-radius: 0px;
+        margin-top: 0px;
+    }
+    
+    .plyr__volume input {
+        left: 12px !important;
+    }
+}
+
+@media(max-width: 460px) {
+
+    .plyr__progress__container {
+        left: 50px;
+        width: calc(80% - 15px);
+    }
+
+    .plyr__time {
+        left: 89%;
+    }
+
+    .plyr__volume input {
+        left: 15px !important;
+    }
+}
+
+@media(max-width: 430px) {
+
+    .plyr__volume input {
+        left: 16px !important;
+    }
+}
+
+@media(max-width: 400px) {
+
+    .welcome h1 {
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    /* BOTON DE ENVIAR */
+    .enviarGrabacion {
+        grid-row: 1/2;
+        grid-column: 1/3;
+    }
+
+    /* BOTON DE BORRAR */
+    .borrarGrabacion {
+        grid-row: 2/3;
+        grid-column: 1/3;
+    }
+
+    /* CANTIDAD DE GRABACIONES */
+    .cantidad-grabaciones {
+        grid-row: 3/4;
+        grid-column: 1/3;
+    }
+
+    .plyr__progress__container {
+        left: 50px;
+        width: 70%;
+    }
+
+    .plyr__time {
+        left: 85%;
+    }
+    .plyr__volume input {
+        left: 2px !important;
+        width: 70% !important;
+    }
+}
+
+@media(max-width: 380px) {
+
+    .plyr__progress__container {
+        left: 50px;
+        width: 70%;
     }
 
     .plyr__time {
@@ -824,7 +898,7 @@ select::-ms-expand {
     }
 
     .plyr__volume input {
-        left: 5px;
+        left: 5px !important;
         margin-left: 2.5px !important;
     }
 
@@ -832,9 +906,27 @@ select::-ms-expand {
 
 @media(max-width: 340px) {
 
+    .plyr__progress__container {
+        left: 50px;
+        width: 68%;
+    }
+
     .plyr__volume input {
-        left: 10px;
+        left: 5px !important;
+        width: 68% !important;
         margin-left: 2.5px !important;
+    }
+
+}
+
+@media(max-width: 320px) {
+
+    .plyr__time {
+        left: 85% !important;
+    }
+
+    .plyr__volume input {
+        left: 8px !important;
     }
 
 }
@@ -842,12 +934,17 @@ select::-ms-expand {
 @media(max-width: 300px) {
 
     .plyr__time {
-        left: calc(100% - 40px);
+        left: 84% !important;
+    }
+
+    .plyr__progress__container {
+        width: 65%;
     }
 
     .plyr__volume input {
-        left: 15px;
+        left: 12px !important;
         margin-left: 2.5px !important;
+        width: 65%;
     }
 
 }
@@ -940,6 +1037,17 @@ select::-ms-expand {
 #footer{
     margin-top: 50px;
     background-color: #CCCCCC !important;
+}
+
+@media (max-width: 500px) {
+
+    .contenedor-microfono-mobile {
+        padding-bottom: 10px;
+    }
+
+    #footer {
+        margin: 0;
+    }
 }
 
 body{
