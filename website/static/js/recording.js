@@ -90,10 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Alternamos entre icono de 'empezar a grabar' e icono de 'grabando'
     function cambiarIcono(img){
+        const root = document.querySelector(":root");
         if(!recording){
-            img.src = '../static/SVG/grabando.svg'
+            img.src = '../static/img/grabando2.jpg'
+            root.style.setProperty("--background-mic", '#FF0000');
+            root.style.setProperty("--color-animacion", 'red');
+            img.style.height = "33px";
         } else{
             img.src = '../static/SVG/microfono.svg'
+            root.style.setProperty("--background-mic", '#FFF');
+            root.style.setProperty("--color-animacion", 'white');
+            img.style.height = "50px";
         }
     }
 
