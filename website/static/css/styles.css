@@ -10,6 +10,10 @@
   --fuenteParrafos: Apple-system;
 }
 
+.scrollpos {
+  background-color: var(--colorMorado);
+  overflow: hidden;
+}
 
 h1 {
   /* font-family: 'Press Start 2P', cursive; */
@@ -67,6 +71,7 @@ h1 {
 
 .close {
   color: #6dffa8;
+  outline: none !important;
 }
 
 .contactClose {
@@ -368,6 +373,14 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+
+/* ALERTAS */
+.alert{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 /* MOVILE */
