@@ -1,338 +1,336 @@
-#info{
-    display: none;
+#info {
+  display: none;
 }
 
-.contenedor-externo-general{
-    min-height: 100vh;
+.contenedor-externo-general {
+  min-height: 100vh;
 }
 
 .jumbotron {
-    height:auto;
-    position: static;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  height: auto;
+  position: static;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .jumbotron h1 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 @media (min-width: 350px) {
-    .jumbotron h1{
-        font-size: 2.5rem;
-    }
+  .jumbotron h1 {
+    font-size: 2.5rem;
+  }
 }
 
 @media (min-width: 410px) {
-    .jumbotron h1{
-        font-size: 3rem;
-    }
+  .jumbotron h1 {
+    font-size: 3rem;
+  }
 }
 
 @media (min-width: 510px) {
-    .jumbotron h1{
-        font-size: 3.75rem;
-    }
+  .jumbotron h1 {
+    font-size: 3.75rem;
+  }
 }
 
 .jumbotron p {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
-#contenedor-formularios{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 50px;
-    margin-bottom: 50px;
+#contenedor-formularios {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+  margin-bottom: 50px;
 }
 
 @media (min-width: 1200px) {
-    #contenedor-formularios{
-        flex-direction: row;
-    }
+  #contenedor-formularios {
+    flex-direction: row;
+  }
 }
 
 .contenedor-externo {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background: #800080;
-    width: 100%;
-    max-width: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #800080;
+  width: 100%;
+  max-width: 550px;
 }
 
 .contenedor-externo-login {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background: #800080;
-    width: 100%;
-    max-width: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #800080;
+  width: 100%;
+  max-width: 550px;
 }
 
 .formulario {
-    width: 100%;
-    height: 625px;
-    background: #0DB39B;
-    border-radius: 6px;
+  width: 100%;
+  height: 625px;
+  background: #0db39b;
+  border-radius: 6px;
 }
 
 .formulario-login {
-    width: 100%;
-    height: max-content;
-    background: #0DB39B;
-    border-radius: 6px;
+  width: 100%;
+  height: max-content;
+  background: #0db39b;
+  border-radius: 6px;
 }
 
 .formulario h3 {
-    font-family: 'Major Mono Display', monospace;
-    font-size: 2rem;
-    padding: 0.7em;
-    text-align: center;
-    font-weight: 600;
+  font-family: "Major Mono Display", monospace;
+  font-size: 2rem;
+  padding: 0.7em;
+  text-align: center;
+  font-weight: 600;
 }
 
-.formulario-login h4{
-    display: none;
-    font-family: 'Major Mono Display', monospace;
-    font-size: 1.5rem;
-    text-align: center;
-    font-weight: 600;
-    padding-top: 0.7em;
+.formulario-login h4 {
+  display: none;
+  font-family: "Major Mono Display", monospace;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  padding-top: 0.7em;
 }
 
 .formulario-login h3 {
-    font-family: 'Major Mono Display', monospace;
-    font-size: 2rem;
-    margin: 0.7em;
-    text-align: center;
-    font-weight: 600;
+  font-family: "Major Mono Display", monospace;
+  font-size: 2rem;
+  margin: 0.7em;
+  text-align: center;
+  font-weight: 600;
 }
 
-@media (min-width: 1200px){
-    .formulario-login h4{
-        display: block;
-    }
-    
-    .formulario-login h3 {
-        padding: 0;
-    }
-}
+@media (min-width: 1200px) {
+  .formulario-login h4 {
+    display: block;
+  }
 
+  .formulario-login h3 {
+    padding: 0;
+  }
+}
 
 .formulario form {
-    padding: 20px 40px;
-    box-sizing: border-box;
+  padding: 20px 40px;
+  box-sizing: border-box;
 }
 
-@media (max-width: 550px){
-    .formulario form {
-        padding: 10px 10px !important;
-    }
+@media (max-width: 550px) {
+  .formulario form {
+    padding: 10px 10px !important;
+  }
 
-    .formulario-login form {
-        padding: 20px 10px !important;
-    }
-    
+  .formulario-login form {
+    padding: 20px 10px !important;
+  }
 }
 
 .formulario-login form {
-    padding: 20px 40px;
-    box-sizing: border-box;
+  padding: 20px 40px;
+  box-sizing: border-box;
 }
 
 form .entrada {
-    position: relative;
-    border-bottom: 3px solid #224a4b;
-    margin: 30px 0;
+  position: relative;
+  border-bottom: 3px solid #224a4b;
+  margin: 30px 0;
 }
 
 .entrada input {
-    width: 100%;
-    padding: 0 5px;
-    height: 50px;
-    border: none;
-    background: none;
-    outline: none;
+  width: 100%;
+  padding: 0 5px;
+  height: 50px;
+  border: none;
+  background: none;
+  outline: none;
 }
 
 .entrada label {
-    position: absolute;
-    top: 1px;
-    left: 5px;
-    color: #224a4b;
-    transform: translateY(-50%);
-    font-size: 18px;
-    pointer-events: none;
-    transition: 0.3s;
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  color: #224a4b;
+  transform: translateY(-50%);
+  font-size: 18px;
+  pointer-events: none;
+  transition: 0.3s;
 }
 
 .entrada span::before {
-    content: " ";
-    position: absolute;
-    top: 40%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: #800080;
-    transition: .5s;
+  content: " ";
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #800080;
+  transition: 0.5s;
 }
 
-.entrada input:focus~label,
-.entrada input:focus~label {
-    top: -5px;
-    color: #800080;
+.entrada input:focus ~ label,
+.entrada input:focus ~ label {
+  top: -5px;
+  color: #800080;
 }
 
-.entrada input:focus~span::before,
-.entrada input:focus~span::before {
-    width: 100%;
+.entrada input:focus ~ span::before,
+.entrada input:focus ~ span::before {
+  width: 100%;
 }
 
 select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    appearance: none;
-    outline: 0;
-    box-shadow: none;
-    border: 0 !important;
-    background: #e7e7e7;
-    background-image: none;
-    flex: 1;
-    padding: 0 .5em;
-    color: #224a4b;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: 'Open Sans', sans-serif;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #e7e7e7;
+  background-image: none;
+  flex: 1;
+  padding: 0 0.5em;
+  color: #224a4b;
+  cursor: pointer;
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
 }
 
 select::-ms-expand {
-    display: none;
+  display: none;
 }
 
 .seleccion {
-    position: relative;
-    display: flex;
-    width: 100%;
-    max-width: 20em;
-    height: 3em;
-    line-height: 3;
-    background: #800080;
-    overflow: hidden;
-    border-radius: .25em;
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #800080;
+  overflow: hidden;
+  border-radius: 0.25em;
 }
 
 .seleccion::after {
-    content: '\25BC';
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0 1em;
-    background: #800080;
-    cursor: pointer;
-    pointer-events: none;
-    transition: .25s all ease;
+  content: "\25BC";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #800080;
+  cursor: pointer;
+  pointer-events: none;
+  transition: 0.25s all ease;
 }
 
 .seleccion:hover::after {
-    color: #23b499;
+  color: #23b499;
 }
 
 #Region {
-    font-family: "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .contenedor-boton {
-    text-align: right;
+  text-align: right;
 }
 
 .boton-neon {
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    color: #224a4b;
-    letter-spacing: 2px;
-    font-size: 16px;
-    text-decoration: none;
-    overflow: hidden;
-    transition: 0.2;
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #224a4b;
+  letter-spacing: 2px;
+  font-size: 16px;
+  text-decoration: none;
+  overflow: hidden;
+  transition: 0.2;
 }
 
 .boton-neon:hover {
-    background: #80358B;
-    color: #fff;
-    transition-delay: 1s;
+  background: #80358b;
+  color: #fff;
+  transition-delay: 1s;
 }
 
 .boton-neon span {
-    position: absolute;
-    display: block;
+  position: absolute;
+  display: block;
 }
 
 #span1 {
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #80358B);
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #80358b);
 }
 
 .boton-neon:hover #span1 {
-    left: 100%;
-    transition: 1s;
+  left: 100%;
+  transition: 1s;
 }
 
 #span3 {
-    bottom: 0;
-    right: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(270deg, transparent, #80358B);
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, #80358b);
 }
 
 .boton-neon:hover #span3 {
-    right: 100%;
-    transition: 1s;
-    transition-delay: 0.5s;
+  right: 100%;
+  transition: 1s;
+  transition-delay: 0.5s;
 }
 
 #span2 {
-    top: -100%;
-    right: 0;
-    height: 100%;
-    width: 2px;
-    background: linear-gradient(180deg, transparent, #80358B);
+  top: -100%;
+  right: 0;
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, #80358b);
 }
 
 .boton-neon:hover #span2 {
-    top: 100%;
-    transition: 1s;
-    transition-delay: 0.25s;
+  top: 100%;
+  transition: 1s;
+  transition-delay: 0.25s;
 }
 
 #span4 {
-    bottom: -100%;
-    left: 0;
-    height: 100%;
-    width: 2px;
-    background: linear-gradient(360deg, transparent, #80358B);
+  bottom: -100%;
+  left: 0;
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(360deg, transparent, #80358b);
 }
 
 .boton-neon:hover #span4 {
-    bottom: 100%;
-    transition: 1s;
-    transition-delay: 0.72s;
+  bottom: 100%;
+  transition: 1s;
+  transition-delay: 0.72s;
 }
 
-.modal-info-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: start;
-    padding: 1rem;
+.modal-info-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: start;
+  padding: 1rem;
 }
