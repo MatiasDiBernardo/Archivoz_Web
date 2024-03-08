@@ -1,0 +1,68 @@
+#container-general {
+  display: flex;
+  flex-direction: column;
+}
+
+#hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(
+    var(--colorVerdeFluor) 0%,
+    var(--colorVerdeOscuro) 100%
+  );
+}
+
+#objectives {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 655px;
+  background: linear-gradient(
+    var(--colorVerdeOscuro) 0%,
+    var(--colorMorado) 100%
+  );
+}
+
+#container-objectives {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 80%;
+  height: 348px;
+  padding: 50px;
+  gap: 20px;
+}
+
+.objetive {
+  width: 250px;
+  text-align: center;
+}
+
+#voice-archive {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  height: 1340px;
+  background: linear-gradient(var(--colorMorado) 20%, var(--colorNegro) 100%);
+}
+
+#text-to-speech {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  height: 1067px;
+  background: linear-gradient(var(--colorNegro) 30%, var(--colorMorado) 100%);
+}
+
+#infosection {
+  background: linear-gradient(var(--colorMorado) 20%, var(--colorNegro) 100%);
+}
