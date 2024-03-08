@@ -10,7 +10,7 @@ def create_app(database_uri = f'sqlite:///{DB_NAME}'):
     global mail
 
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = os.environ.get("PASSWORD_DB")
+    app.config['SECRET_KEY'] = "test"
     app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
     app.config['UPLOAD_FOLDER'] = 'uploads'
 

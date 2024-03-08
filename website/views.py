@@ -48,7 +48,7 @@ def obtener_datos():
             mail_usuario = newUser.mail
 
             # It sends a mail notifying the user the assigned ID (it doesn't work without the env password_mail key)
-            if not os.environ.get("DEBUG"):
+            if True:
                 msg_title = "Registro ArchiVoz"
                 sender = "ArchiVoz Bot"
                 msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
@@ -212,6 +212,8 @@ def get_the_data():
                 file_path = os.path.join(foldername, filename)
                 arcname = os.path.relpath(file_path, directory_to_zip)  # Relative path to preserve directory structure
                 zip_file.write(file_path, arcname=arcname)
+        
+        zip_file.write("instance/data_base.db")
     
     return send_file(zip_filename, as_attachment=True)
     
