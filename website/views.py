@@ -3,6 +3,7 @@ from flask_mail import Message
 from .utils import *
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db, mail
+from routines.backup import upload_file
 
 import os
 import datetime
@@ -133,6 +134,10 @@ def grabacion(id_user):
         mp3_filename = os.path.join(user_folder_path, f'{id_user}_{text_id}.mp3')
         with open(mp3_filename, 'wb') as mp3_name:
             audio_file.save(mp3_name)
+        
+        # TODO: Delete this backup. For performance is better to do it async
+        # Uploads audio to cloud storage
+        upload_file(mp3_filename, f'{id_user}_{text_id}')
 
         # Defines next frase to display
             
