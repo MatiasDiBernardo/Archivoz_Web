@@ -16,30 +16,33 @@
 
 <div id="container-general">
   <section id="hero">
-    <h1 class="display-4 text-center titleAnim">ArchiVoz</h1>
-    <p class="text-center subAnim">Archivo de voces diversas</p>
+    <div id="container-hero">
+        <h1 class="titleAnim">ArchiVoz</h1>
+        <p class="subAnim">archivo de voces diversas</p>
+    </div>
+    <img id='arrow' src="../static/SVG/flecha.svg" alt="">
   </section>
   
   <section id="objectives">
     <h1>¿qué hacemos?</h1>
     <div id="container-objectives">
-      <div class="objetive">
-        <div class="container-objective-image">
-          <img src="" alt="Icono de objetivo">
+      <div class="objective" id="obj1">
+        <div class="container-objective-image" style="background-color: #D0C8FA;">
+          <img src="../static/SVG/microfono2.svg" alt="Icono de objetivo">
         </div>
         <h4>Graba tu voz</h4>
-        <p>Los usuarios pueden grabar su voz leyendo textos proporcionados por nosotros</p>
+        <p>Los usuarios pueden grabar su voz leyendo textos proporcionados por nosotros.</p>
       </div>
-      <div class="objetive">
-        <div class="container-objective-image">
-          <img src="" alt="Icono de objetivo">
+      <div class="objective" id="obj2">
+        <div class="container-objective-image" style="background-color: #FFE99B;">
+          <img src="../static/SVG/cerebro.svg" alt="Icono de objetivo">
         </div>
         <h4>IA personalizada</h4>
         <p>Utilizamos inteligencia artificial para transformar esas grabaciones en un modelo de voz personalizado, ¡creando un bot que suena como tú!</p>
       </div>
-      <div class="objetive">
-        <div class="container-objective-image">
-          <img src="" alt="Icono de objetivo">
+      <div class="objective" id="obj3">
+        <div class="container-objective-image" style="background-color: #91FA80;">
+          <img src="../static/SVG/cabeza.svg" alt="Icono de objetivo">
         </div>
         <h4>Texto a voz</h4>
         <p>¿Necesitas que tu voz hable por ti? Solo ingresa el texto y nuestra IA lo convertirá en audio, ¡escucha cómo suena tu voz leyendo tus palabras!</p>
@@ -60,34 +63,36 @@
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborumnumquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentiumoptio, eaque rerum! Provident similique accusantium nemo autem. Veritatisobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquamnihil, eveniet aliquid</p>
   </section>
   
-  <section class=" info-container" id="infosection">
-    <div class = "contenedor-imagen">
-      <div class="svg_container">
-  
-        <img class=" laringe" src="..\static\SVG\laringe.svg" alt="">
-        <img class=" capas flor3" src="..\static\SVG\flor3.svg" alt="">
-        <img class=" capas flor2" src="..\static\SVG\flor2.svg" alt="">
-        <img class=" capas flor1" src="..\static\SVG\flor1.svg" alt="">
-    
-        <i id="lg_tooltip" class=" capas fas fa-play-circle" data-toggle="tooltip" data-placement="top" title="Click!"></i>
-    
-        
+  <section id="infosection">
+    <h1>información</h1>
+    <div id="container-info">
+      <div class = "contenedor-imagen">
+        <div class="svg_container">
+          <img class=" laringe" src="..\static\SVG\laringe.svg" alt="">
+          <img class=" capas flor3" src="..\static\SVG\flor3.svg" alt="">
+          <img class=" capas flor2" src="..\static\SVG\flor2.svg" alt="">
+          <img class=" capas flor1" src="..\static\SVG\flor1.svg" alt="">
+        </div>
       </div>
-    </div>
-    
-    <div class="info-text">
-      <p class="tlt">Este archivo está destinado a recopilar grabaciones de voces diversas.
-        Trabajamos con la voz como sonido que representa nuestra corporeidad,
-        Un modulo de nuestro sistema con el cual nos expresamos, nos relacionamos y tenemos la posibilidad de "resonar"
-        en el entorno .
-        
-        La idea surgio con el animo de aportar soluciones a personas laringectomizadas, pero hoy en día se propone
-        invitar a distintas identidades a la investigación de su propia diccion.
-        
-        Estas voces serán la materia prima de un proceso técnico que podría devenir en la sintesis de una voz artificial
-        o voz expandida.
-      </p>
-  
+      <div class="info-text">
+        <p class="tlt">Este archivo está destinado a recopilar grabaciones de voces diversas.</p>
+        <br>
+        <p class="tlt">
+          Trabajamos con la voz como sonido que representa nuestra corporeidad,
+          un modulo de nuestro sistema con el cual nos expresamos, nos relacionamos y tenemos la posibilidad de "resonar"
+          en el entorno.
+        </p>
+        <br>
+        <p class="tlt">
+          La idea surgio con el animo de aportar soluciones a personas laringectomizadas, pero hoy en día se propone
+          invitar a distintas identidades a la investigación de su propia diccion.
+        </p>
+        <br>
+        <p class="tlt">
+          Estas voces serán la materia prima de un proceso técnico que podría devenir en la sintesis de una voz artificial
+          o voz expandida.
+        </p>
+      </div>
     </div>
   </section>
 </div>
