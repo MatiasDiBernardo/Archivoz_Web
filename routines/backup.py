@@ -1,8 +1,9 @@
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
+import os
 
 SCOPE = ['https://www.googleapis.com/auth/drive']
-SERVICE_ACCOUNT_FILE = 'routines\\archivoz-backup-de3a274eace7.json'
+SERVICE_ACCOUNT_FILE = os.path.join('routines', 'archivoz-backup-de3a274eace7.json')
 # Folder for audio backups
 PARENT_FOLDER_ID = "19MqMZZfbFbukczHjrXz5cp0KIvjKGfwb"  # ID is URL on the foder to upload
 
