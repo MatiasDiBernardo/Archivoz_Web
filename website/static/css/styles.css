@@ -284,10 +284,66 @@ hr {
   FOOTER
 */
 
-footer {
-  background-color: var(--colorMorado);
-  /* border-top: solid black; */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #111111 !important;
+  padding-top: 20px;
 }
+
+.logo {
+  background-color: gray;
+}
+
+.redes-footer {
+  display: flex;
+  gap: 30px;
+  justify-content: space-around;
+  align-items: center;
+  height: 100px;
+  max-width: 1200px;
+}
+
+.icono {
+  text-decoration: none !important;
+}
+
+.icono i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  background-color: #D9D9D9;
+  color: black;
+  font-size: 30px;
+}
+
+.enlaces-footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 10px;
+  max-width: 1200px;
+}
+
+.enlaces-footer a {
+  color: white;
+}
+
+.copy-footer {
+  display: flex;
+  justify-content: center;
+  background-color: #000000;
+  width: 100%;
+  color: white;
+  padding-top: 10px;
+}
+
 
 /*GENERAL MODAL*/
 .modal-dialog {
