@@ -137,7 +137,7 @@ def grabacion(id_user):
         
         # TODO: Delete this backup. For performance is better to do it async
         # Uploads audio to cloud storage
-        upload_file(mp3_filename, f'{id_user}_{text_id}')
+        #upload_file(mp3_filename, f'{id_user}_{text_id}')
 
         # Defines next frase to display
             
