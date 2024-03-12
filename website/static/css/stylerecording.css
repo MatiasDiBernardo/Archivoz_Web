@@ -1035,18 +1035,13 @@ select::-ms-expand {
   color: white;
 }
 
-#footer {
+.footer {
   margin-top: 50px;
-  background-color: #cccccc !important;
 }
 
 @media (max-width: 500px) {
   .contenedor-microfono-mobile {
-    padding-bottom: 10px;
-  }
-
-  #footer {
-    margin: 0;
+    padding-bottom: 40px;
   }
 }
 
