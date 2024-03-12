@@ -218,22 +218,15 @@ def text_ID_to_name(text_id):
     text_splitted = text_splitted[:-2]  # Removes ID and ID Max
     return " - ".join(text_splitted)
 
-def check_audio_conditions(audio_path):
-    # Para levantar el audio tendría que usar soundfile (esto añade una dependencia)
-    # y además tengo que analizar cada audio, lo cual añadiria una latencia innecesaria.
-    # Probar en local y en prod, pero este es un punto fuerte para optimizar.
-    return True
-
 def text_to_speech(text, model):
-    """Simula el comportamiento del tts donde se especifíca text y modelo
-    y el algorítmo generaría un archivo de audio.
-
+    """Calls FastPitch to make an inference with the specified
+    text. 
     Args:
-        text (string): Audio a procesar
-        model (string): Nombre del modelo
+        text (string): Text to transform to audio.
+        model (string): Name of trainged models.
 
     Returns:
-        string: Path del audio creado
+        string: Path of the created audio.
     """
 
     #audio_infer = infer(text, model)

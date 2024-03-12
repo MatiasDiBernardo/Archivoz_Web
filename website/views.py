@@ -3,7 +3,6 @@ from flask_mail import Message
 from .utils import *
 from .models import Usuario, Grabacion, Texto, MapaVoces
 from . import db, mail
-from routines.backup import upload_file
 
 import os
 import datetime
@@ -135,10 +134,6 @@ def grabacion(id_user):
         with open(mp3_filename, 'wb') as mp3_name:
             audio_file.save(mp3_name)
         
-        # TODO: Delete this backup. For performance is better to do it async
-        # Uploads audio to cloud storage
-        #upload_file(mp3_filename, f'{id_user}_{text_id}')
-
         # Defines next frase to display
             
         # This implementation changes the text based on author at any moment
@@ -152,20 +147,15 @@ def grabacion(id_user):
         text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
         
         # Update the db with the current recording
-        good_audio_conditons = check_audio_conditions(mp3_filename)
-        if good_audio_conditons:
-            newRecording = Grabacion(usuario_id=id_user, 
-                                     text_id=text_id, 
-                                     text_display=text_to_display,
-                                     audio_path=mp3_filename,
-                                     fecha=datetime.datetime.now(),
-                                     audio_duration=audio_duration)
-            db.session.add(newRecording)
-            db.session.commit()
+        newRecording = Grabacion(usuario_id=id_user, 
+                                text_id=text_id, 
+                                text_display=text_to_display,
+                                audio_path=mp3_filename,
+                                fecha=datetime.datetime.now(),
+                                audio_duration=audio_duration)
 
-        # Hice una implementación de la parte de texto sin base de datos porque creí que
-        # sería mas fácil y si bien fue mas rápido quedo bastante desprolijo a nivel código.
-        # Así que dejo esta sección para refactor mas adelante.
+        db.session.add(newRecording)
+        db.session.commit()
 
         name_of_text = text_ID_to_name(text_to_display) 
         text_to_display_on_front = text_ID_to_text(text_to_display)

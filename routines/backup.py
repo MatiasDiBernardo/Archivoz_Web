@@ -12,6 +12,12 @@ def authenticate():
     return creds
 
 def upload_file(file_path, name):
+    """Uploads a file to the google drive.
+
+    Args:
+        file_path (str): Path to the file to upload.
+        name (str): Name to save the file.
+    """
     creds = authenticate()
     service = build('drive', 'v3', credentials=creds)
 
