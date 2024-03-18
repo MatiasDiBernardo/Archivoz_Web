@@ -222,7 +222,7 @@
   font-size: 20px;
   display: flex;
   line-height: 35px;
-  font-family: Monserrat;
+  font-family: Poppins;
 }
 
 .visual-seccion {
@@ -296,9 +296,81 @@ iframe {
   color: var(--colorBlanco);
 }
 
+@media (max-width: 1250px) {
+
+  .texto-seccion {
+    max-width: 1000px !important;
+  }
+  
+  .visual-seccion {
+    height: 500px !important;
+    width: 1000px !important;
+  }
+  
+  iframe {
+    height: 500px !important;
+    width: 1000px !important;
+  }
+
+}
+
 @media (max-width: 1000px) {
   #container-info {
     flex-direction: column;
+  }
+
+  .texto-seccion {
+    max-width: 800px !important;
+  }
+  
+  .visual-seccion {
+    height: 500px !important;
+    width: 800px !important;
+  }
+  
+  iframe {
+    height: 500px !important;
+    width: 800px !important;
+  }
+}
+
+@media (max-width: 800px) {
+  #container-info {
+    flex-direction: column;
+  }
+
+  .texto-seccion {
+    max-width: 600px !important;
+  }
+  
+  .visual-seccion {
+    height: 350px !important;
+    width: 600px !important;
+  }
+  
+  iframe {
+    height: 350px !important;
+    width: 600px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  #container-info {
+    flex-direction: column;
+  }
+
+  .texto-seccion {
+    max-width: 400px !important;
+  }
+  
+  .visual-seccion {
+    height: 250px !important;
+    width: 400px !important;
+  }
+  
+  iframe {
+    height: 250px !important;
+    width: 400px !important;
   }
 }
 
@@ -307,15 +379,63 @@ iframe {
     min-width: 400px;
     min-height: 400px;
   }
+
+  #objectives h1,
+  #voice-archive h1,
+  #text-to-speech h1,
+  #infosection h1 {
+    font-size: 35px !important;
+  }
+
+  .texto-seccion {
+    max-width: 100% !important;
+  }
+  
+  .visual-seccion {
+    height: 400px !important;
+    width: 100% !important;
+    border-radius: 0% !important;
+  }
+  
+  iframe {
+    height: 400px !important;
+    width: 100% !important;
+    border-radius: 0% !important;
+  }
+
+}
+
+@media (max-width: 420px) {
+  #objectives h1,
+  #voice-archive h1,
+  #text-to-speech h1,
+  #infosection h1 {
+    font-size: 30px !important;
+  }
+
+  .texto-seccion {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 400px) {
-  #infosection h1 {
-    font-size: 2rem;
-  }
+
   .contenedor-imagen {
     min-width: 300px;
     min-height: 300px;
+  }
+
+  #voice-archive h1 {
+    padding-top: 50px;
+  }
+}
+
+@media (max-width: 355px) {
+  #objectives h1,
+  #voice-archive h1,
+  #text-to-speech h1,
+  #infosection h1 {
+    font-size: 25px !important;
   }
 }
 
@@ -323,5 +443,12 @@ iframe {
   .contenedor-imagen {
     min-width: 250px;
     min-height: 250px;
+  }
+
+  #objectives h1,
+  #voice-archive h1,
+  #text-to-speech h1,
+  #infosection h1 {
+    font-size: 20px !important;
   }
 }
