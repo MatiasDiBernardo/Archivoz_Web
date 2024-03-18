@@ -240,16 +240,16 @@ hr {
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-family: var(--fuenteTitulos);
+  font-family: Montserrat;
   height: 60px;
   padding-right: 50px;
   font-size: 20px;
-  gap: 20px;
+  gap: 30px;
 }
 
 .nav-conteiner__navegacion__link {
   color: var(--colorVerdeFluor);
-  font-family: var(--fuenteParrafos);
+  font-family: Montserrat;
   font-weight: normal;
   text-decoration: none !important;
   position: relative;
@@ -435,6 +435,12 @@ hr {
   }
 }
 
+@media (max-width: 400px) {
+  .nav-conteiner__navegacion__link {
+    font-size: 40px !important;
+  }
+}
+
 @media (max-width: 991px) {
   .overlay {
     height: 100%;
@@ -533,7 +539,7 @@ hr {
     height: calc(100% - 60px);
     font-size: 50px;
     overflow-y: auto;
-
+    padding-right: 0px;
     pointer-events: none;
     transition: left 0.3s;
   }
