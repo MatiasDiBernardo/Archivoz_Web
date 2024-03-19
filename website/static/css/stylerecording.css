@@ -952,15 +952,6 @@ select::-ms-expand {
   }
 }
 
-/* OCULTO LINKS DE NAVBAR */
-#info {
-  display: none;
-}
-
-#participar {
-  display: none;
-}
-
 /* Animacion para el microfono */
 
 .contenedor-microfono::after,
@@ -1088,4 +1079,9 @@ body {
 #loader-send #custom-loader {
   width: 25px;
   height: 25px;
+}
+
+/* OCULTO LINKS DE NAVBAR Y FOOTER */
+.a-info, .a-objetivos{
+  display: none;
 }
