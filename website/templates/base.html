@@ -40,52 +40,14 @@
           <i class="fa-solid fa-bars"></i>
       </button>
       <nav class = "nav-conteiner__navegacion">
-          <a class ="nav-conteiner__navegacion__link" href="/"> Participar </a>
-          <a id = "participar" class ="nav-conteiner__navegacion__link" href="registro_voces"> Objetivos </a>
-          <a  id = "contactos" class ="nav-conteiner__navegacion__link" data-toggle="modal" data-target="#contactoModal"href="#"> Text to Speech </a>
-          <a class ="nav-conteiner__navegacion__link" id="info" href="#"> Mapa de Voces </a>
-          <a class ="nav-conteiner__navegacion__link" id="info" href="#"> Informacion </a>
-          <a class ="nav-conteiner__navegacion__link" id="info" href="#"> Nosotros </a>
+        <a class ="nav-conteiner__navegacion__link a-objetivos" href="#"> Objetivos </a>
+        <a class ="nav-conteiner__navegacion__link a-participar" href="registro_voces"> Participar </a>
+        <a class ="nav-conteiner__navegacion__link a-TTS" href="text-to-speech"> Text to Speech </a>
+        <a class ="nav-conteiner__navegacion__link a-mapa" href="#"> Mapa de Voces </a>
+        <a class ="nav-conteiner__navegacion__link a-info" href="#"> Informacion </a>
+        <a class ="nav-conteiner__navegacion__link a-nosotros" href="#"> Nosotros </a>
       </nav>
     </header>
-
-
-
-    <!-- Modal contacto -->
-    <div class="modal fade" id="contactoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content ">
-          <div class="modal-header bg-col">
-            <h5 class="modal-title">#Contacto</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-contact-body bg-col">
-
-            <div class="modal-content contactContent">
-              <a href="https://www.instagram.com/intercambios_transorganicos/"><i class="fab fa-instagram"></i></a>
-            </div>
-
-            <div class="modal-content contactContent">
-              <a href="https://www.facebook.com/intercambiostransorganicos"><i class="fab fa-facebook-f"></i></a>
-            </div>
-
-            <div class="modal-content contactContent">
-              <a href="mailto:intercambios.transorganicos@gmail.com"><i class="fas fa-at"></i></a>
-            </div>
-
-            <div class="modal-content contactContent">
-              <a href="https://intercambiostransorganicos.org/"><i class="far fa-window-restore"></i></a>
-            </div>
-
-          </div>
-          <div class="modal-footer bg-col">
-          </div>
-        </div>
-      </div>
-    </div>
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
@@ -120,13 +82,13 @@
         <h4>Secciones</h4>
         <div class="enlaces-container">
           <a id="a-inicio" href="http://127.0.0.1:5000">Inicio</a>
-          <a id="a-objetivos" href="http://127.0.0.1:5000">Objetivos</a>
-          <a id="a-participar" href="registro_voces">Participar</a>
-          <a id="a-TTS" href="text-to-speech">Text To Speech</a>
-          <a id="a-mapa" href="http://127.0.0.1:5000">Mapa de voces</a>
-          <a id="a-info" href="http://127.0.0.1:5000">Información</a>
-          <a id="a-nosotros" href="http://127.0.0.1:5000">Nosotros</a>
-          <a id="a-condiciones" href="http://127.0.0.1:5000">Terminos y condiciones</a>
+          <a class="a-objetivos" href="http://127.0.0.1:5000">Objetivos</a>
+          <a class="a-participar" href="registro_voces">Participar</a>
+          <a class="a-TTS" href="text-to-speech">Text To Speech</a>
+          <a class="a-mapa" href="http://127.0.0.1:5000">Mapa de voces</a>
+          <a class="a-info" href="http://127.0.0.1:5000">Información</a>
+          <a class="a-nosotros" href="http://127.0.0.1:5000">Nosotros</a>
+          <a class="a-condiciones" href="http://127.0.0.1:5000">Terminos y condiciones</a>
         </div>
       </div>
       <div class = "contacto-footer">

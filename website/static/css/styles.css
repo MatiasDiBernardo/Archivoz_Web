@@ -217,7 +217,7 @@ hr {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
+  position: relative;
   left: 0;
   top: 0;
   width: 100%;
