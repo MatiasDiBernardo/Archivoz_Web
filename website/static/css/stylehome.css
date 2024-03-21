@@ -139,6 +139,13 @@
   height: 40px;
 }
 
+#objectives h1,
+#voice-archive h1,
+#text-to-speech h1,
+#infosection h1 {
+  margin-inline: 20px;
+}
+
 @media (min-width: 1000px) {
   #container-objectives {
     width: 85%;
@@ -360,17 +367,30 @@ iframe {
   }
 
   .texto-seccion {
-    max-width: 400px !important;
+    margin: 0 20px !important;
+    margin-bottom: 10px !important;
   }
-  
+
   .visual-seccion {
-    height: 250px !important;
-    width: 400px !important;
+    height: 400px !important;
+    width: 100% !important;
+    border-radius: 0 !important;
   }
   
   iframe {
-    height: 250px !important;
-    width: 400px !important;
+    height: 400px !important;
+    width: 100% !important;
+    margin: 0 20px !important;
+    border-radius: 0 !important;
+  }
+}
+
+@media (max-width: 520px) {
+  #objectives h1,
+  #voice-archive h1,
+  #text-to-speech h1,
+  #infosection h1 {
+    font-size: 2rem !important;
   }
 }
 
@@ -380,42 +400,30 @@ iframe {
     min-height: 400px;
   }
 
-  #objectives h1,
-  #voice-archive h1,
-  #text-to-speech h1,
-  #infosection h1 {
-    font-size: 35px !important;
-  }
-
   .texto-seccion {
     max-width: 100% !important;
   }
-  
-  .visual-seccion {
-    height: 400px !important;
-    width: 100% !important;
-    border-radius: 0% !important;
-  }
+
   
   iframe {
     height: 400px !important;
     width: 100% !important;
-    border-radius: 0% !important;
   }
 
 }
 
 @media (max-width: 420px) {
+  .texto-seccion {
+    font-size: 15px;
+  }
+
   #objectives h1,
   #voice-archive h1,
   #text-to-speech h1,
   #infosection h1 {
-    font-size: 30px !important;
+    font-size: 1.8rem !important;
   }
 
-  .texto-seccion {
-    font-size: 15px;
-  }
 }
 
 @media (max-width: 400px) {
@@ -425,19 +433,37 @@ iframe {
     min-height: 300px;
   }
 
-  #voice-archive h1 {
-    padding-top: 50px;
-  }
-}
-
-@media (max-width: 355px) {
   #objectives h1,
   #voice-archive h1,
   #text-to-speech h1,
   #infosection h1 {
-    font-size: 25px !important;
+    font-size: 1.6rem !important;
+  }
+
+}
+
+@media (max-width: 350px) {
+  #objectives h1,
+  #voice-archive h1,
+  #text-to-speech h1,
+  #infosection h1 {
+    font-size: 1.5rem !important;
   }
 }
+
+@media (max-width: 330px) {
+  #objectives h1,
+  #voice-archive h1,
+  #text-to-speech h1,
+  #infosection h1 {
+    font-size: 1.3rem !important;
+  }
+
+  #voice-archive h1 {
+    padding-top: 15px;
+  }
+}
+
 
 @media (max-width: 300px) {
   .contenedor-imagen {
@@ -449,6 +475,6 @@ iframe {
   #voice-archive h1,
   #text-to-speech h1,
   #infosection h1 {
-    font-size: 20px !important;
+    font-size: 1.2rem !important;
   }
 }
