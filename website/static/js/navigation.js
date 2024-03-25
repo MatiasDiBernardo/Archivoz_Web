@@ -11,10 +11,20 @@ let TTS = null;
 let mapa = null;
 let info = null;
 
+// Si el menu de la navbar está abierto, que se cierre al pulsar un link
+function ocultarNavbar(){
+  const navegacion = document.querySelector(".nav-conteiner__navegacion")
+  if(navegacion.classList.contains("nav-conteiner__navegacion-visible")) {
+    navegacion.classList.toggle("nav-conteiner__navegacion-visible");
+    document.body.style.overflow = 'scroll';
+  }
+}
+
 linkInicio.addEventListener("click", (e) => {
   e.preventDefault();
   navbar = document.getElementsByClassName("nav-conteiner")[0];
   navbar.scrollIntoView({ block: "start", behavior: "smooth" });
+  ocultarNavbar()
 });
 
 linkObjetivos.forEach((i) => {
@@ -22,6 +32,7 @@ linkObjetivos.forEach((i) => {
     e.preventDefault();
     objetivos = document.getElementById("objectives");
     objetivos.scrollIntoView({ block: "start", behavior: "smooth" });
+    ocultarNavbar()
   })
 })
 
@@ -30,6 +41,7 @@ linkParticipar.forEach((i) => {
     e.preventDefault();
     participar = document.getElementById("voice-archive").firstElementChild
     participar.scrollIntoView({ block: "start", behavior: "smooth" });
+    ocultarNavbar()
   })
 })
 
@@ -38,6 +50,7 @@ linkTTS.forEach((i) => {
     e.preventDefault();
     TTS = document.getElementById("text-to-speech").firstElementChild;
     TTS.scrollIntoView({ block: "start", behavior: "smooth" });
+    ocultarNavbar()
   })
 })
 
@@ -45,6 +58,7 @@ linkMapa.forEach((i) => {
   i.addEventListener("click", (e) => {
     e.preventDefault();
     hero.scrollIntoView({ block: "start", behavior: "smooth" });
+    ocultarNavbar()
   })
 })
 
@@ -53,5 +67,6 @@ linkInfo.forEach((i) => {
     e.preventDefault();
     info = document.getElementById("infosection").firstElementChild;
     info.scrollIntoView({ block: "start", behavior: "smooth" });
+    ocultarNavbar()
   })
 })
