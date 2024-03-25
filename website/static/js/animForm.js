@@ -20,6 +20,6 @@ document.querySelector(".nav-conteiner__boton-menu").addEventListener("click", (
   if(navegacion.classList.contains("nav-conteiner__navegacion-visible")) {
     document.body.style.overflow = 'hidden';
   } else{ // Si el menu se cierra, que rehabilite el scroll
-    document.body.style.overflow = 'scroll';
+    document.body.style.overflow = 'initial';
   }
 });

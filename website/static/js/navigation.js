@@ -16,7 +16,7 @@ function ocultarNavbar(){
   const navegacion = document.querySelector(".nav-conteiner__navegacion")
   if(navegacion.classList.contains("nav-conteiner__navegacion-visible")) {
     navegacion.classList.toggle("nav-conteiner__navegacion-visible");
-    document.body.style.overflow = 'scroll';
+    document.body.style.overflow = 'initial';
   }
 }
 
