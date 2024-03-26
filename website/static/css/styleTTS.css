@@ -204,3 +204,8 @@
     transform: rotate(1turn);
   }
 }
+
+/* OCULTO LINKS DE NAVBAR Y FOOTER */
+.a-info, .a-objetivos{
+  display: none;
+}

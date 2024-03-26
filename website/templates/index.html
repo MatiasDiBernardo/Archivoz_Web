@@ -6,12 +6,107 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <!-- LETTERING -->
+<link rel="stylesheet" href="..\static\css\stylehome.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="..\static\img\favicon.ico" type="image/x-icon">
 {% endblock %}
 
 {% block body %}
+
+<div id="container-general">
+  <section id="hero">
+    <img id="purple-light1" src="../static/SVG/luz-violeta.svg" alt="">
+    <div id="container-hero">
+      <div id="container-title">
+          <h1 class="titleAnim">Archivamos</h1>
+          <h1 class="subAnim">Tu Voz</h1>
+      </div>
+      <img src="../static/SVG/hero.svg" alt="">
+      <i id='arrow' class="fa-solid fa-chevron-down"></i>
+    </div>
+    <img id="purple-light2" src="../static/SVG/luz-violeta.svg" alt="">
+  </section>
+  
+  <section id="objectives">
+    <div style="display: flex; color: white; z-index: 5;">
+      <h1 style="font-family: Poiret One;">¿</h1>
+      <h1>qué hacemos</h1>
+      <h1 style="font-family: Poiret One;">?</h1>
+    </div>
+    <div id="container-objectives">
+      <div class="objective" id="obj1">
+        <div class="container-objective-image" style="background-color: #D0C8FA;">
+          <img src="../static/SVG/microfono2.svg" alt="Icono de objetivo">
+        </div>
+        <h4>Graba tu voz</h4>
+        <p>Los usuarios pueden grabar su voz leyendo textos proporcionados por nosotros.</p>
+      </div>
+      <div class="objective" id="obj2">
+        <div class="container-objective-image" style="background-color: #FFE99B;">
+          <img src="../static/SVG/cerebro.svg" alt="Icono de objetivo">
+        </div>
+        <h4>IA personalizada</h4>
+        <p>Utilizamos inteligencia artificial para transformar esas grabaciones en un modelo de voz personalizado, ¡creando un bot que suena como tú!</p>
+      </div>
+      <div class="objective" id="obj3">
+        <div class="container-objective-image" style="background-color: #91FA80;">
+          <img src="../static/SVG/cabeza.svg" alt="Icono de objetivo">
+        </div>
+        <h4>Texto a voz</h4>
+        <p>¿Necesitas que tu voz hable por ti? Solo ingresa el texto y nuestra IA lo convertirá en audio, ¡escucha cómo suena tu voz leyendo tus palabras!</p>
+      </div>
+    </div>
+  </section>
+  
+  <section id="voice-archive">
+    <h1>archivo de voces</h1>
+    <!-- <video class = "visual-seccion" src=""></video> -->
+    <iframe width="1200" height="700" src="https://www.youtube.com/embed/GBIIQ0kP15E?si=DX6LY-s-hObBMM9k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <p class = "texto-seccion">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborumnumquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentiumoptio, eaque rerum! Provident similique accusantium nemo autem. Veritatisobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquamnihil, eveniet aliquid</p>
+    <button class="btn btn-primary btn-lg">COMENZAR</button>
+  </section>
+  
+  <section id="text-to-speech">
+    <h1>text-to-speech</h1>
+    <img  class = "visual-seccion" src="../static/img/tts.jpg" alt="Imagen de Text-To-Speech">
+    <p class = "texto-seccion">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborumnumquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentiumoptio, eaque rerum! Provident similique accusantium nemo autem. Veritatisobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquamnihil, eveniet aliquid</p>
+    <button class="btn btn-primary btn-lg">ACCEDER</button>
+  </section>
+  
+  <section id="infosection">
+    <h1>información</h1>
+    <div id="container-info">
+      <div class = "contenedor-imagen">
+        <div class="svg_container">
+          <img class=" laringe" src="..\static\SVG\laringe.svg" alt="">
+          <img class=" capas flor3" src="..\static\SVG\flor3.svg" alt="">
+          <img class=" capas flor2" src="..\static\SVG\flor2.svg" alt="">
+          <img class=" capas flor1" src="..\static\SVG\flor1.svg" alt="">
+        </div>
+      </div>
+      <div class="info-text">
+        <p class="tlt">Este archivo está destinado a recopilar grabaciones de voces diversas.</p>
+        <br>
+        <p class="tlt">
+          Trabajamos con la voz como sonido que representa nuestra corporeidad,
+          un modulo de nuestro sistema con el cual nos expresamos, nos relacionamos y tenemos la posibilidad de "resonar"
+          en el entorno.
+        </p>
+        <br>
+        <p class="tlt">
+          La idea surgio con el animo de aportar soluciones a personas laringectomizadas, pero hoy en día se propone
+          invitar a distintas identidades a la investigación de su propia diccion.
+        </p>
+        <br>
+        <p class="tlt">
+          Estas voces serán la materia prima de un proceso técnico que podría devenir en la sintesis de una voz artificial
+          o voz expandida.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
 
 <!-- MODAL TTS -->
 
@@ -111,58 +206,6 @@
     </div>
   </div>
 </div>
-
-<!-- JUMBO CONTAINER -->
-
-<div class="jumbotron" id="jumbo-canvas">
-
-  <h1 class="display-4 text-center titleAnim">ArchiVoz</h1>
-  <p class="lead text-center subAnim">Archivo de voces diversas</p>
-
-  <div class="overlay text-center">
-    <a href="text-to-speech">
-      <button type="button" class="btn btn-primary btn-lg miBtn">Comenzar</button>
-    </a>
-    <!-- CONTENEDOR AUDIOS -->
-    <div class=" audios"></div>
-  </div>
-
-
-</div>
-
-<!-- INFO CONTAINER    -->
-<div class=" info-container" id="infosection">
-  <div class = "contenedor-imagen">
-    <div class="svg_container">
-
-      <img class=" laringe" src="..\static\SVG\laringe.svg" alt="">
-      <img class=" capas flor3" src="..\static\SVG\flor3.svg" alt="">
-      <img class=" capas flor2" src="..\static\SVG\flor2.svg" alt="">
-      <img class=" capas flor1" src="..\static\SVG\flor1.svg" alt="">
-  
-      <i id="lg_tooltip" class=" capas fas fa-play-circle" data-toggle="tooltip" data-placement="top" title="Click!"></i>
-  
-  
-    </div>
-  </div>
-
-  <div class="info-text">
-    <p class="tlt">Este archivo está destinado a recopilar grabaciones de voces diversas.
-      Trabajamos con la voz como sonido que representa nuestra corporeidad,
-      Un modulo de nuestro sistema con el cual nos expresamos, nos relacionamos y tenemos la posibilidad de "resonar"
-      en el entorno .
-
-      La idea surgio con el animo de aportar soluciones a personas laringectomizadas, pero hoy en día se propone
-      invitar a distintas identidades a la investigación de su propia diccion.
-
-      Estas voces serán la materia prima de un proceso técnico que podría devenir en la sintesis de una voz artificial
-      o voz expandida.
-    </p>
-
-  </div>
-</div>
-
-
 {% endblock %}
 
 {% block scripts %}
@@ -172,6 +215,7 @@
   integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<script src="..\static\js\navigation.js"></script>
 <script src="..\static\js\data.js"></script>
 <script src="..\static\js\script.js" charset="utf-8"></script>
 <script src="..\static\js\req.js"></script>
