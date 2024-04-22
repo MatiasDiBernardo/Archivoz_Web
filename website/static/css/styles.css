@@ -239,6 +239,10 @@ hr {
   gap: 10px;
 }
 
+.nav-conteiner__logo:hover{
+  text-decoration: none;
+}
+
 .nav-conteiner__logo h4{
   position: relative;
   top: 2px;

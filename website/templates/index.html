@@ -20,7 +20,7 @@
     <div id="container-hero">
       <div id="container-title">
           <h1 class="titleAnim">Archivamos</h1>
-          <h1 class="subAnim">Tu Voz</h1>
+          <h1 class="subAnim">Tu voz</h1>
       </div>
       <img src="../static/SVG/hero.svg" alt="">
       <i id='arrow' class="fa-solid fa-chevron-down"></i>
@@ -53,8 +53,8 @@
         <div class="container-objective-image" style="background-color: #91FA80;">
           <img src="../static/SVG/cabeza.svg" alt="Icono de objetivo">
         </div>
-        <h4>Texto a voz</h4>
-        <p>¿Necesitas que tu voz hable por ti? Solo ingresa el texto y nuestra IA lo convertirá en audio, ¡escucha cómo suena tu voz leyendo tus palabras!</p>
+        <h4>Recolección de voces</h4>
+        <p>Almacenamos las voces grabadas para tener una base de datos con voces argentinas que permita desarrollar tecnologías con IA en nuestro país.</p>
       </div>
     </div>
   </section>
@@ -63,14 +63,14 @@
     <h1>archivo de voces</h1>
     <!-- <video class = "visual-seccion" src=""></video> -->
     <iframe width="1200" height="700" src="https://www.youtube.com/embed/GBIIQ0kP15E?si=DX6LY-s-hObBMM9k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    <p class = "texto-seccion">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborumnumquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentiumoptio, eaque rerum! Provident similique accusantium nemo autem. Veritatisobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquamnihil, eveniet aliquid</p>
+    <p class = "texto-seccion">Toda la tecnología desarrollada en ArchiVoz se base en el entrenamiento de datos con algoritmos de Inteligencia Artificial, para eso es necesitamos donaciones de voces que nos permitan seguir investigando y mejorando en las diferentes tecnologías que se usan en el proyecto. Para facilitar la donación de voz, creamos un asistente de grabación de voz, mirá el video para entender en detalle como funciona.</p>
     <button class="btn btn-primary btn-lg">COMENZAR</button>
   </section>
   
   <section id="text-to-speech">
     <h1>text-to-speech</h1>
     <img  class = "visual-seccion" src="../static/img/tts.jpg" alt="Imagen de Text-To-Speech">
-    <p class = "texto-seccion">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborumnumquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentiumoptio, eaque rerum! Provident similique accusantium nemo autem. Veritatisobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquamnihil, eveniet aliquid</p>
+    <p class = "texto-seccion">Nuestro modelo de Text-to-speech, permite procesar texto y convertirlo en audio con el contenido hablado del texto ingresado. En la iteración actual del proyecto solo se puede probar los modelos que entrenamos nosotros, el objetivo es que en un futuro los usuarios puedan probar como funciona el algoritmo de clonación de voz con su propia voz en base a las donaciones que realicen en el proyecto.</p>
     <button class="btn btn-primary btn-lg">ACCEDER</button>
   </section>
   
@@ -108,104 +108,6 @@
   </section>
 </div>
 
-<!-- MODAL TTS -->
-
-<div class="modal fade" id="ttsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content ">
-      <div class="modal-header bg-col">
-        <h5 class="modal-title">#Texto a voz</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body  bg-clonar bg-col">
-        <div>
-          <h1 class="display-4 text-center title_anim">Texto a Voz</h1>
-          <!-- <p class="lead text-center">Breve descripcion de la voz clonada</p> -->
-
-          <form>
-            <div class="form-group">
-              <label for="exampleFormControlTextarea1"></label>
-              <textarea class="form-control mb-5" id="exampleFormControlTextarea1"
-                placeholder="Escribi algo"></textarea>
-            </div>
-          </form>
-
-
-          <div class="d-flex justify-content-around">
-
-
-            <!-- <button type="button" class="btn btn-primary btn-lg mt-4" id="miBtn">Hablar</button> -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-play"
-              viewBox="0 0 16 16" id="playBtn">
-              <path fill-rule="evenodd"
-                d="M10.804 8L5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z" />
-            </svg>
-
-            <div class="d-flex justify-content-center" id="loader">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 681.19 135.43">
-                <defs>
-                  <style>
-                    .cls-1 {
-                      font-size: 20px;
-                      font-family: IBMPlexMono-SemiBold, IBM Plex Mono;
-                      font-weight: 600;
-                    }
-
-                    .cls-1,
-                    .cls-2 {
-                      fill: #eeeeee;
-                    }
-
-                    .cls-2 {
-                      font-size: 32px;
-                      font-family: IBMPlexMono-Bold, IBM Plex Mono;
-                      font-weight: 700;
-                    }
-
-                    .cls-3,
-                    .cls-4 {
-                      fill: none;
-                      stroke-linecap: round;
-                      stroke-miterlimit: 10;
-                    }
-
-                    .cls-3 {
-                      stroke: #7d287d;
-                      stroke-width: 57px
-                    }
-
-                    .cls-4 {
-                      stroke: #95d0a4;
-                      stroke-width: 38px;
-                    }
-                  </style>
-                </defs>
-                <text id="loader_message" class="cls-1" transform="translate(172.6 58.29)">Estamos procesando tu
-                  voz...</text>
-                <text id="cargandotxt" class="cls-2" transform="translate(235 27.17)">Cargando...</text>
-                <line class="cls-3" x1="28.5" y1="106.93" x2="652.69" y2="106.93" />
-                <line id="carga" class="cls-4" x1="28.5" y1="106.93" x2="30" y2="106.93" />
-
-              </svg>
-            </div>
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor"
-              class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16" id="downloadBtn">
-              <path
-                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
-            </svg>
-
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer bg-col">
-      </div>
-    </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block scripts %}
