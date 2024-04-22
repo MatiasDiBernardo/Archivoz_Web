@@ -583,7 +583,7 @@ hr {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 750px) {
   .footer-container {
     flex-direction: column;
     align-items: center;
@@ -595,6 +595,11 @@ hr {
   .enlaces-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  .enlaces-footer a:last-child,
+  .enlaces-footer-info a:last-child{
+    grid-column: 1/3;
   }
   .redes-container {
     display: flex;
