@@ -214,3 +214,6 @@ def get_the_data():
     return send_file(zip_filename, as_attachment=True)
     
 
+@views.route('/terminos')
+def terminos():
+    return render_template('Terms.html')
