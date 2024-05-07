@@ -589,16 +589,24 @@ hr {
     align-items: center;
     gap: 40px;
   }
-  .enlaces-footer {
+  
+  .enlaces-footer, .enlaces-footer-info {
     text-align: center;
   }
+
+  .enlaces-footer-info .enlaces-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   .enlaces-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
 
-  .enlaces-footer a:last-child,
-  .enlaces-footer-info a:last-child{
+  .enlaces-footer a:last-child{
     grid-column: 1/3;
   }
   .redes-container {

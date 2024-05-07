@@ -1,0 +1,143 @@
+.scrollpos {
+    background-color: black;
+}
+
+.terms-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.terms-title{
+    margin-top: 30px;
+    margin-inline: 30px;
+}
+
+.terms-title h1 {
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 65px;
+    width: 100%; 
+}
+
+.terms-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.termino {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin: 0 30px;
+    margin-top: 20px;
+    max-width: 1200px;
+}
+
+.body-title {
+    color: #0afad298;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.body-text{
+    color:white;
+    font-size: 20px;
+}
+
+@media (max-width: 1135px) {
+    .terms-title h1 {
+        font-size: 55px !important;
+    }
+
+    .body-title {
+        font-size: 28px;
+    }
+
+    .body-text {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 975px) { 
+    .terms-title h1 {
+        font-size: 45px !important;
+    }
+}
+
+@media (max-width: 812px) { 
+    .terms-title h1 {
+        font-size: 40px !important;
+    }
+}
+
+@media (max-width: 730px) {
+    .terms-title h1 {
+        font-size: 35px !important;
+    }
+
+    .body-title {
+        font-size: 25px;
+    }
+
+    .body-text {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 650px) {
+    .terms-title h1 {
+        font-size: 30px !important;
+    }
+}
+
+@media (max-width: 570px) {
+    .terms-title h1 {
+        font-size: 25px !important;
+    }
+}
+
+@media (max-width: 485px) {
+    .terms-title h1 {
+        font-size: 22px !important;
+    }
+
+    .body-title {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 435px) {
+
+    .termino{
+        margin: 0 10px;
+    }
+
+    .terms-title{
+        margin-inline: 10px;
+    }
+}
+
+@media (max-width: 395px) {
+    .terms-title h1 {
+        font-size: 18px !important;
+    }
+
+    .body-title {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 330px) {
+    .terms-title h1 {
+        font-size: 14px !important;
+    }
+
+    .body-title {
+        font-size: 12px;
+    }
+}

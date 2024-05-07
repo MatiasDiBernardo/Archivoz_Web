@@ -1,0 +1,63 @@
+{% extends "./base.html" %}
+
+{% block tittle %}Terminos y Condiciones{% endblock %}
+
+{% block links %}
+<link rel="icon" href="..\static\img\favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="..\static\img\favicon.ico" type="image/x-icon">
+{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" type="text/css" href="..\static\css\styleterms.css">
+{% endblock %}
+
+{% block body %}
+<div class="terms-container">
+    <div class="terms-title">
+        <h1>términos y condiciones</h1>
+    </div>
+    <div class="terms-body">
+        <section class="termino">
+            <h1 class="body-title">privacidad</h1>
+            <div class="body-text">
+                <p>La base de datos de ArchiVoz esta bajo una Licencia de Acceso Selectivo, esto quiere decir que los datos son accesibles por medio de una petición. Esta opción es la que mejor se alinea con nuestras aspiraciones donde queremos proteger a los donantes de un uso irresponsable de los datos, pero queremos compartirlos con las entidades y organizaciones que se interesen por el material recolectado con el fin de desarrollar tecnologías con una finalidad positiva y de impacto social. Mas información sobre los criterios de petición para los datos en LINK COMPARTIR DATOS.</p>
+                <p>Los datos que se comparten son los audios que realizó en nuestro asistente de grabación y la información de edad y región. El mail asociado y el nombre NO se comparte, estos datos solo se usan para notificar al usuario y para el funcionamiento interno de la web.</p>
+            </div>
+        </section>
+
+        <section class="termino">
+            <h1 class="body-title">condiciones para participar</h1>
+            <div class="body-text">
+                <p>Nuestro trabajo se enfoca en recolectar voces con acentos de Argentina, personas de otra nacionalidad no podrán participar. Si bien el criterio de que acento es subjetivo, si no es de nacionalidad argentina pero considera que tiene un acento que es adecuado para la finalidad del proyecto también puede participar.</p>
+                <p>Los menores de 18 años solo podrán participar con el consentimiento de sus padres, madres o tutores legales.</p>
+            </div>
+        </section>
+
+        <section class="termino">
+            <h1 class="body-title">originalidad en las contribuciones</h1>
+            <div class="body-text">
+                <p>El análisis de los datos que se realiza en este proyecto depende enteramente en la honestidad y compromiso de los donantes, se espera que complete los datos demográficos correctamente.</p>
+                <p>Las grabaciones que se realicen en este marco tienen que ser originales y coincidir con los datos establecidos en el formulario. Las grabaciones que no sean de creación propia o infrinjan los derechos de terceros serán removidas de la base de datos.</p>
+            </div>
+        </section>
+
+        <section class="termino">
+            <h1 class="body-title">desvinculación del archivo de voces</h1>
+            <div class="body-text">
+                <p>Si por cualquier razón ya a donado su voz pero considera que no quiere formar parte de nuestro archivo de voces, se puede comunicar con nosotros a MAIL con la información de su nombre e ID y solicitar que borremos su contribución de nuestra base de datos.</p>
+            </div>
+        </section>
+
+        <section class="termino">
+            <h1 class="body-title">descargo de responsabilidades</h1>
+            <div class="body-text">
+                <p class="body-text">ArchiVoz no se responsabiliza del correcto uso de los datos o cualquier reclamación que deriven de los mismos. Por medio del criterio de selección queremos limitar y no exponer los datos a terceros que puedan hacer un uso no responsable de nuestro archivo de voces, pero el correcto gestionamiento de esta información excede nuestro control una vez que se habilite una petición de acceso a la base de datos.</p>
+                <p>Compartir los datos es una parte fundamental del proyecto ya que queremos el beneficio y desarrollo general de la tecnología nacional y nuestra base de datos es una parte crucial en este crecimiento.</p>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
