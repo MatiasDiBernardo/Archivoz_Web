@@ -27,6 +27,7 @@ class Grabacion(db.Model):
     text_id = db.Column(db.String(200))
     text_display = db.Column(db.String(200))
     audio_path = db.Column(db.String(200))
+    audio_duration = db.Column(db.Float)
 
     def __repr__(self):
         return f'<Grabacion: ID = {self.id} | Usuario asociado ID = {self.usuario_id}>'
@@ -38,6 +39,8 @@ class Usuario(db.Model):
     region = db.Column(db.String(100))
     mail = db.Column(db.String(150), unique=True)
     grabaciones = db.relationship('Grabacion', backref='usuario')
+    custom_TTS = db.Column(db.Boolean)
+    custom_TTS_uses = db.Column(db.Integer)
 
     def __repr__(self):
         return f'User ID = {self.user_id} | Nombre = {self.nombre}> | Grabaciónes = {self.grabaciones}'

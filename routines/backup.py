@@ -1,1 +1,0 @@
-# Create script that uploads db and files to storage on the cloud

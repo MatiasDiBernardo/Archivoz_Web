@@ -1,10 +1,10 @@
 from .models import Usuario, Texto
-# from .tts.inference import infer
+#from .tts.inference import infer
 
 import os
 import json
 import random 
-# import scipy
+#import scipy
 
 def find_match_on_id(userID):
     """Busca si el ID que el usuario ingreso es válido.
@@ -218,29 +218,22 @@ def text_ID_to_name(text_id):
     text_splitted = text_splitted[:-2]  # Removes ID and ID Max
     return " - ".join(text_splitted)
 
-def check_audio_conditions(audio_path):
-    # Para levantar el audio tendría que usar soundfile (esto añade una dependencia)
-    # y además tengo que analizar cada audio, lo cual añadiria una latencia innecesaria.
-    # Probar en local y en prod, pero este es un punto fuerte para optimizar.
-    return True
+def text_to_speech(text, model):
+    """Calls FastPitch to make an inference with the specified
+    text. 
+    Args:
+        text (string): Text to transform to audio.
+        model (string): Name of trainged models.
 
-# def text_to_speech(text, model):
-#     """Simula el comportamiento del tts donde se especifíca text y modelo
-#     y el algorítmo generaría un archivo de audio.
+    Returns:
+        string: Path of the created audio.
+    """
 
-#     Args:
-#         text (string): Audio a procesar
-#         model (string): Nombre del modelo
+    #audio_infer = infer(text, model)
+    dirname = os.path.dirname(__file__)
 
-#     Returns:
-#         string: Path del audio creado
-#     """
+    save_path = os.path.join(dirname, "tts", "audios", "audio.wav")
 
-#     audio_infer = infer(text, model)
-#     dirname = os.path.dirname(__file__)
+    #scipy.io.wavfile.write(save_path, 44100, audio_infer)
 
-#     save_path = os.path.join(dirname, "tts", "audios", "audio.wav")
-
-#     scipy.io.wavfile.write(save_path, 44100, audio_infer)
-
-#     return save_path
+    return save_path
