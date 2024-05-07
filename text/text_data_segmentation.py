@@ -2,7 +2,7 @@ import os
 
 # By design lonegest sentece could contain up to (UPPER_WPS + UNDER_WPS) words
 UPPER_WPS = 40
-UNDER_WPS = 10
+UNDER_WPS = 15
 
 def words_per_sentece(s):
     return len(s.split(" "))
@@ -135,12 +135,22 @@ def show_results(norm_sentences, wps_original):
     for norm in norm_sentences:
         words_per_sentece_norm.append(words_per_sentece(norm))
     print(words_per_sentece_norm)
+
     print("Average: ", sum(words_per_sentece_norm)/len(words_per_sentece_norm))
 
     print(" -------------- ")
-    print(norm_sentences)
+    print("Cantidad de oraciones", len(norm_sentences))
 
 def text_segmentation(path):
+    """Creates an array of text segments based on the root text
+    and the upper and lower words per sentence limit.
+
+    Args:
+        path (string): Path to txt file.
+
+    Returns:
+        array[string]: Segmented version of root txt file.
+    """
     with open(path, encoding="utf8") as f:
         content = f.read() # Read the whole file
         content = content.replace("\n", " ")  # Replace the jumps in line
@@ -165,9 +175,9 @@ def text_clean(file_path):
     with open(file_path, 'w') as file:
         file.write(modified_content)
 
-# Change the txt path to see the words per sentence distribution
+# Test: Uncomment and change txt path to see words per sentence distribution
 
-# filename_txt = "Jorge Luis Borges_El Aleph_El Aleph_olld.txt"
+# filename_txt = "Adolfo Bioy Casares_La invención de Morel_Capítulo I.txt"
 # path = os.path.join("text", "raw_data", filename_txt)
 
 # norm_sentence, wps_count = text_segmentation(path)

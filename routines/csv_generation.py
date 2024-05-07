@@ -50,19 +50,29 @@ def removeUnknowChar(frase):
     
     return frase
 
-ID_target = "6AD0C6"
+def main(id_target):
+    """Converts the data from the user into the csv format
+    expected to train  model.
 
-#audios_path = os.listdir(os.path.join("uploads", ID_target))
-audios_path = os.listdir("uploads")
-data = []
-for path in audios_path:
-    audio = "audios/" + path
-    transcript = pathToTranscript(path)
-    transcript_clean = removeUnknowChar(transcript)
-    text = audio + "|" + transcript_clean
-    data.append(text)
+    Args:
+        id_target (int): ID associate with the user.
+    """
+    audios_path = os.listdir(os.path.join("uploads", id_target))
+    data = []
+    for path in audios_path:
+        audio = "audios/" + path
+        transcript = pathToTranscript(path)
+        transcript_clean = removeUnknowChar(transcript)
+        text = audio + "|" + transcript_clean
+        data.append(text)
 
-audios_transcript_file="\n".join(data)
+    audios_transcript_file="\n".join(data)
 
-with open(f"transcript_{ID_target}.csv", 'w', encoding="utf-8") as file:
-     file.write(audios_transcript_file)
+    with open(f"transcript_{id_target}.csv", 'w', encoding="utf-8") as file:
+        file.write(audios_transcript_file)
+
+if __name__ == "__main__":
+
+    ID_target = "6AD0C6"
+    main(ID_target)
+    

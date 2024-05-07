@@ -13,8 +13,8 @@ WORKDIR /app
 COPY . /app
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
-# Expose port 5000
-EXPOSE 5000
+# Expose port 8000
+EXPOSE 8000
 
 # Define the command to run your application
-CMD ["python3", "main.py"]
+CMD ["guinicorn", "wsgi:app"]

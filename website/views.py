@@ -48,7 +48,7 @@ def obtener_datos():
             mail_usuario = newUser.mail
 
             # It sends a mail notifying the user the assigned ID (it doesn't work without the env password_mail key)
-            if not os.environ.get("DEBUG"):
+            if True:
                 msg_title = "Registro ArchiVoz"
                 sender = "ArchiVoz Bot"
                 msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
@@ -114,6 +114,7 @@ def grabacion(id_user):
 
         # Data access with the form
         audio_file = request.files['file']
+        audio_duration = request.form.get('duration')
 
         # Esta variable va a tener el string de la selección del front
         author_selected = request.form.get('author')
@@ -132,7 +133,7 @@ def grabacion(id_user):
         mp3_filename = os.path.join(user_folder_path, f'{id_user}_{text_id}.mp3')
         with open(mp3_filename, 'wb') as mp3_name:
             audio_file.save(mp3_name)
-
+        
         # Defines next frase to display
             
         # This implementation changes the text based on author at any moment
@@ -146,19 +147,15 @@ def grabacion(id_user):
         text_to_display = update_text_on_screen(text_id, author_selected, list_texts)
         
         # Update the db with the current recording
-        good_audio_conditons = check_audio_conditions(mp3_filename)
-        if good_audio_conditons:
-            newRecording = Grabacion(usuario_id=id_user, 
-                                     text_id=text_id, 
-                                     text_display=text_to_display,
-                                     audio_path=mp3_filename,
-                                     fecha=datetime.datetime.now())
-            db.session.add(newRecording)
-            db.session.commit()
+        newRecording = Grabacion(usuario_id=id_user, 
+                                text_id=text_id, 
+                                text_display=text_to_display,
+                                audio_path=mp3_filename,
+                                fecha=datetime.datetime.now(),
+                                audio_duration=audio_duration)
 
-        # Hice una implementación de la parte de texto sin base de datos porque creí que
-        # sería mas fácil y si bien fue mas rápido quedo bastante desprolijo a nivel código.
-        # Así que dejo esta sección para refactor mas adelante.
+        db.session.add(newRecording)
+        db.session.commit()
 
         name_of_text = text_ID_to_name(text_to_display) 
         text_to_display_on_front = text_ID_to_text(text_to_display)
@@ -195,7 +192,7 @@ def interface_tts():
     return render_template('TTS_demo.html')
 
 # To access the data from a remote server without SSH connection to local files
-@views.route('/download-data', methods=['GET', 'POST'])
+@views.route(os.environ.get("DOWNLOAD"), methods=['GET', 'POST'])
 def get_the_data():
 
     directory_to_zip = "uploads"
@@ -210,6 +207,8 @@ def get_the_data():
                 file_path = os.path.join(foldername, filename)
                 arcname = os.path.relpath(file_path, directory_to_zip)  # Relative path to preserve directory structure
                 zip_file.write(file_path, arcname=arcname)
+        
+        zip_file.write("instance/data_base.db")
     
     return send_file(zip_filename, as_attachment=True)
     
