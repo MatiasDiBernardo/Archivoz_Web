@@ -250,50 +250,55 @@ document.addEventListener('DOMContentLoaded', () => {
         habilitarGrabar();
     });
 
+    let clicked = false;
     sendBtn.addEventListener('click', () => {
-        let author = autorSelector.value;
-        // Acá se podría implementar una fución que en base al valor rms que esta almacenado en el array chunks
-        // me deje guardar o no el audio. Es mas rápido hacerlo desde acá que guardarlo, mandarlo y recién ahi
-        // decidir si ese audio eso bueno o no.
-
-        // Realizar una solicitud POST al backend con el audio y el ID del texto
-        const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
-        var form = new FormData();
-        form.append('file', audioBlob2, 'data.mp3');
-        form.append('author', author);
-
-        iniciarLoaderEnvio();
-        setTimeout(() => { // Agregué timeoout para ver el loader
-            fetch(pathnameURL, {
-                method: 'POST',
-                body: form,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud fetch: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Actualizar la interfaz con el texto obtenido del backend
-                actualizarFrase(data.text_to_display);
-                actualizarNombreDeTexto(data.name_of_text);
-                actualizarContador(data.num_recordings);
-            })
-            .catch(error => {
-                console.error('Error al obtener datos JSON:', error);
-            })
-            .finally(() => {
-                borrarGrabacion();
-                detenerLoaderEnvio();
-                ocultarAudioResultado();
-                deleteBtn.disabled = true;
-                sendBtn.disabled = true;
-                habilitarGrabar();
-            })
-        }, 3000)
+        if(!clicked){
+            clicked = true;
+            let author = autorSelector.value;
+            // Acá se podría implementar una fución que en base al valor rms que esta almacenado en el array chunks
+            // me deje guardar o no el audio. Es mas rápido hacerlo desde acá que guardarlo, mandarlo y recién ahi
+            // decidir si ese audio eso bueno o no.
+    
+            // Realizar una solicitud POST al backend con el audio y el ID del texto
+            const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
+            var form = new FormData();
+            form.append('file', audioBlob2, 'data.mp3');
+            form.append('author', author);
+    
+            iniciarLoaderEnvio();
+            setTimeout(() => { // Agregué timeoout para ver el loader
+                fetch(pathnameURL, {
+                    method: 'POST',
+                    body: form,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud fetch: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Actualizar la interfaz con el texto obtenido del backend
+                    actualizarFrase(data.text_to_display);
+                    actualizarNombreDeTexto(data.name_of_text);
+                    actualizarContador(data.num_recordings);
+                })
+                .catch(error => {
+                    console.error('Error al obtener datos JSON:', error);
+                })
+                .finally(() => {
+                    borrarGrabacion();
+                    detenerLoaderEnvio();
+                    ocultarAudioResultado();
+                    deleteBtn.disabled = true;
+                    sendBtn.disabled = true;
+                    clicked = false;
+                    habilitarGrabar();
+                })
+            }, 3000)
+        }
     });
 });
