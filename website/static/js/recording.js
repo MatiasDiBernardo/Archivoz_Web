@@ -292,20 +292,21 @@ document.addEventListener('DOMContentLoaded', () => {
         habilitarGrabar();
     });
 
+    let clicked = false;
     sendBtn.addEventListener('click', () => {
-        let author = autorSelector.value;
-
-        // Realizar una solicitud POST al backend con el audio, el ID del texto y la duración
-        const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
-        var form = new FormData();
-        form.append('file', audioBlob2, 'data.mp3');
-        form.append('author', author);
-        form.append('duration', audio_duration);
-
-        if (audio_condition){
+        if(!clicked){
+            clicked = true;
+            let author = autorSelector.value;
+           
+            // Realizar una solicitud POST al backend con el audio y el ID del texto
+            const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
+            var form = new FormData();
+            form.append('file', audioBlob2, 'data.mp3');
+            form.append('author', author);    
+        
+          if (audio_condition){
             iniciarLoaderEnvio();
-            setTimeout(() => { // Agregué timeoout para ver el loader
-                fetch(pathnameURL, {
+            fetch(pathnameURL, {
                     method: 'POST',
                     body: form,
                     headers: {
@@ -333,11 +334,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     ocultarAudioResultado();
                     deleteBtn.disabled = true;
                     sendBtn.disabled = true;
+                    clicked = false;
                     habilitarGrabar();
                 })
-            }, 1)
-        }
-        else {
+        } else {
             // Warnings when audio is not good
             var modalElement = document.getElementById("errorModal");
 
@@ -357,5 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sendBtn.disabled = true;
             habilitarGrabar();
         }
+      }
     });
 });
