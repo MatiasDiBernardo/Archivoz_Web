@@ -16,26 +16,32 @@
 {% block body %}
 <div class="contenedor-externo-general">
   <div class="jumbotron" id="jumbo-canvas">
-    <h1 class="display-4 text-center titleAnim">¿ComO pArTiciPar?</h1>
+    <h1 class="display-4 text-center titleAnim">¿como participar?</h1>
     <p class="lead text-center subAnim">Para poder donar tu voz en ArchiVoz tenes que completar un formulario.</p>
     <button href="#" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#infoModal">Más información</button>
   </div>
   <div id="contenedor-formularios">
     <div class="contenedor-externo">
       <div class="formulario">
-    
-        <h3>FormULarIo</h3>
-    
+        <div class="contenedor-encabezado">
+          <div class="line"></div>
+          <h3>Registro</h3>
+          <div class="line"></div>
+        </div>
         <form id="signin" method="POST">
-    
+          
           <div class="entrada">
-            <input type="text" id="nombre" name="nombre" required />
-            <label for="Nombre Completo">Nombre completo</label>
+            <div id="entrada__icono">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <input type="text" id="nombre" name="nombre" required placeholder="Nombre completo"/>
           </div>
     
           <div class="entrada">
-            <input type="number" id="edad" name="edad" required />
-            <label for="Edad">Edad</label>
+            <div id="entrada__icono">
+              <i class="fa-solid fa-cake-candles"></i>
+            </div>
+            <input type="number" id="edad" name="edad" placeholder="Edad" required min="1" />
           </div>
     
           <div class="seleccion">
@@ -70,13 +76,29 @@
           </div>
     
           <div class="entrada">
-            <input type="email" id="mail1" name="mail1" required />
-            <label for="Mail">Email</label>
+            <div id="entrada__icono">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <input type="email" id="mail1" name="mail1" placeholder="Email" required />
           </div>
     
           <div class="entrada">
-            <input type="email" id="mail2" name="mail2" required />
-            <label for="Mail">Confirmar email</label>
+            <div id="entrada__icono">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <input type="email" id="mail2" name="mail2" placeholder="Confirmar email" required />
+          </div>
+
+          <div class="entrada">
+            <div id="entrada__icono">
+              <img src="../static/SVG/virus.svg" alt="">
+            </div>
+            <input type="text" id="patologia" name="patologia" placeholder="Patología del habla (opcional)" />
+          </div>
+
+          <div id="checkbox">
+            <input type="checkbox" id="demoCheckbox" name="checkbox" value="1">
+            <span for="checkbox">He leído y acepto los <span id="terminos-y-condiciones">Terminos y Condiciones</span>.</span>
           </div>
     
           <div class="contenedor-boton">
@@ -85,25 +107,28 @@
               <span id="span2"></span>
               <span id="span3"></span>
               <span id="span4"></span>
-              Enviar
+              Registrarse
             </button>
           </div>
         </form>
     
       </div>
     </div>
-    <div class="contenedor-externo-login">
+    <div class="contenedor-externo">
     
-      <div class="formulario-login">
-        
-        <h4>O SI nO</h4>
-        <h3>REtomAr SeSIón</h3>
-    
+      <div class="formulario">
+        <div class="contenedor-encabezado-login">
+          <div class="line"></div>
+          <h3>Retomar sesión</h3>
+          <div class="line"></div>
+        </div>
         <form id="login" method="POST">
-    
+          
           <div class="entrada">
-            <input type="text" id="userID" name="userID" />
-            <label for="ID">Retoma tu sesión con tu ID</label>
+            <div id="entrada__icono">
+              <img src="../static/SVG/userid.svg" alt="">
+            </div>
+            <input type="text" id="userID" name="userID" placeholder="Ingresar su ID" />
           </div>
     
           <div class="contenedor-boton">
@@ -119,36 +144,65 @@
       </div>
     </div>
   </div>
+  
   <!-- Modal info -->
   <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content ">
-      <div class="modal-header bg-col">
-        <h5 class="modal-title">#Info</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-info-body bg-col">
-        <div>
-          <h6>¿Porqué necesitamos estos datos?</h6>
-          <p>Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content ">
+        <div class="modal-header bg-col">
+          <h5 class="modal-title">#Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div>
-          <h6>¿Se comparten estos datos? </h6>
-          <p>La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página.</p>
+        <div class="modal-info-body bg-col">
+          <div>
+            <h6>¿Porqué necesitamos estos datos?</h6>
+            <p>Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
+          </div>
+          <div>
+            <h6>¿Se comparten estos datos? </h6>
+            <p>La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página.</p>
+          </div>
+          <h6>Mas info en Terminos y Condiciones.</h6>
         </div>
-        <h6>Mas info en Terminos y Condiciones.</h6>
-      </div>
-      <div class="modal-footer bg-col">
+        <div class="modal-footer bg-col">
+        </div>
       </div>
     </div>
   </div>
-</div>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+  'error' %}
+  <!-- Modal error -->
+  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header modal-error-header">
+            <h5 class="modal-title">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-error-body">
+            <div>
+                <p id="error">{{ message }}</p>
+            </div>
+            <div id="modal-error-button-container">
+                <button data-dismiss="modal" aria-label="Close">Cerrar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+  </div>
+  {% endif %} {% endfor %} {% endif %} {% endwith %}
+  
 </div>
 
 {% endblock %}
 
 {% block scripts %}
+<script src="..\static\js\form.js"></script>
 {% endblock %}

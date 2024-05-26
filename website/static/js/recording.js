@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.readAsArrayBuffer(audioBlob);
     }
 
+
     // Obtener datos del usuario desde el backend
     obtenerDatos(id_user)
         .then(data => {
@@ -206,9 +207,20 @@ document.addEventListener('DOMContentLoaded', () => {
     /*
     navigator.mediaDevices.getUserMedia(audioConstraints)
     */
+    
+    // Data de los constrains: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
+    // Configuración de la grabación
+     const audioConstraints = {
+         audio: {
+             sampleRate: 44100,  
+             sampleSize: 16,
+             channelCount: 1,    // 1 mono, 2 estereo
+             echoCancellation: true,  // Para testear
+         }
+     };
    
     // Evento para controlar la entrada de audio
-    navigator.mediaDevices.getUserMedia({ audio: true })
+    navigator.mediaDevices.getUserMedia(audioConstraints)
         .then(stream => {
             mediaRecorder = new MediaRecorder(stream);
             
@@ -299,7 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
             let author = autorSelector.value;
            
             // Realizar una solicitud POST al backend con el audio y el ID del texto
-            const audioBlob2 = new Blob(chunks, { type: 'audio/mpeg-3' });
+            const audioBlob2 = new Blob(chunks, { type: mediaRecorder.mimeType });  // Antes 'audio/mpeg-3'
+            // Aca en type yo puedo poner lo que quiera en type, eso no significa que me lo guarda
+            // como mp3, es una referencia para el que recibe el blob. Es un standar called MIME.
+            // Con la línea que puse, me muestra el formato real en el que se esta grabando, que es webM,
+            // tendría que encontrar la forma de pasar de webM a valid mp3 desde acá o hacerlo después desde
+            // el back.
+            console.log("Este es el blob")
+            console.log(audioBlob2)
+
             var form = new FormData();
             form.append('file', audioBlob2, 'data.mp3');
             form.append('author', author);    
@@ -355,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ocultarAudioResultado();
             deleteBtn.disabled = true;
             sendBtn.disabled = true;
+            clicked = false
             habilitarGrabar();
         }
       }
