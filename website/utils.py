@@ -19,7 +19,7 @@ def find_match_on_id(userID):
 
     return val
 
-def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
+def validate_user_data(nombre, edad, mail, mail_confirmacion, ID, patologia):
     """Verifica si los datos que ingreso el usuario son válidos.
     Si algún dato no es válido devuelve False y un mensaje explicando
     cual es el error al ingresar el dato. Si todos los datos son
@@ -30,6 +30,8 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
         edad (string): Edad del usuario. 
         mail (string): Mail del usuario.
         mail_confimación (string): Nuevo entrada para el mail del usuario.
+        ID (int): ID ingresado por el usuario.
+        patologia(string): Aclaración sobre patologías del habla.
     Return:
         (boolean): Si los datos son validos o no.
         (string): Mensaje que recibe el usuario si puso algún dato mal.
@@ -86,6 +88,11 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID):
     if (int(edad) > 200):
         validate = False 
         mensaje = "Poner una edad menor a 200."
+        return validate, mensaje
+
+    if (len(patologia) > 400):
+        validate = False 
+        mensaje = "Explique su patología del habla en un texto mas breve."
         return validate, mensaje
 
     return validate, mensaje

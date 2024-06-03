@@ -24,12 +24,15 @@ def obtener_datos():
         nombreUsuario = request.form.get("nombre")
         edadUsuario = request.form.get("edad")
         regionUsuario = request.form.get("region")
+        patologiaUsuario = request.form.get("patologia")
         mailUsuario = request.form.get("mail1")
         mailUsuarioConfirmacion = request.form.get("mail2")
 
         #Validación de datos y de ID en caso de existir
         idUsuarioAValidar = request.form.get("userID")
-        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, mailUsuario, mailUsuarioConfirmacion, idUsuarioAValidar)
+        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, 
+                                                        mailUsuario, mailUsuarioConfirmacion, 
+                                                        idUsuarioAValidar, patologiaUsuario)
         matchID = find_match_on_id(idUsuarioAValidar)
 
         if not data_validation and not matchID:
@@ -39,7 +42,9 @@ def obtener_datos():
         else:
             # Si se crea un nuevo usuario se guarda en la base de datos.
             newUser = Usuario(nombre=nombreUsuario, edad=edadUsuario,
-                              region=regionUsuario, mail=mailUsuario)
+                              region=regionUsuario, mail=mailUsuario,
+                              custom_TTS=False, custom_TTS_uses=0,
+                              patologia=patologiaUsuario)
             
             db.session.add(newUser)
             db.session.commit()
