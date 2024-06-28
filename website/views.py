@@ -189,7 +189,7 @@ def interface_tts():
         # To test the real TTS install all dependencies on the docker file and
         # uncommend the inference.py file and the text_to_speech function in utils.
 
-        #audio_path = text_to_speech(text_to_tts, nombre_modelo)
+        # audio_path = text_to_speech(text_to_tts, nombre_modelo)
         audio_path = ""
 
         return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
@@ -217,7 +217,6 @@ def get_the_data():
     
     return send_file(zip_filename, as_attachment=True)
     
-
 @views.route('/terminos')
 def terminos():
     return render_template('Terms.html')

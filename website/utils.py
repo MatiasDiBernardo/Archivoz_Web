@@ -1,10 +1,10 @@
 from .models import Usuario, Texto
-#from .tts.inference import infer
+# from .tts.inference import infer
 
 import os
 import json
 import random 
-#import scipy
+# import scipy
 
 def find_match_on_id(userID):
     """Busca si el ID que el usuario ingreso es válido.
@@ -236,11 +236,11 @@ def text_to_speech(text, model):
         string: Path of the created audio.
     """
 
-    #audio_infer = infer(text, model)
+    # audio_infer = infer(text, model)
     dirname = os.path.dirname(__file__)
 
     save_path = os.path.join(dirname, "tts", "audios", "audio.wav")
 
-    #scipy.io.wavfile.write(save_path, 44100, audio_infer)
+    # scipy.io.wavfile.write(save_path, 44100, audio_infer)
 
     return save_path
