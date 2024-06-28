@@ -64,14 +64,14 @@
     <!-- <video class = "visual-seccion" src=""></video> -->
     <iframe width="1200" height="700" src="https://www.youtube.com/embed/GBIIQ0kP15E?si=DX6LY-s-hObBMM9k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     <p class = "texto-seccion">Toda la tecnología desarrollada en ArchiVoz se base en el entrenamiento de datos con algoritmos de Inteligencia Artificial, para eso es necesitamos donaciones de voces que nos permitan seguir investigando y mejorando en las diferentes tecnologías que se usan en el proyecto. Para facilitar la donación de voz, creamos un asistente de grabación de voz, mirá el video para entender en detalle como funciona.</p>
-    <button class="btn btn-primary btn-lg">COMENZAR</button>
+    <button class="btn btn-primary btn-lg" id="botonAccesoFormulario">COMENZAR</button>
   </section>
   
   <section id="text-to-speech">
     <h1>text-to-speech</h1>
     <img  class = "visual-seccion" src="../static/img/tts.jpg" alt="Imagen de Text-To-Speech">
     <p class = "texto-seccion">Nuestro modelo de Text-to-speech, permite procesar texto y convertirlo en audio con el contenido hablado del texto ingresado. En la iteración actual del proyecto solo se puede probar los modelos que entrenamos nosotros, el objetivo es que en un futuro los usuarios puedan probar como funciona el algoritmo de clonación de voz con su propia voz en base a las donaciones que realicen en el proyecto.</p>
-    <button class="btn btn-primary btn-lg">ACCEDER</button>
+    <button class="btn btn-primary btn-lg" id="botonAccesoTTS">ACCEDER</button>
   </section>
   
   <section id="infosection">
@@ -122,5 +122,16 @@
 <script src="..\static\js\script.js" charset="utf-8"></script>
 <script src="..\static\js\req.js"></script>
 
+<!-- Agregue para que los botones del inicio me redirigan a donde corresponde para probar mañana -->
+<!-- Después cambienlo y manejenlo como sea que lo tenían pensado. -->
+<script>
+  document.getElementById('botonAccesoFormulario').onclick = function() {
+      window.location.href = '/registro_voces';
+  };
+
+  document.getElementById('botonAccesoTTS').onclick = function() {
+      window.location.href = '/text-to-speech';
+  };
+</script>
 
 {% endblock %}
