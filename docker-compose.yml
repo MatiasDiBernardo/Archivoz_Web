@@ -1,0 +1,13 @@
+services:
+  archivoz-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: archivoz-web
+    env_file:
+      - .env
+    volumes:
+      - ${HOME}/files-app/instance:/app/instance
+      - ${HOME}/files-app/uploads:/app/uploads
+    ports:
+      - "8000:8000"

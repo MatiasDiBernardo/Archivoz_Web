@@ -90,10 +90,11 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID, patologia):
         mensaje = "Poner una edad menor a 200."
         return validate, mensaje
 
-    if (len(patologia) > 400):
-        validate = False 
-        mensaje = "Explique su patología del habla en un texto mas breve."
-        return validate, mensaje
+    if patologia is not None:
+        if (len(patologia) > 400):
+            validate = False 
+            mensaje = "Explique su patología del habla en un texto mas breve."
+            return validate, mensaje
 
     return validate, mensaje
 

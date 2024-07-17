@@ -13,9 +13,8 @@ WORKDIR /app
 COPY . /app
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
-# Expose port si es Gunicorn es el puerto 8000
-EXPOSE 5000
+# Expose port: Gunicorn is 8000. Python is 5000
+EXPOSE 8000
 
-# Define the command to run your application
-# CMD ["gunicorn", "wsgi:app"]
-CMD ["python3", "main.py"]
+# Command to run the application (use -b 0.0.0.0 for local test)
+CMD ["gunicorn", "-w 4", "-b 0.0.0.0", "wsgi:app"]
