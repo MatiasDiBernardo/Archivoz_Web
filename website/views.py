@@ -133,8 +133,8 @@ def grabacion(id_user):
         user_folder_path = os.path.join('uploads', id_user)
         if not os.path.exists(user_folder_path):
             os.makedirs(user_folder_path)
-
-        # Save audio file to local storage
+            
+        # Save audio file to local storage (es un archivo webm guardado como mp3, después se corrigue con pydub)
         mp3_filename = os.path.join(user_folder_path, f'{id_user}_{text_id}.mp3')
         with open(mp3_filename, 'wb') as mp3_name:
             audio_file.save(mp3_name)
