@@ -27,12 +27,11 @@ def obtener_datos():
         patologiaUsuario = request.form.get("patologia")
         mailUsuario = request.form.get("mail1")
         mailUsuarioConfirmacion = request.form.get("mail2")
-
+        terminosLeidos = request.form.get('terminos')
+         
         #Validación de datos y de ID en caso de existir
         idUsuarioAValidar = request.form.get("userID")
-        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, 
-                                                        mailUsuario, mailUsuarioConfirmacion, 
-                                                        idUsuarioAValidar, patologiaUsuario)
+        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, regionUsuario, mailUsuario, mailUsuarioConfirmacion, idUsuarioAValidar, terminosLeidos, patologiaUsuario)
         matchID = find_match_on_id(idUsuarioAValidar)
 
         if not data_validation and not matchID:

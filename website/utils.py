@@ -19,7 +19,7 @@ def find_match_on_id(userID):
 
     return val
 
-def validate_user_data(nombre, edad, mail, mail_confirmacion, ID, patologia):
+def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, terminos_leidos, patologia):
     """Verifica si los datos que ingreso el usuario son válidos.
     Si algún dato no es válido devuelve False y un mensaje explicando
     cual es el error al ingresar el dato. Si todos los datos son
@@ -42,7 +42,7 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID, patologia):
 
     validate = True
     mensaje = ""
-
+    
     if ID is not None:  #Si paso algo como ID
         if (not find_match_on_id(ID)):
             validate = False
@@ -89,7 +89,17 @@ def validate_user_data(nombre, edad, mail, mail_confirmacion, ID, patologia):
         validate = False 
         mensaje = "Poner una edad menor a 200."
         return validate, mensaje
+    
+    if (region == "Selecciona la provincia" or region == None):
+        validate = False 
+        mensaje = "Ingresa la provincia en la que creciste."
+        return validate, mensaje
 
+    if(terminos_leidos != '1'):
+        validate = False 
+        mensaje = "Debes aceptar los terminos y condiciones."
+        return validate, mensaje
+    
     if patologia is not None:
         if (len(patologia) > 400):
             validate = False 
