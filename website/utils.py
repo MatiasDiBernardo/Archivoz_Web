@@ -1,10 +1,10 @@
 from .models import Usuario, Texto
-#from .tts.inference import infer
+# from .tts.inference import infer
 
 import os
 import json
 import random 
-#import scipy
+# import scipy
 
 def find_match_on_id(userID):
     """Busca si el ID que el usuario ingreso es válido.
@@ -19,7 +19,7 @@ def find_match_on_id(userID):
 
     return val
 
-def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, terminos_leidos):
+def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, terminos_leidos, patologia):
     """Verifica si los datos que ingreso el usuario son válidos.
     Si algún dato no es válido devuelve False y un mensaje explicando
     cual es el error al ingresar el dato. Si todos los datos son
@@ -30,6 +30,8 @@ def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, termin
         edad (string): Edad del usuario. 
         mail (string): Mail del usuario.
         mail_confimación (string): Nuevo entrada para el mail del usuario.
+        ID (int): ID ingresado por el usuario.
+        patologia(string): Aclaración sobre patologías del habla.
     Return:
         (boolean): Si los datos son validos o no.
         (string): Mensaje que recibe el usuario si puso algún dato mal.
@@ -98,6 +100,12 @@ def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, termin
         mensaje = "Debes aceptar los terminos y condiciones."
         return validate, mensaje
     
+    if patologia is not None:
+        if (len(patologia) > 400):
+            validate = False 
+            mensaje = "Explique su patología del habla en un texto mas breve."
+            return validate, mensaje
+
     return validate, mensaje
 
 def change_author_by_selection(target_author, list_texts):
@@ -239,11 +247,11 @@ def text_to_speech(text, model):
         string: Path of the created audio.
     """
 
-    #audio_infer = infer(text, model)
+    # audio_infer = infer(text, model)
     dirname = os.path.dirname(__file__)
 
     save_path = os.path.join(dirname, "tts", "audios", "audio.wav")
 
-    #scipy.io.wavfile.write(save_path, 44100, audio_infer)
+    # scipy.io.wavfile.write(save_path, 44100, audio_infer)
 
     return save_path

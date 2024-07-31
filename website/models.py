@@ -37,6 +37,7 @@ class Usuario(db.Model):
     nombre = db.Column(db.String(50))
     edad = db.Column(db.Integer)
     region = db.Column(db.String(100))
+    patologia = db.Column(db.String(400))
     mail = db.Column(db.String(150), unique=True)
     grabaciones = db.relationship('Grabacion', backref='usuario')
     custom_TTS = db.Column(db.Boolean)

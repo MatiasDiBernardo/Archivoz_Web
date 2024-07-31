@@ -24,13 +24,14 @@ def obtener_datos():
         nombreUsuario = request.form.get("nombre")
         edadUsuario = request.form.get("edad")
         regionUsuario = request.form.get("region")
+        patologiaUsuario = request.form.get("patologia")
         mailUsuario = request.form.get("mail1")
         mailUsuarioConfirmacion = request.form.get("mail2")
         terminosLeidos = request.form.get('terminos')
          
         #Validación de datos y de ID en caso de existir
         idUsuarioAValidar = request.form.get("userID")
-        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, regionUsuario, mailUsuario, mailUsuarioConfirmacion, idUsuarioAValidar, terminosLeidos)
+        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, regionUsuario, mailUsuario, mailUsuarioConfirmacion, idUsuarioAValidar, terminosLeidos, patologiaUsuario)
         matchID = find_match_on_id(idUsuarioAValidar)
 
         if not data_validation and not matchID:
@@ -40,7 +41,9 @@ def obtener_datos():
         else:
             # Si se crea un nuevo usuario se guarda en la base de datos.
             newUser = Usuario(nombre=nombreUsuario, edad=edadUsuario,
-                              region=regionUsuario, mail=mailUsuario)
+                              region=regionUsuario, mail=mailUsuario,
+                              custom_TTS=False, custom_TTS_uses=0,
+                              patologia=patologiaUsuario)
             
             db.session.add(newUser)
             db.session.commit()
@@ -129,8 +132,8 @@ def grabacion(id_user):
         user_folder_path = os.path.join('uploads', id_user)
         if not os.path.exists(user_folder_path):
             os.makedirs(user_folder_path)
-
-        # Save audio file to local storage
+            
+        # Save audio file to local storage (es un archivo webm guardado como mp3, después se corrigue con pydub)
         mp3_filename = os.path.join(user_folder_path, f'{id_user}_{text_id}.mp3')
         with open(mp3_filename, 'wb') as mp3_name:
             audio_file.save(mp3_name)
@@ -185,7 +188,7 @@ def interface_tts():
         # To test the real TTS install all dependencies on the docker file and
         # uncommend the inference.py file and the text_to_speech function in utils.
 
-        #audio_path = text_to_speech(text_to_tts, nombre_modelo)
+        # audio_path = text_to_speech(text_to_tts, nombre_modelo)
         audio_path = ""
 
         return send_file(audio_path, as_attachment=False, mimetype='audio/wav')
@@ -213,7 +216,6 @@ def get_the_data():
     
     return send_file(zip_filename, as_attachment=True)
     
-
 @views.route('/terminos')
 def terminos():
     return render_template('Terms.html')

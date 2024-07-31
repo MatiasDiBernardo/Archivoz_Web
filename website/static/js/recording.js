@@ -222,6 +222,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Evento para controlar la entrada de audio
     navigator.mediaDevices.getUserMedia(audioConstraints)
         .then(stream => {
+            // No soporta mp3 para real time recording
+            // const options = {
+            //     audioBitsPerSecond:320000,
+            //     mimeType:"audio/mpeg",
+            // };
+        
             mediaRecorder = new MediaRecorder(stream);
             
             // Cuando nota que empezamos a grabar
@@ -321,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(audioBlob2)
 
             var form = new FormData();
-            form.append('file', audioBlob2, 'data.mp3');
+            form.append('file', audioBlob2, 'data.webm');
             form.append('author', author);    
         
           if (audio_condition){
