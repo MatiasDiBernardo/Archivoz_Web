@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="contenedor-frases">
-                <div class="rectangulo-verde">
+                <div class="rectangulo">
                     <div class="frases-leer">
                         En el resplandor del atardecer, el cielo se tiñó de un exquisito tono de azul profundo,
                         un azul que se desvanecía sutilmente en un verde sereno y etéreo,
@@ -73,8 +73,7 @@
                     <audio controls></audio>
                 </div>
                 <div class="contenedor-botones">
-                    <div class = "borrarGrabacion"><button id="borrarGrabacion" class="borrar  boton-grabacion">Borrar
-                        grabacion</button></div>
+                    <div class = "borrarGrabacion"><button id="borrarGrabacion" class="borrar  boton-grabacion"><img src="../static/SVG/basura.svg" alt=""><span>Borrar</span></button></div>
                     <div class="cantidad-grabaciones">
                         <div class="texto-cant-audios">
                             Cantidad de audios enviados
@@ -85,7 +84,10 @@
                     </div>
                     <div class = "enviarGrabacion">
                         <button id="enviarGrabacion" class="enviar  boton-grabacion">
-                            <span id="texto-envio">Enviar</span>
+                            <div id="texto-envio">
+                                <img src="../static/SVG/tilde.svg" alt="">
+                                <span>Enviar</span>
+                            </div>
                             <div id="loader-send" class="loader-wrapper">
                                 <div id="custom-loader"></div>
                             </div>
