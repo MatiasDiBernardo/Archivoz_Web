@@ -9,12 +9,7 @@
 }
 
 .contenedor-externo-general {
-  background: linear-gradient(
-    180deg,
-    var(--colorVerdeFluor) 0%,
-    var(--colorVerdeOscuro) 20%,
-    var(--colorMorado) 100%
-  ) !important;
+  background: linear-gradient(#000 20%, var(--colorMorado) 100%) !important;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   width: 100%;
   position: relative;
@@ -87,7 +82,7 @@ nav ul li a {
 }
 
 .welcome h1 {
-  color: #000;
+  color: #fff;
   text-align: center;
   justify-content: center;
   font-family: "Major Mono Display", monospace;
@@ -152,10 +147,10 @@ section p {
   align-items: center;
 }
 
-.contenedor-frases .rectangulo-verde {
+.contenedor-frases .rectangulo {
   width: 100%;
   height: 462.22px;
-  background: #74f9d8;
+  background: #dddddd; /*fef1e4*/
   display: flex;
   justify-content: center;
   align-items: center;
@@ -163,7 +158,7 @@ section p {
   border: 1px solid black;
 }
 
-section .contenedor-frases .rectangulo-verde .frases-leer {
+section .contenedor-frases .rectangulo .frases-leer {
   max-width: 577px;
   text-align: center;
   color: rgba(0, 0, 0, 0.75);
@@ -178,13 +173,14 @@ section .contenedor-frases .rectangulo-verde .frases-leer {
 .contenedor-grabacion {
   width: 100%;
   max-width: 800px;
-  background: #90dacc;
+  background: #000;
   margin: 50px 0;
   padding-bottom: 20px;
   display: none;
   justify-content: center;
   border: 1px solid black;
   border-radius: 12px;
+  color: white;
 }
 
 .sub-contenedor-grabacion {
@@ -211,13 +207,17 @@ section .contenedor-contenedor {
 }
 
 .boton-grabacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
   width: 176px;
   height: 38px;
-  border-radius: 4.8px;
+  border-radius: 15px;
   text-align: center;
   text-decoration: none;
   font-size: 19px;
-  font-family: Segoe UI;
+  font-family: Poppins;
   font-style: normal;
   font-weight: 400;
   line-height: 18px;
@@ -227,6 +227,7 @@ section .contenedor-contenedor {
   outline: none !important;
   border: 1px solid black !important;
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  color: white;
 }
 
 .boton-grabacion:hover {
@@ -235,10 +236,10 @@ section .contenedor-contenedor {
 }
 
 .contenedor-botones .borrar {
-  background-color: #ff4545;
+  background-color: #ff0000;
 }
 .contenedor-botones .enviar {
-  background-color: #61ff84;
+  background-color: #02ff3a;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -259,15 +260,11 @@ button:hover:not(:disabled) {
 .plyr {
   --shadow-color: 197deg 32% 65%;
   border-radius: 12px;
-  box-shadow: 0 0.5px 0.6px hsl(var(--shadow-color) / 0.36),
-    0 1.7px 1.9px -0.8px hsl(var(--shadow-color) / 0.36),
-    0 4.3px 4.8px -1.7px hsl(var(--shadow-color) / 0.36),
-    -0.1px 10.6px 11.9px -2.5px hsl(var(--shadow-color) / 0.36);
   margin: auto;
 }
 
 .plyr__controls {
-  background: #000 !important;
+  background: #fff !important;
 }
 
 .plyr__control {
@@ -280,6 +277,7 @@ button:hover:not(:disabled) {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.8);
 }
 
 .plyr__control:hover {
@@ -459,7 +457,7 @@ button:hover:not(:disabled) {
 }
 
 .plyr__time--current {
-  color: white !important;
+  color: black !important;
 }
 
 /* Este es el CSS del selection (similar al del formulario pero con los colores invertidos) */
@@ -629,7 +627,7 @@ select::-ms-expand {
     font-size: 30px;
   }
 
-  .rectangulo-verde {
+  .rectangulo {
     height: 500px !important;
   }
 }
@@ -681,7 +679,7 @@ select::-ms-expand {
   /*
         CONTENEDOR DE FRASES
     */
-  .contenedor-frases .rectangulo-verde {
+  .contenedor-frases .rectangulo {
     height: auto !important;
     min-height: 500px;
     background: #74f9d8;
@@ -1082,6 +1080,7 @@ body {
 }
 
 /* OCULTO LINKS DE NAVBAR Y FOOTER */
-.a-info, .a-objetivos{
+.a-info,
+.a-objetivos {
   display: none;
 }
