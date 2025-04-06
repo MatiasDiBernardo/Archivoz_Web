@@ -164,77 +164,22 @@ def choose_random_text_by_autor(author, list_texts):
     
     return new_text 
 
-def update_text_on_screen(current_text, target_author, list_texts):
-    """ Update the text ID in base of the user choise.
-
-    Args:
-        current_text (string): Text ID of the current text diplayed.
-        target_author (string): Name of the author election from the user.
-        list_texts (list): ID list with the text that the usar already read.
-
-    Returns:
-        string: Next ID to read.
-    """
-    text_splitted = current_text.split("_")
-    current_text_index = text_splitted[-1] 
-    max_text_index = str(int(text_splitted[-2]) - 1)  #Accounting for 0 index on list
-
-    # Update the index until the user read all the content 
-    if current_text_index != max_text_index:
-        if text_splitted[0] == "Archivoz":
-            add_index = int(text_splitted[-1]) + 1
-            new_text = f"{text_splitted[0]}_{text_splitted[1]}_{str(add_index)}"
-
-        else:
-            add_index = int(text_splitted[-1]) + 1
-            new_text = f"{text_splitted[0]}_{text_splitted[1]}_{text_splitted[2]}_{text_splitted[3]}_{str(add_index)}"
-
-        return new_text
-    
-    # Choose randomly other book or author.
-    else:
-        # If not author selected, choose randomly 
-        if target_author is None:
-            new_author = choose_random_author(list_texts)
-            new_text = choose_random_text_by_autor(new_author, list_texts)
-
-            return new_text
-        
-        # Pick one text from the choosen author randomly
-        else:
-            new_text = change_author_by_selection(target_author, list_texts)
-
-            return new_text
-
 def text_ID_to_text(text_id):
     """Change the text ID to raw text to display on the screen.
 
     Args:
-        text_id (string): String ID:
+        text_id (int): String ID:
 
     Returns:
         string: Text associate with the string ID:
     """
-    text_splitted = text_id.split("_")
-    path_to_json = os.path.join("text", "process_data", text_splitted[0], "_".join(text_splitted[:-1]) + ".json")
+    path_to_json = os.path.join("text", "data_text.json")
 
     with open(path_to_json, 'r', encoding='utf8') as file:
         data = json.load(file)
     
-    return data[int(text_splitted[-1])]
+    return data[text_id]
 
-def text_ID_to_name(text_id):
-    """Shows only the text information from the text ID.
-
-    Args:
-        text_id (string): String ID
-
-    Returns:
-        string: Text name from the string ID:
-    """
-    text_splitted = text_id.split("_")
-    text_splitted = text_splitted[:-2]  # Removes ID and ID Max
-    return " - ".join(text_splitted)
 
 def text_to_speech(text, model):
     """Calls FastPitch to make an inference with the specified

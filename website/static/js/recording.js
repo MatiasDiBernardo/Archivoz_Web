@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Elementos de interfaz de usuario
   let counterDisplay = document.getElementById("contador"); //contador
   let fraseLeerElement = document.querySelector(".frases-leer"); //frases-leer
-  let autorTextDisplay = document.querySelector(".nombre-texto"); //Es el texto de Grabación
+  let erroresLecturaUsuario = 0;  // Tal vez se debería inicializar de otra forma, fijate que conviene
   let grabacionResultado = document.querySelector(".contenedor-grabacion");
   let loaderGrabacion = document.querySelector("#loader-recording");
   let loaderEnvio = document.querySelector("#loader-send");
@@ -139,10 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fraseLeerElement.textContent = frase;
   }
 
-  function actualizarNombreDeTexto(name) {
-    // autorTextDisplay.textContent = name;
-  }
-
   function actualizarContador(numRecordings) {
     counterDisplay.textContent = numRecordings;
   }
@@ -195,7 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       actualizarContador(data.num_recordings); // Numero de grabaciones
       actualizarFrase(data.text_to_display); ///Texto aleatorio
-      actualizarNombreDeTexto(data.name_of_text); //Archivoz
     })
     .catch((error) => {
       console.error("Error en la solicitud:", error);
@@ -322,6 +317,17 @@ document.addEventListener("DOMContentLoaded", () => {
     sendBtn.disabled = true;
     borrarGrabacion();
     ocultarAudioResultado();
+
+    // Acá hay que agregar un POST request donde en el body de la request el form tenga la variable num_error mayor a cero
+    // según la veces que el usuario se equivocó. Este pedido devuelve una nueva frase para mostrar
+    //
+    // Es decir, el códgio empieza así:
+    erroresLecturaUsuario += 1;
+    var form = new FormData();
+      form.append("error", erroresLecturaUsuario);
+    
+    
+    // Cambiar esto para que cuando se habilite la grabación sea con la nueva frase
     habilitarGrabar();
   });
 
@@ -329,7 +335,6 @@ document.addEventListener("DOMContentLoaded", () => {
   sendBtn.addEventListener("click", () => {
     if (!clicked) {
       clicked = true;
-      let author = autorSelector.value;
 
       // Realizar una solicitud POST al backend con el audio y el ID del texto
       const audioBlob2 = new Blob(chunks, { type: mediaRecorder.mimeType }); // Antes 'audio/mpeg-3'
@@ -341,9 +346,11 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Este es el blob");
       console.log(audioBlob2);
 
+      erroresLecturaUsuario = 0
       var form = new FormData();
       form.append("file", audioBlob2, "data.webm");
-      form.append("author", author);
+      form.append("duration", audio_duration);
+      form.append("error", erroresLecturaUsuario);
 
       if (audio_condition) {
         iniciarLoaderEnvio();
@@ -365,7 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
           .then((data) => {
             // Actualizar la interfaz con el texto obtenido del backend
             actualizarFrase(data.text_to_display);
-            actualizarNombreDeTexto(data.name_of_text);
             actualizarContador(data.num_recordings);
           })
           .catch((error) => {
