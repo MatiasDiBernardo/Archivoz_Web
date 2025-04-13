@@ -87,15 +87,34 @@ def grabacion(id_user):
 
     # Se fija si el usario ya tiene un perfil de grabación.
     user_object = Usuario.query.filter_by(user_id=id_user).first()
-    list_recordings = user_object.grabaciones
-    list_ids = [g.text_id for g in list_recordings]  # List of string with texts ids
+    list_recordings = user_object.grabaciones 
     num_recordings = len(list_recordings)
+
+    # Acá en vez de recorrer las listas podría pedir la última grabación que es lo único que importa but lazy
+    list_ids = [g.text_id for g in list_recordings]  # Lista de ints con los ids leído
+    list_errors = [e.error_id for e in list_recordings]  # Lista de ints con los ids de los intentos fallidos
 
     # Incrementa el Text ID (frase a leer)
     if num_recordings != 0:
-        text_id = list_ids[-1] + 1
+        # Se fija si la última grabación fue buena o fue un error
+        if len(list_ids) != 0:
+            last_rec_good = list_ids[-1]
+        else:
+            last_rec_good = 0
+
+        if len(list_errors) != 0:
+            last_rec_error = list_errors[-1]
+        else:
+            last_rec_error = 0
+
+        # Si la última grabación no es un error se aumenta desde la última frase leída
+        if last_rec_good > last_rec_error:
+            text_id = last_rec_good + 1
+        # Si la última grabación es un error se aumenta desde el error
+        else:
+            text_id = last_rec_error + 1
     else:
-        # If the user doesn't have recordings start from the beggining
+        # Si el usuario no tiene grabaciones (primera vez que entra a la página) que empiece desde el principio
         text_id = 0
     
     # Cuando el user acceda a esta página que le salga su última grabación y el número de grabaciones
@@ -103,7 +122,7 @@ def grabacion(id_user):
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             text_to_display_on_front = text_ID_to_text(text_id)
 
-            data = {'num_recordings': num_recordings,
+            data = {'num_recordings': len(list_ids),
                     'text_to_display': text_to_display_on_front}
 
             return jsonify(data)
@@ -112,21 +131,19 @@ def grabacion(id_user):
     
     # Esto se trigerea cuando el usuario 
     if request.method  == 'POST':
-
         if 'file' not in request.files:
             return 'No audio file provided', 400
 
         # Data access with the form
         audio_file = request.files['file']
-        user_errors = request.form.get('errors')
-        audio_duration = request.form.get('duration')  # Revisar si esto se pasa bien porque no figura en el form de front
-        print("Duración del audio" , audio_duration)
+        resultado_grabacion = request.form.get('errors')  # Boolean (True si esta bien la graba, False si no)
+        audio_duration = request.form.get('duration')
 
         if audio_file.filename == '':
             return 'No selected file', 400
         
         # Si el usuario considero que la grabación no tiene errores (se guarda la data en el back)
-        if user_errors != 0:
+        if resultado_grabacion:
             # Creates the user audio folder if needed
             user_folder_path = os.path.join('uploads', id_user)
             if not os.path.exists(user_folder_path):
@@ -139,9 +156,16 @@ def grabacion(id_user):
             
             text_to_display_on_front = text_ID_to_text(text_id)
             
+            # Control para caso inicial
+            if len(list_errors) != 0:
+                id_last_error = list_errors[-1]
+            else:
+                id_last_error = -1
+            
             # Update the db with the current recording
             newRecording = Grabacion(usuario_id=id_user, 
                                     text_id=text_id, 
+                                    error_id=id_last_error,
                                     text_display=text_to_display_on_front,
                                     audio_path=mp3_filename,
                                     fecha=datetime.datetime.now(),
@@ -151,18 +175,36 @@ def grabacion(id_user):
             db.session.commit()
 
             # Data sended to the front
-            data = {'num_recordings': num_recordings + 1,
+            data = {'num_recordings': len(list_ids) + 1,
                     'text_to_display': text_to_display_on_front}
 
             return jsonify(data)
         
-        # Si se borró la grabación, mandar nuevo texto y no guardar esa grabación en el back
+        # Si se borró la grabación, mandar nuevo texto y guardar en el back que es un grabación fallida
         else:
-            # Text ID increse but not num recordings 
-            text_to_display_on_front = text_ID_to_text(text_id + user_errors)
+            # Como la grabación no es válido no guardo el audio
+            text_to_display_on_front = text_ID_to_text(text_id)
+
+            # Control para caso inicial
+            if len(list_ids) != 0:
+                id_last_rec = list_ids[-1]
+            else:
+                id_last_rec = -1
+            
+            # Update the db with the current recording
+            newRecording = Grabacion(usuario_id=id_user, 
+                                    text_id=id_last_rec, 
+                                    error_id=text_id,
+                                    text_display=text_to_display_on_front,
+                                    audio_path="Wrong audio",
+                                    fecha=datetime.datetime.now(),
+                                    audio_duration=0.0)
+
+            db.session.add(newRecording)
+            db.session.commit()
 
             # Data sended to the front
-            data = {'num_recordings': num_recordings,
+            data = {'num_recordings': len(list_ids),
                     'text_to_display': text_to_display_on_front}
 
             return jsonify(data)
