@@ -15,45 +15,44 @@
     <div class="invisible-div">
         <div id="id_user">{{ id_user }}</div>
     </div>
-    
-    <section class="contenedor-titulo">
-        <div class="welcome">
-            <h1>bienvenido a la grabadora de archivoz</h1>
+    <section id="instrucciones">
+        <div class="instruccion">
+            <span>Esta es la grabadora de Archivoz. El objetivo es donar tu voz para construir una base de datos de voces argentinas con el propósito de desarrollar tecnología para nuestro país.</span>
+            <ul>
+                <li>No impostar la voz</li>
+                <li>Leer de corrido</li>
+            </ul>
+            <div id="instruccion-controles">
+                <button id="prev">
+                    <img src="../static/SVG/flecha1.svg" alt="">
+                </button>
+                <button id="next">
+                    <img src="../static/SVG/flecha1.svg" alt="">
+                </button>
+            </div>
+            <span id="temporizador">10</span>
         </div>
     </section>
-    
     <section class="contenedor-contenido">
         <div class="contenedor-aux">
-            <div class="contenedor-seleccion">
-                <div class="seleccion">
-                    <select id="autorSelection" name="autorSel">
-    
-                        <option selected disabled value="None">Selecciona un autor (opcional)</option>
-                        <option value="Julio Cortázar">Julio Cortázar</option>
-                        <option value="Jorge Luis Borges">Jorge Luis Borges</option>
-                        <option value="Ernesto Sabato">Ernesto Sabato</option>
-                        <option value="Adolfo Bioy Casares">Adolfo Bioy Casares</option>
-    
-                    </select>
-                </div>
-            </div>
             <!-- Este microfono se muestra en vista desktop -->
             <div id="microfono-desktop" class="contenedor-microfono">
                 <img src="../static/SVG/microfono.svg" alt="">
             </div>
+            <div id="grabando">
+                <span>Grabando...</span>
+            </div>
+            <div class="cantidad-grabaciones">
+                <span>Audios enviados</span>
+                <span class="contador">{{number_recordings or '0'}} / 20</span>
+            </div>
+            <div id="cronometro">
+                <span>00:00</span>
+            </div>
         </div>
-        <div class="contenedor-frases">
-                <div class="rectangulo">
-                    <div class="frases-leer">
-                        En el resplandor del atardecer, el cielo se tiñó de un exquisito tono de azul profundo,
-                        un azul que se desvanecía sutilmente en un verde sereno y etéreo,
-                        como el matiz encantado de un jardín secreto. Las nubes,
-                        adornadas con pinceladas rosadas y doradas,
-                        danzaban en armonía con esta paleta celestial,
-                        pintando un paisaje que parecía sacado de un sueño.
-                        El mundo se sumergía en la calidez de la transición del día a la noche,
-                        envuelto en la magia cromática que solo el ocaso podía ofrecer.
-                    </div>
+        <div id="contenedor-frases">
+                <div class="frases-leer">
+                    Cuando estés listo, pulsa el botón para empezar a grabar
                 </div>
         </div>
         <!-- Este microfono se muestra en vista movil -->
@@ -62,25 +61,27 @@
                 <img src="../static/SVG/microfono.svg" alt="">
             </div>
         </div>
+        <button id="detener-grabación">Detener grabación</button>
         <div id="loader-recording" class="loader-wrapper">
             <div id="custom-loader"></div>
             <span>Procesando grabación...</span>
         </div>
         <div class = "contenedor-grabacion">
             <div class="sub-contenedor-grabacion">
-                <h2 class="nombre-texto">grabación</h2>
+                <h2 class="nombre-texto">¿Querés escuchar tu grabación?</h2>
                 <div class="contenedor-audio">
                     <audio controls></audio>
                 </div>
                 <div class="contenedor-botones">
-                    <div class = "borrarGrabacion"><button id="borrarGrabacion" class="borrar  boton-grabacion"><img src="../static/SVG/basura.svg" alt=""><span>Borrar</span></button></div>
+                    <div class = "borrarGrabacion">
+                        <button id="borrarGrabacion" class="borrar  boton-grabacion">
+                            <img src="../static/SVG/basura.svg" alt="">
+                            <span>Borrar</span>
+                        </button>
+                    </div>
                     <div class="cantidad-grabaciones">
-                        <div class="texto-cant-audios">
-                            Cantidad de audios enviados
-                        </div>
-                        <div class = "contador-audios">
-                            <span id="contador">0</span>
-                        </div>
+                        <span>Audios enviados</span>
+                        <span class="contador">{{number_recordings}} / 20</span>
                     </div>
                     <div class = "enviarGrabacion">
                         <button id="enviarGrabacion" class="enviar  boton-grabacion">
@@ -109,7 +110,10 @@
             </button>
         </div>
         <div class="modal-error-body">
-            <div>
+            <div style="
+            align-self: flex-start;
+            white-space: pre-line;
+        ">
                 <p>Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
             </div>
             <div>
