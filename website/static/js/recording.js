@@ -303,12 +303,12 @@ document.addEventListener('DOMContentLoaded', () => {
             switch(err.name){
                 case "NotAllowedError":
                     errorOcurred = {mensaje: 'Permiso de micrófono denegado.\n\nPermita su uso y recargue la página.', tipo: err.name}
-                    return mostrarError();
+                    return mostrarError(errorOcurred.mensaje);
                 case "NotReadableError":
-                    errorOcurred = {mensaje: 'El micrófono está siendo usado por otra aplicación.\n\nDesconectelo y recargue la página.', tipo: err.name}
+                    errorOcurred = {mensaje: 'El micrófono está siendo usado por otra aplicación.\n\nDesconéctelo y recargue la página.', tipo: err.name}
                     return mostrarError(errorOcurred.mensaje);
                 case "NotFoundError":
-                    errorOcurred = {mensaje: 'No hay ningún micrófono conectado.\n\nConectelo y recargue la página.', tipo: err.name}
+                    errorOcurred = {mensaje: 'No hay ningún micrófono conectado.\n\nConéctelo y recargue la página.', tipo: err.name}
                     return mostrarError(errorOcurred.mensaje);
                 default:
                     errorOcurred = {mensaje: 'Ocurrió un error inesperado.\n\nRecarga la página o inténtalo más tarde.', tipo: 'Desconocido'}
