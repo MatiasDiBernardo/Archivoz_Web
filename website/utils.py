@@ -178,7 +178,11 @@ def text_ID_to_text(text_id):
     with open(path_to_json, 'r', encoding='utf8') as file:
         data = json.load(file)
     
-    return data[text_id]
+    try:
+        return data[text_id]
+    except IndexError: #Si no hay más textos para leer
+        return "Leíste todos los textos que preparamos, gracias por su participación!"
+
 
 
 def text_to_speech(text, model):

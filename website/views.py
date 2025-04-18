@@ -85,6 +85,7 @@ def obtener_datos():
 @views.route('/recording/<string:id_user>', methods=['GET', 'POST'])
 def grabacion(id_user):
 
+
     # Se fija si el usario ya tiene un perfil de grabación.
     user_object = Usuario.query.filter_by(user_id=id_user).first()
     list_recordings = user_object.grabaciones 
@@ -96,21 +97,22 @@ def grabacion(id_user):
 
     # Incrementa el Text ID (frase a leer)
     if num_recordings != 0:
-        # Se fija si la última grabación fue buena o fue un error
+        # Control para caso inicial. Agarra el id de la ultima grabacion realizada
         if len(list_ids) != 0:
             last_rec_good = list_ids[-1]
         else:
             last_rec_good = 0
 
+        # Control para caso inicial. Aagarra el id del ultimo error que ocurrio
         if len(list_errors) != 0:
             last_rec_error = list_errors[-1]
         else:
             last_rec_error = 0
 
-        # Si la última grabación no es un error se aumenta desde la última frase leída
+        # Si la última grabación no es un error se elige la frase que le sigue a esta
         if last_rec_good > last_rec_error:
             text_id = last_rec_good + 1
-        # Si la última grabación es un error se aumenta desde el error
+        # Si la última grabación es un error se elige la frase que le sigue a esta
         else:
             text_id = last_rec_error + 1
     else:
@@ -122,28 +124,29 @@ def grabacion(id_user):
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             text_to_display_on_front = text_ID_to_text(text_id)
 
-            data = {'num_recordings': len(list_ids),
+            data = {'num_recordings': len(set(list_ids)), #Es un conjunto para obtener la cantidad de textos leidos, sin duplicados
                     'text_to_display': text_to_display_on_front}
 
             return jsonify(data)
         else:
-            return render_template('recording.html', id_user=id_user)
-    
-    # Esto se trigerea cuando el usuario 
+            return render_template('recording.html', id_user=id_user, number_recordings=num_recordings)
+
     if request.method  == 'POST':
-        if 'file' not in request.files:
-            return 'No audio file provided', 400
 
-        # Data access with the form
-        audio_file = request.files['file']
-        resultado_grabacion = request.form.get('errors')  # Boolean (True si esta bien la graba, False si no)
-        audio_duration = request.form.get('duration')
+        error_ocurred = request.form.get('errorOcurred') #True si fallo la grabacion, False si no
 
-        if audio_file.filename == '':
-            return 'No selected file', 400
-        
         # Si el usuario considero que la grabación no tiene errores (se guarda la data en el back)
-        if resultado_grabacion:
+        if error_ocurred == "False":
+            if 'file' not in request.files:
+                return 'No audio file provided', 400
+
+            # Data access with the form
+            audio_file = request.files['file']
+            audio_duration = request.form.get('duration')
+
+            if audio_file.filename == '':
+                return 'No selected file', 400
+
             # Creates the user audio folder if needed
             user_folder_path = os.path.join('uploads', id_user)
             if not os.path.exists(user_folder_path):
@@ -161,7 +164,6 @@ def grabacion(id_user):
                 id_last_error = list_errors[-1]
             else:
                 id_last_error = -1
-            
             # Update the db with the current recording
             newRecording = Grabacion(usuario_id=id_user, 
                                     text_id=text_id, 
@@ -175,8 +177,8 @@ def grabacion(id_user):
             db.session.commit()
 
             # Data sended to the front
-            data = {'num_recordings': len(list_ids) + 1,
-                    'text_to_display': text_to_display_on_front}
+            data = {'num_recordings': len(set(list_ids)) + 1,
+                    'text_to_display': text_ID_to_text(text_id + 1)}
 
             return jsonify(data)
         
@@ -204,10 +206,11 @@ def grabacion(id_user):
             db.session.commit()
 
             # Data sended to the front
-            data = {'num_recordings': len(list_ids),
-                    'text_to_display': text_to_display_on_front}
+            data = {'num_recordings': len(set(list_ids)), 
+                    'text_to_display': text_ID_to_text(text_id + 1)}
 
             return jsonify(data)
+
 
     return render_template('recording.html', id_user=id_user)
 
