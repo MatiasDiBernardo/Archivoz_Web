@@ -128,7 +128,7 @@ section p {
   line-height: 30px;
 }
 
-#grabando{
+.grabando{
   display: none;
   justify-content: center;
   align-items: center;

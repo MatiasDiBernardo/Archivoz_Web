@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let chunks = [];
     let audio_duration;
     let audio = document.querySelector('audio'); // <audio>
+    let noise_db;
+    let audioType = 'noise';
     
     // Botones
     const deleteBtn = document.getElementById('borrarGrabacion'); // borrarGrabacion
@@ -76,18 +78,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let loaderEnvio = document.querySelector('#loader-send')
     let textoEnvio = document.getElementById('texto-envio')
     let detenerGrabacion = document.getElementById('detener-grabación')
-    let grabando = document.getElementById('grabando')
+    let grabando = document.getElementsByClassName('grabando')[1];
     let cronometro = document.getElementById('cronometro')
     let microfono = document.getElementsByClassName('contenedor-microfono')
+    let contenedorInstrucciones = document.getElementsByClassName('instruccion')[0]
     let instruccionesControl = document.getElementById('instruccion-controles')
     let nextInstruction = document.querySelector('.instruccion #next')
     let prevInstruction = document.querySelector('.instruccion #prev')
-    let instruccion = document.querySelector('.instruccion span')
+    let instruccionFrase = document.getElementById('texto-instruccion')
     let temporizador = document.getElementById('temporizador')
     let instruccionLista = document.querySelector('.instruccion ul');
+    let instruccionGrabando = document.getElementsByClassName('grabando')[0];
 
     // Backend var
     var pathnameURL = window.location.pathname;
+
+    // Lista de frases de instrucciones
+    const instrucciones = 
+        ["Esta es la grabadora de Archivoz. El objetivo es donar tu voz para construir una base de datos de voces argentinas con el propósito de desarrollar tecnología para nuestro país.",
+        "Trata de:",
+        "Si te trabas o te equivocas leyendo el texto, borra la grabación",
+        "En el siguiente paso vas a grabar 10 segundos de ruido de fondo para calibrar audio. Quedate en silencio y espera a que finalice la grabación.",
+        "Quedate en silencio",
+        "En el siguiente paso vas a grabar 10 segundos de tu voz para calibrar audio. Prepárate para leer en voz alta el texto que verás. No importa si no llegas a leer todo.",        
+        "Este es un texto de prueba que se utiliza para verificar si hay ruido en tu micrófono."
+    ];
+
+    // Instruccio actual
+    let instruccionActual = 0;
 
     function borrarGrabacion() {
         chunks = [];
@@ -137,7 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
             temporizador.innerHTML = segundos;
             if(segundos == 0){
                 clearInterval(intervalo);
-                document.getElementById('instrucciones').style.display = 'none';
+                temporizador.innerHTML = 10;
+                temporizador.style.display = 'none';
+                mediaRecorder.stop();
             }
         }
     }
@@ -183,36 +203,89 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(intervalo);
     }
 
-    function measureNoiseLevel(audioBlob) {
+    async function measureSoundLevel(audioBlob, type) {
+        // console.log('measureSoundLevel');
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const reader = new FileReader();
+        
+        //const reader = new FileReader();
+        const arrayBuffer = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
 
-        reader.onload = async function () {
-          const buffer = await audioContext.decodeAudioData(reader.result);
-          const dataArray = buffer.getChannelData(0);
+            reader.onload = () => {
+                resolve(reader.result);
+            };
 
-          // Calculate average amplitude as a measure of noise level
-          const sumOfSquares = dataArray.reduce((acc, val) => acc + (val * val), 0);
-          const rms = Math.sqrt(sumOfSquares / dataArray.length);
-          const rms_db = 20 * Math.log10(rms);
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(audioBlob); 
+        });
+        
+        // console.log('post await');
+        const buffer = await audioContext.decodeAudioData(arrayBuffer);
+        const dataArray = buffer.getChannelData(0);
 
-          audio_duration = buffer.duration;  // In seconds
+        // Calculate average amplitude as a measure of noise level
+        const sumOfSquares = dataArray.reduce((acc, val) => acc + (val * val), 0);
+        const rms = Math.sqrt(sumOfSquares / dataArray.length);
+        const rms_db = 20 * Math.log10(rms);
 
-          // Noise control
-          let threshold_db = -45;
-          if (rms_db < threshold_db){
-            errorOcurred = {mensaje: "El audio grabado no tiene suficiente volumen para reconocer una voz. Asegúrate de que tu micrófono esté conectado. Si está correctamente conectado, intenta hablar más fuerte o más cerca del micrófono.\n\nEn cualquier caso, recarga la página e inténtalo de nuevo.", tipo: "NoiseControl"};
-            mostrarError(errorOcurred.mensaje)
+        // console.log(rms_db);
+
+        audio_duration = buffer.duration;  // In seconds
+        let threshold_db;
+
+        // Noise control
+        switch (type) {
+            case 'signal':
+                threshold_db = -45;
+                if (rms_db < threshold_db){
+                    errorOcurred = {mensaje: "El audio grabado no tiene suficiente volumen para reconocer una voz. Asegúrate de que tu micrófono esté conectado. Si está correctamente conectado, intenta hablar más fuerte o más cerca del micrófono.\n\nEn cualquier caso, recarga la página e inténtalo de nuevo.", tipo: "NoiseControl"};
+                    mostrarError(errorOcurred.mensaje)
+                    instruccionActual = 5;
+                    cambiarInstruccion();
+                    return;
+                }
+            break;
+            case 'noise':
+                threshold_db = -30;
+                if (rms_db > threshold_db){
+                    errorOcurred = {mensaje: "Se detectó mucho ruido en la grabación. Buscá un lugar más silencioso para continuar.", tipo: "NoiseControl"};
+                    mostrarError(errorOcurred.mensaje)
+                    instruccionActual = 3;
+                    cambiarInstruccion();
+                    return;
+                } else{
+                    instruccionActual = 5;
+                    cambiarInstruccion();
+                }              
+            break;
         }
 
-          // Control audio length
-          if (buffer.duration > 60){
+        // Control audio length
+        if (buffer.duration > 60){
             errorOcurred = {mensaje: "La grabación superó el tiempo máximo.\n\nBorra la grabación y asegúrate de leer la oración en pantalla en menos de 60 segundos. ", tipo: "AudioLength"}
             mostrarError(errorOcurred.mensaje)
-          } 
+            return;
         }
+        
+        // console.log('fin reader onload');
+        return rms_db;       
+    }
 
-        reader.readAsArrayBuffer(audioBlob);
+    function measureSNR(signal_db, noise_db, min_snr_threshold_db = 20) {
+        // console.log('ini SNR');
+        let snr = signal_db - noise_db;
+        // console.log('SNR:', snr);
+        if (snr < min_snr_threshold_db) {
+            errorOcurred = {mensaje: "El audio grabado no tiene suficiente volumen para reconocer una voz por encima del ruido, intenta hablar más fuerte, más cerca del micrófono o buscá un lugar más silencioso.", tipo: "SNRControl"};
+            mostrarError(errorOcurred.mensaje)
+            audioType = 'noise'; //Cambio el tipo de audio porque se reinicia el proceso
+            instruccionActual = 3; //Vuelvo al primer paso del chequeo
+            cambiarInstruccion();
+        } else{
+            document.getElementById('instrucciones').style.display = 'none';
+            audioType = 'recording';
+        }
+        // console.log('fin SNR');
     }
 
     // Obtener datos del usuario desde el backend
@@ -282,20 +355,38 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             // Cuando paramos de grabar, es decir, de meter audio
-            mediaRecorder.onstop = () => {
-                // Mostramos loader
-                iniciarLoaderGrabacion();
+            mediaRecorder.onstop = async () => {
+                if(audioType == 'recording'){
+                    // Mostramos loader
+                    iniciarLoaderGrabacion();
+                }
+                // // Mostramos loader
+                // iniciarLoaderGrabacion();
                 // Crea un Blob con el resultado
                 const audioBlob = new Blob(chunks, { type: 'audio/wav' });
                 // Lo convierte en una URL
                 const audioURL = URL.createObjectURL(audioBlob);
                 // Y lo pasa al reproductor
                 audio.src = audioURL;
-                // Calcular valor RMS del audio
-                measureNoiseLevel(audioBlob);
-                
-                setTimeout(mostrarAudioResultado, 1);
 
+                if(audioType == 'recording'){
+                    mostrarAudioResultado()
+                    return;
+                }
+
+                // Calcular valor RMS del audio
+                let rms_db = await measureSoundLevel(audioBlob, audioType);                
+                // console.log('post measure');
+
+                if (!rms_db) return;
+
+                // Si ya se midió el ruido, se calcula la SNR.
+                if(audioType == 'signal'){
+                    measureSNR(rms_db, noise_db);                    
+                } else{
+                    noise_db = rms_db;
+                    audioType = 'signal';
+                }
             };
         })
         .catch(err => {
@@ -316,60 +407,58 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-    // EVENTOS DE CADA BOTÓN
-    const instrucciones = 
-        ["Esta es la grabadora de Archivoz. El objetivo es donar tu voz para construir una base de datos de voces argentinas con el propósito de desarrollar tecnología para nuestro país.",
-        "Trata de:",
-        "Si te trabas o te equivocas leyendo el texto, borra la grabación",
-        "Vas a grabar 10 segundos para calibrar audio. Prepárate para leer en voz alta y luego pasa al siguiente paso. No importa si no llegas a leer todo.",
-        "Este es un texto de prueba que se utiliza para verificar si hay ruido en tu micrófono. "
-        ];
-    let instruccionActual = 0;
-    nextInstruction.addEventListener('click', (e) => {
-        prevInstruction.style.visibility = 'visible'
-        instruccionActual++;
+    function cambiarInstruccion(){
+        // console.log(instruccionActual)
+        if(instruccionActual == -1) return;
+        instruccionFrase.innerHTML = instrucciones[instruccionActual]
+        
+        if(instruccionActual == 0){
+            prevInstruction.style.visibility = 'hidden';
+        } else{
+            prevInstruction.style.visibility = 'visible';
+        }
 
-
-        if(instruccionActual == 1){
+         if(instruccionActual == 1){
             instruccionLista.style.display = 'block';
-            instruccion.style.flex = '0';
-            instruccion.style.alignSelf = 'start';
+            instruccionFrase.style.flex = '0';
+            instruccionFrase.style.alignSelf = 'start';
         } else{
             instruccionLista.style.display = 'none';
-            instruccion.style.flex = '1';
-            instruccion.style.alignSelf = 'center';
+            instruccionFrase.style.flex = '1';
+            instruccionFrase.style.alignSelf = 'center';
+        }
+
+        if(instruccionActual == 3 || instruccionActual == 5){
+            instruccionGrabando.style.display = 'none'
+            contenedorInstrucciones.style.border = 'none';
+            instruccionesControl.style.display = 'flex';
         }
 
         if(instruccionActual == 3){
-            document.getElementById('instrucciones').style.display = 'none';
-            return;
+            prevInstruction.style.visibility = 'visible';
         }
 
-        if(instruccionActual == 4){
+        if(instruccionActual == 5){
+            prevInstruction.style.visibility = 'hidden';
+        }
+
+        if(instruccionActual == 4 || instruccionActual == 6){
+            instruccionGrabando.style.display = 'flex'
+            contenedorInstrucciones.style.border = '5px solid red';
             instruccionesControl.style.display = 'none';
+            mediaRecorder.start();
             iniciarTemporizador();
-            return;
         }
-
-        instruccion.innerHTML = instrucciones[instruccionActual]
+    }
+    
+    nextInstruction.addEventListener('click', (e) => {
+        instruccionActual++;
+        cambiarInstruccion();
     })
 
     prevInstruction.addEventListener('click', (e) => {
         instruccionActual--;
-        if(instruccionActual == -1) return;
-        if(instruccionActual == 0) prevInstruction.style.visibility = 'hidden';
-
-        if(instruccionActual == 1){
-            instruccionLista.style.display = 'block';
-            instruccion.style.flex = '0';
-            instruccion.style.alignSelf = 'start';
-        } else{
-            instruccionLista.style.display = 'none';
-            instruccion.style.flex = '1';
-            instruccion.style.alignSelf = 'center';
-        }
-
-        instruccion.innerHTML = instrucciones[instruccionActual]
+        cambiarInstruccion();
     })
 
     let recording = false;
