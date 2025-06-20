@@ -204,10 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function measureSoundLevel(audioBlob, type) {
-        // console.log('measureSoundLevel');
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         
-        //const reader = new FileReader();
         const arrayBuffer = await new Promise((resolve, reject) => {
             const reader = new FileReader();
 
@@ -219,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.readAsArrayBuffer(audioBlob); 
         });
         
-        // console.log('post await');
         const buffer = await audioContext.decodeAudioData(arrayBuffer);
         const dataArray = buffer.getChannelData(0);
 
@@ -228,11 +225,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const rms = Math.sqrt(sumOfSquares / dataArray.length);
         const rms_db = 20 * Math.log10(rms);
 
-        // console.log(rms_db);
-
+        //console.log(rms_db);
+        
         audio_duration = buffer.duration;  // In seconds
         let threshold_db;
-
+        
         // Noise control
         switch (type) {
             case 'signal':
@@ -274,7 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function measureSNR(signal_db, noise_db, min_snr_threshold_db = 20) {
         // console.log('ini SNR');
         let snr = signal_db - noise_db;
-        // console.log('SNR:', snr);
+        /*console.log('S:', signal_db);
+        console.log('N:', noise_db);
+        console.log('SNR:', snr);*/
         if (snr < min_snr_threshold_db) {
             errorOcurred = {mensaje: "El audio grabado no tiene suficiente volumen para reconocer una voz por encima del ruido, intenta hablar más fuerte, más cerca del micrófono o buscá un lugar más silencioso.", tipo: "SNRControl"};
             mostrarError(errorOcurred.mensaje)
@@ -284,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else{
             document.getElementById('instrucciones').style.display = 'none';
             audioType = 'recording';
+            errorOcurred = null;
         }
         // console.log('fin SNR');
     }
@@ -446,6 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
             instruccionGrabando.style.display = 'flex'
             contenedorInstrucciones.style.border = '5px solid red';
             instruccionesControl.style.display = 'none';
+            borrarGrabacion();
             mediaRecorder.start();
             iniciarTemporizador();
         }
