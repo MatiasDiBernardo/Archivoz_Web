@@ -284,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('instrucciones').style.display = 'none';
             audioType = 'recording';
             errorOcurred = null;
+            borrarGrabacion();
         }
         // console.log('fin SNR');
     }
