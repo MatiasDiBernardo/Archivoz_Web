@@ -220,6 +220,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const buffer = await audioContext.decodeAudioData(arrayBuffer);
         const dataArray = buffer.getChannelData(0);
 
+        clippíngThreshold = 0.95;
+        sampleClipCountThreshold = 3;
+        //isClipping = dataArray.some(sample => Math.abs(sample) >= clippíngThreshold);
+        let clipCount = dataArray.filter(sample => Math.abs(sample) >= clippíngThreshold).length;
+        console.log(clipCount);
+        if (clipCount >= sampleClipCountThreshold) {
+            if (instruccionActual == 4) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, busque un lugar silencioso y permanezca en silencio durante la grabación del sonido ambiente.", tipo: "ClippingControl"};
+            if (instruccionActual == 6) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, intente hablar un poco más bajo o más lejos del micrófono.", tipo: "ClippingControl"};
+            mostrarError(errorOcurred.mensaje);
+            instruccionActual -= 1;
+            cambiarInstruccion();
+            return;
+        }
+
         // Calculate average amplitude as a measure of noise level
         const sumOfSquares = dataArray.reduce((acc, val) => acc + (val * val), 0);
         const rms = Math.sqrt(sumOfSquares / dataArray.length);
@@ -284,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('instrucciones').style.display = 'none';
             audioType = 'recording';
             errorOcurred = null;
-            borrarGrabacion();
         }
         // console.log('fin SNR');
     }
