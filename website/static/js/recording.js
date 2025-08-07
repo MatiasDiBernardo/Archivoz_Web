@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let temporizador = document.getElementById('temporizador')
     let instruccionLista = document.querySelector('.instruccion ul');
     let instruccionGrabando = document.getElementsByClassName('grabando')[0];
+    let instruccionPermiso = document.getElementById('permiso');
 
     // Backend var
     var pathnameURL = window.location.pathname;
@@ -96,10 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lista de frases de instrucciones
     const instrucciones = 
         ["Esta es la grabadora de Archivoz. El objetivo es donar tu voz para construir una base de datos de voces argentinas con el propósito de desarrollar tecnología para nuestro país.",
+        "Permitenos el acceso a tu micrófono para poder grabar tu voz.",
         "Trata de:",
-        "Si te trabas o te equivocas leyendo el texto, borra la grabación",
+        "Si te trabas o te equivocas leyendo el texto, borra la grabación.",
         "En el siguiente paso vas a grabar 10 segundos de ruido de fondo para calibrar audio. Quedate en silencio y espera a que finalice la grabación.",
-        "Quedate en silencio",
+        "Quedate en silencio.",
         "En el siguiente paso vas a grabar 10 segundos de tu voz para calibrar audio. Prepárate para leer en voz alta el texto que verás. No importa si no llegas a leer todo.",        
         "Este es un texto de prueba que se utiliza para verificar si hay ruido en tu micrófono."
     ];
@@ -219,15 +221,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const buffer = await audioContext.decodeAudioData(arrayBuffer);
         const dataArray = buffer.getChannelData(0);
-
+        
         clippíngThreshold = 0.95;
         sampleClipCountThreshold = 3;
         //isClipping = dataArray.some(sample => Math.abs(sample) >= clippíngThreshold);
         let clipCount = dataArray.filter(sample => Math.abs(sample) >= clippíngThreshold).length;
         console.log(clipCount);
         if (clipCount >= sampleClipCountThreshold) {
-            if (instruccionActual == 4) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, busque un lugar silencioso y permanezca en silencio durante la grabación del sonido ambiente.", tipo: "ClippingControl"};
-            if (instruccionActual == 6) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, intente hablar un poco más bajo o más lejos del micrófono.", tipo: "ClippingControl"};
+            if (instruccionActual == 5) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, busque un lugar silencioso y permanezca en silencio durante la grabación del sonido ambiente.", tipo: "ClippingControl"};
+            if (instruccionActual == 7) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, intente hablar un poco más bajo o más lejos del micrófono.", tipo: "ClippingControl"};
             mostrarError(errorOcurred.mensaje);
             instruccionActual -= 1;
             cambiarInstruccion();
@@ -251,21 +253,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (rms_db < threshold_db){
                     errorOcurred = {mensaje: "El audio grabado no tiene suficiente volumen para reconocer una voz. Asegúrate de que tu micrófono esté conectado. Si está correctamente conectado, intenta hablar más fuerte o más cerca del micrófono.\n\nEn cualquier caso, recarga la página e inténtalo de nuevo.", tipo: "NoiseControl"};
                     mostrarError(errorOcurred.mensaje)
-                    instruccionActual = 5;
+                    instruccionActual--;
                     cambiarInstruccion();
                     return;
-                }
+                }    
             break;
             case 'noise':
                 threshold_db = -30;
                 if (rms_db > threshold_db){
                     errorOcurred = {mensaje: "Se detectó mucho ruido en la grabación. Buscá un lugar más silencioso para continuar.", tipo: "NoiseControl"};
                     mostrarError(errorOcurred.mensaje)
-                    instruccionActual = 3;
+                    instruccionActual--;
                     cambiarInstruccion();
                     return;
                 } else{
-                    instruccionActual = 5;
+                    instruccionActual++;
                     cambiarInstruccion();
                 }              
             break;
@@ -292,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
             errorOcurred = {mensaje: "El audio grabado no tiene suficiente volumen para reconocer una voz por encima del ruido, intenta hablar más fuerte, más cerca del micrófono o buscá un lugar más silencioso.", tipo: "SNRControl"};
             mostrarError(errorOcurred.mensaje)
             audioType = 'noise'; //Cambio el tipo de audio porque se reinicia el proceso
-            instruccionActual = 3; //Vuelvo al primer paso del chequeo
+            instruccionActual = 4; //Vuelvo al primer paso del chequeo
             cambiarInstruccion();
         } else{
             document.getElementById('instrucciones').style.display = 'none';
@@ -421,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-    function cambiarInstruccion(){
+    async function cambiarInstruccion(){
         // console.log(instruccionActual)
         if(instruccionActual == -1) return;
         instruccionFrase.innerHTML = instrucciones[instruccionActual]
@@ -432,7 +434,21 @@ document.addEventListener('DOMContentLoaded', () => {
             prevInstruction.style.visibility = 'visible';
         }
 
-         if(instruccionActual == 1){
+        if(instruccionActual == 1){
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+            .catch(err => {
+                errorOcurred = { mensaje: 'Permiso de micrófono denegado.\n\nPermita su uso y recargue la página.', tipo: err.name };
+                mostrarError(mensaje);
+            })
+        
+            instruccionFrase.style.display = 'none';
+            instruccionPermiso.style.display = 'block';
+        } else{
+            instruccionFrase.style.display = 'block';
+            instruccionPermiso.style.display = 'none';
+        }
+
+         if(instruccionActual == 2){
             instruccionLista.style.display = 'block';
             instruccionFrase.style.flex = '0';
             instruccionFrase.style.alignSelf = 'start';
@@ -442,21 +458,21 @@ document.addEventListener('DOMContentLoaded', () => {
             instruccionFrase.style.alignSelf = 'center';
         }
 
-        if(instruccionActual == 3 || instruccionActual == 5){
+        if(instruccionActual == 4 || instruccionActual == 6){
             instruccionGrabando.style.display = 'none'
             contenedorInstrucciones.style.border = 'none';
             instruccionesControl.style.display = 'flex';
         }
 
-        if(instruccionActual == 3){
+        if(instruccionActual == 4){
             prevInstruction.style.visibility = 'visible';
         }
 
-        if(instruccionActual == 5){
+        if(instruccionActual == 6){
             prevInstruction.style.visibility = 'hidden';
         }
 
-        if(instruccionActual == 4 || instruccionActual == 6){
+        if(instruccionActual == 5 || instruccionActual == 7){
             instruccionGrabando.style.display = 'flex'
             contenedorInstrucciones.style.border = '5px solid red';
             instruccionesControl.style.display = 'none';

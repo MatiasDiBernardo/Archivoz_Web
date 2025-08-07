@@ -1181,6 +1181,13 @@ body {
   transform: scaleX(-1);
 }
 
+#permiso{
+  display: none;
+  flex: 1;
+  height: 196px;
+  max-width: 100%;
+}
+
 #temporizador{
   display: none;
   justify-content: center;

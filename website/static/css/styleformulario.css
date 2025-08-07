@@ -449,3 +449,10 @@ select::-ms-expand {
 .a-info, .a-objetivos{
   display: none;
 }
+
+.aclaracion{
+  font-size: 15px;
+  font-family: Poppins;
+  font-weight: 500;
+  white-space: pre-line;
+}
