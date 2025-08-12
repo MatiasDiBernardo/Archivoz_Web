@@ -21,17 +21,14 @@ def obtener_datos():
     #Cuando el user pone "Confirmar datos" se ejecuta el POST
     if request.method == 'POST':
         #Se guardan los datos que ingreso el usuario
-        nombreUsuario = request.form.get("nombre")
         edadUsuario = request.form.get("edad")
         regionUsuario = request.form.get("region")
-        patologiaUsuario = request.form.get("patologia")
-        mailUsuario = request.form.get("mail1")
-        mailUsuarioConfirmacion = request.form.get("mail2")
+        observacionesUsuario = request.form.get("observaciones")
         terminosLeidos = request.form.get('terminos')
          
         #Validación de datos y de ID en caso de existir
         idUsuarioAValidar = request.form.get("userID")
-        data_validation, error_msj = validate_user_data(nombreUsuario, edadUsuario, regionUsuario, mailUsuario, mailUsuarioConfirmacion, idUsuarioAValidar, terminosLeidos, patologiaUsuario)
+        data_validation, error_msj = validate_user_data(edadUsuario, regionUsuario, observacionesUsuario, idUsuarioAValidar, terminosLeidos)
         matchID = find_match_on_id(idUsuarioAValidar)
 
         if not data_validation and not matchID:
@@ -40,42 +37,41 @@ def obtener_datos():
             return redirect(url_for("views.grabacion", id_user=idUsuarioAValidar))
         else:
             # Si se crea un nuevo usuario se guarda en la base de datos.
-            newUser = Usuario(nombre=nombreUsuario, edad=edadUsuario,
-                              region=regionUsuario, mail=mailUsuario,
+            newUser = Usuario(edad=edadUsuario,
+                              region=regionUsuario,
                               custom_TTS=False, custom_TTS_uses=0,
-                              patologia=patologiaUsuario)
+                              observaciones=observacionesUsuario)
             
             db.session.add(newUser)
             db.session.commit()
 
             id_user_for_session = newUser.user_id
-            mail_usuario = newUser.mail
 
             # It sends a mail notifying the user the assigned ID (it doesn't work without the env password_mail key)
-            if True:
-                msg_title = "Registro ArchiVoz"
-                sender = "ArchiVoz Bot"
-                msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
-                msg_body = """ Gracias por registrarte en nuestro archivo de voces. Con el ID que te asignamos
-                podes retomar tu sesión de grabación en cualquier momento desde el punto donde la dejaste.
-                Además, con tu ID vas a poder acceder a las funcionalidades de texto a voz personalizado y a ubicar
-                tu voz dentro del mapa de voces, ambos proyectos en los que estamos trabajando. Así que no lo pierdas.
-                Este es tu ID:
-                """
-                msg.body = ""
-                data = {
-                    'app_name': "ArchiVoz",
-                    'title': msg_title,
-                    'body': msg_body,
-                    'id': id_user_for_session,
-                }
+            # if True:
+            #     msg_title = "Registro ArchiVoz"
+            #     sender = "ArchiVoz Bot"
+            #     msg = Message(msg_title, sender=sender, recipients=[mail_usuario])
+            #     msg_body = """ Gracias por registrarte en nuestro archivo de voces. Con el ID que te asignamos
+            #     podes retomar tu sesión de grabación en cualquier momento desde el punto donde la dejaste.
+            #     Además, con tu ID vas a poder acceder a las funcionalidades de texto a voz personalizado y a ubicar
+            #     tu voz dentro del mapa de voces, ambos proyectos en los que estamos trabajando. Así que no lo pierdas.
+            #     Este es tu ID:
+            #     """
+            #     msg.body = ""
+            #     data = {
+            #         'app_name': "ArchiVoz",
+            #         'title': msg_title,
+            #         'body': msg_body,
+            #         'id': id_user_for_session,
+            #     }
 
-                msg.html = render_template("email.html",data=data)
+            #     msg.html = render_template("email.html",data=data)
 
-                try:
-                    mail.send(msg)
-                except Exception as e:
-                    print(e)
+            #     try:
+            #         mail.send(msg)
+            #     except Exception as e:
+            #         print(e)
 
             return redirect(url_for("views.grabacion", id_user=id_user_for_session))
 
@@ -91,20 +87,29 @@ def grabacion(id_user):
     list_recordings = user_object.grabaciones 
     num_recordings = len(list_recordings)
 
-    # Acá en vez de recorrer las listas podría pedir la última grabación que es lo único que importa but lazy
     list_ids = [g.text_id for g in list_recordings]  # Lista de ints con los ids leído
     list_errors = [e.error_id for e in list_recordings]  # Lista de ints con los ids de los intentos fallidos
+    
+    if(-1 in set(list_ids)): #existen grabaciones fallidas
+        num_recordings_good = len(set(list_ids)) - 1 #cantidad de grabaciones sin contar las grabaciones fallidas
+    else:
+        num_recordings_good = len(set(list_ids))
+
+    if(-1 in set(list_errors)): #existen grabaciones correctas
+        num_recordings_bad = len(set(list_errors)) - 1 #cantidad de grabaciones sin contar las grabaciones correctas
+    else:
+        num_recordings_bad = len(set(list_errors))
 
     # Incrementa el Text ID (frase a leer)
     if num_recordings != 0:
         # Control para caso inicial. Agarra el id de la ultima grabacion realizada
-        if len(list_ids) != 0:
+        if num_recordings_good != 0:
             last_rec_good = list_ids[-1]
         else:
             last_rec_good = 0
 
         # Control para caso inicial. Aagarra el id del ultimo error que ocurrio
-        if len(list_errors) != 0:
+        if num_recordings_bad != 0:
             last_rec_error = list_errors[-1]
         else:
             last_rec_error = 0
@@ -124,12 +129,12 @@ def grabacion(id_user):
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             text_to_display_on_front = text_ID_to_text(text_id)
 
-            data = {'num_recordings': len(set(list_ids)), #Es un conjunto para obtener la cantidad de textos leidos, sin duplicados
+            data = {'num_recordings': num_recordings_good, #Es un conjunto para obtener la cantidad de textos leidos, sin duplicados
                     'text_to_display': text_to_display_on_front}
 
             return jsonify(data)
         else:
-            return render_template('recording.html', id_user=id_user, number_recordings=num_recordings)
+            return render_template('recording.html', id_user=id_user, number_recordings=num_recordings_good)
 
     if request.method  == 'POST':
 
@@ -177,7 +182,7 @@ def grabacion(id_user):
             db.session.commit()
 
             # Data sended to the front
-            data = {'num_recordings': len(set(list_ids)) + 1,
+            data = {'num_recordings': num_recordings_good + 1,
                     'text_to_display': text_ID_to_text(text_id + 1)}
 
             return jsonify(data)
@@ -206,13 +211,13 @@ def grabacion(id_user):
             db.session.commit()
 
             # Data sended to the front
-            data = {'num_recordings': len(set(list_ids)), 
+            data = {'num_recordings': num_recordings_good, 
                     'text_to_display': text_ID_to_text(text_id + 1)}
 
             return jsonify(data)
 
 
-    return render_template('recording.html', id_user=id_user)
+    return render_template('recording.html', id_user=id_user, number_recordings=num_recordings_good)
 
 #Pagina donde el usuario pone sus datos para la grabación
 @views.route('/text-to-speech', methods=['GET', 'POST'])

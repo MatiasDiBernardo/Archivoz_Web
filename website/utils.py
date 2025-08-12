@@ -19,7 +19,7 @@ def find_match_on_id(userID):
 
     return val
 
-def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, terminos_leidos, patologia):
+def validate_user_data(edad, region, observaciones, ID, terminos_leidos):
     """Verifica si los datos que ingreso el usuario son válidos.
     Si algún dato no es válido devuelve False y un mensaje explicando
     cual es el error al ingresar el dato. Si todos los datos son
@@ -31,7 +31,7 @@ def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, termin
         mail (string): Mail del usuario.
         mail_confimación (string): Nuevo entrada para el mail del usuario.
         ID (int): ID ingresado por el usuario.
-        patologia(string): Aclaración sobre patologías del habla.
+        observaciones(string): Aclaración sobre cualquier patología o cualquier característica relevante de la voz del usuario.
     Return:
         (boolean): Si los datos son validos o no.
         (string): Mensaje que recibe el usuario si puso algún dato mal.
@@ -49,31 +49,31 @@ def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, termin
             mensaje = "El ID de usuario ingresado no es válido."
         return validate, mensaje
 
-    email_en_uso = Usuario.query.filter_by(mail=mail).first()
-    if (email_en_uso is not None):
-        validate = False
-        mensaje = "El mail ingresado ya tiene un ID asociado. Por favor, ingrese su ID para retomar su sesión."
-        return validate, mensaje
+    # email_en_uso = Usuario.query.filter_by(mail=mail).first()
+    # if (email_en_uso is not None):
+    #     validate = False
+    #     mensaje = "El mail ingresado ya tiene un ID asociado. Por favor, ingrese su ID para retomar su sesión."
+    #     return validate, mensaje
     
-    if (mail != mail_confirmacion):
-        validate = False
-        mensaje = "Los mail tienen que ser iguales."
-        return validate, mensaje
+    # if (mail != mail_confirmacion):
+    #     validate = False
+    #     mensaje = "Los mail tienen que ser iguales."
+    #     return validate, mensaje
     
-    if ("@" not in mail):
-        validate = False
-        mensaje = "Ingrese un mail válido."
-        return validate, mensaje
+    # if ("@" not in mail):
+    #     validate = False
+    #     mensaje = "Ingrese un mail válido."
+    #     return validate, mensaje
     
-    if (len(mail) < 3 or len(mail) > 150):
-        validate = False
-        mensaje = "Ingrese un mail válido."
-        return validate, mensaje
+    # if (len(mail) < 3 or len(mail) > 150):
+    #     validate = False
+    #     mensaje = "Ingrese un mail válido."
+    #     return validate, mensaje
     
-    if (len(nombre) < 2 or len(nombre) > 120):
-        validate = False
-        mensaje = "Ingrese un nombre válido."
-        return validate, mensaje
+    # if (len(nombre) < 2 or len(nombre) > 120):
+    #     validate = False
+    #     mensaje = "Ingrese un nombre válido."
+    #     return validate, mensaje
 
     if "." in edad:
         validate = False
@@ -100,10 +100,10 @@ def validate_user_data(nombre, edad, region, mail, mail_confirmacion, ID, termin
         mensaje = "Debes aceptar los terminos y condiciones."
         return validate, mensaje
     
-    if patologia is not None:
-        if (len(patologia) > 400):
+    if observaciones is not None:
+        if (len(observaciones) > 400):
             validate = False 
-            mensaje = "Explique su patología del habla en un texto mas breve."
+            mensaje = "Explique su patología o caracteristica relevante de su voz en un texto mas breve."
             return validate, mensaje
 
     return validate, mensaje

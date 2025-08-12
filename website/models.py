@@ -35,11 +35,9 @@ class Grabacion(db.Model):
 
 class Usuario(db.Model):
     user_id = db.Column(db.String, default=lambda: random_ID(), unique=True, primary_key=True)
-    nombre = db.Column(db.String(50))
     edad = db.Column(db.Integer)
     region = db.Column(db.String(100))
-    patologia = db.Column(db.String(400))
-    mail = db.Column(db.String(150), unique=True)
+    observaciones = db.Column(db.String(400))
     grabaciones = db.relationship('Grabacion', backref='usuario')
     custom_TTS = db.Column(db.Boolean)
     custom_TTS_uses = db.Column(db.Integer)

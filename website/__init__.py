@@ -36,8 +36,8 @@ def create_app(database_uri = f'sqlite:///{DB_NAME}'):
         if os.environ.get("DEBUG"):
             # Add test user if the db is empty
             if Usuario.query.filter_by(user_id="000000").first() is None:
-                testUser = Usuario(nombre="Test", edad=20,
-                                    region="Buenos Aires", mail="test@gmail.com", user_id="000000")
+                testUser = Usuario(edad=20,
+                                    region="Buenos Aires", observaciones="resfriado", user_id="000000")
                 print("Se agrego el user test con ID: 000000")
                 
                 db.session.add(testUser)
