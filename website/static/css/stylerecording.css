@@ -3,6 +3,11 @@
   --background-mic: var(--colorVerdeFluor);
 }
 
+*:focus-visible {
+  outline: 3px solid #005eff !important;
+  outline-offset: 3px !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -113,9 +118,7 @@ section p {
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.8;
-  letter-spacing: 3.08px;
-  padding: 145px;
+  margin: 0 0 0 0;
 }
 
 .cantidad-grabaciones {
@@ -241,7 +244,6 @@ section .contenedor-contenedor {
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   font-feature-settings: "clig" off, "liga" off;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  outline: none !important;
   border: 1px solid black !important;
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   color: white;
@@ -254,12 +256,14 @@ section .contenedor-contenedor {
 
 .contenedor-botones .borrar {
   background-color: #FF1C00;
+  outline: none;
 }
 .contenedor-botones .enviar {
   background-color: #02FF3A;
   display: flex;
   justify-content: center;
   align-items: center;
+  outline: none;
 }
 
 button:disabled:hover {
@@ -571,6 +575,7 @@ select::-ms-expand {
   height: 70px;
   cursor: pointer;
   pointer-events: none;
+  border: none;
 }
 
 .contenedor-microfono img {
@@ -1192,4 +1197,8 @@ body {
   display: none;
   justify-content: center;
   align-items: center;
+}
+
+.modal-header .close {
+  padding: -1rem -1rem -1rem 0;
 }

@@ -1,14 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const botonCambioFormulario = document.getElementById('boton');
-    const formularioRegistrarse = document.getElementById('Registrarse');
-    const formularioIniciarSesion = document.getElementById('Iniciar-sesion');
-  
-    botonCambioFormulario.addEventListener('click', function () {
-      formularioRegistrarse.classList.toggle('formulario-activo');
-      formularioIniciarSesion.classList.toggle('formulario-activo');
-    });
-  });
-
 // Al presionar el boton de navegacion en la vista de movil desplaza el menu para abrirlo o cerrarlo.
 document.querySelector(".nav-conteiner__boton-menu").addEventListener("click", () => {
   
