@@ -1131,13 +1131,26 @@ body {
 
 @media (max-width: 560px){
   .instruccion{
-    font-size: 20px;
+    height: 350px;
   }
 }
 
-@media (max-width: 380px){
+@media (max-width: 450px){
   .instruccion{
-    font-size: 18px;
+    height: 400px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 420px){
+  .instruccion{
+    height: 450px;
+  }
+}
+
+@media (max-width: 360px){
+  .instruccion{
+    height: 580px;
   }
 }
 
