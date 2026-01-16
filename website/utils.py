@@ -97,7 +97,7 @@ def validate_user_data(edad, region, observaciones, ID, terminos_leidos):
 
     if(terminos_leidos != '1'):
         validate = False 
-        mensaje = "Debes aceptar los terminos y condiciones."
+        mensaje = "Debes aceptar los términos y condiciones."
         return validate, mensaje
     
     if observaciones is not None:
