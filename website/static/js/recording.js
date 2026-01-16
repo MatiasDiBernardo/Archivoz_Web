@@ -2,6 +2,7 @@ let fraseALeer = ''
 let errorOcurred = null
 const mq = window.matchMedia('(max-width: 500px)');
 let isMobile = mq.matches;
+let numberRecordings = 0;
 
 function mostrarError(error){
     // Accessible custom modal show/hide without Bootstrap so it stays inert when hidden
@@ -94,6 +95,7 @@ function obtenerDatos(idUsuario) {
         })
         .then(data => {
             // console.log('Datos obtenidos:', data);
+            numberRecordings = data.num_recordings;
             return data;
         })
         .catch(error => {
@@ -316,8 +318,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function actualizarContador(numRecordings) {
-        counter[0].innerHTML = `${numRecordings} / 20`
-        counter[1].innerHTML = `${numRecordings} / 20`
+        if(numRecordings < 20){
+            counter[0].innerHTML = `${numRecordings} / 20`
+            counter[1].innerHTML = `${numRecordings} / 20`
+        }
     }
 
     function iniciarTemporizador(){
@@ -677,6 +681,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let recording = false;
     recordingButtonDesktop.addEventListener('click', (e) => {
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
         if(!errorOcurred){
             borrarGrabacion();
             establecerFraseALeer(fraseALeer)
@@ -699,19 +707,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     detenerGrabacion.addEventListener('click', (e) => {
-            mediaRecorder.stop(); //Paramos de grabar
-            deleteBtn.disabled = false;
-            sendBtn.disabled = false;
-            detenerGrabacion.style.display = 'none';
-            grabando.style.display = 'none';
-            contenedorFrases.style.border = 'none';
-            recordingButtonDesktop.style.display = 'none';
-            recordingButtonMobileContainer.style.display = 'none';
-            detenerCronometro();
-        })
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
+        mediaRecorder.stop(); //Paramos de grabar
+        deleteBtn.disabled = false;
+        sendBtn.disabled = false;
+        detenerGrabacion.style.display = 'none';
+        grabando.style.display = 'none';
+        contenedorFrases.style.border = 'none';
+        recordingButtonDesktop.style.display = 'none';
+        recordingButtonMobileContainer.style.display = 'none';
+        detenerCronometro();
+    })
 
     recordingButtonMobile.addEventListener('click', (e) => {
-       
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
         if(!errorOcurred){
             borrarGrabacion();
             establecerFraseALeer(fraseALeer)
@@ -736,9 +751,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let clicked = false;
     deleteBtn.addEventListener('click', () => {
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
         if(!clicked){  // Para que el usuario no borre el mismo audio multiples veces, clickeando el boton repetidas veces
             clicked = true;
-            if(!errorOcurred || errorOcurred.tipo === "AudioLength"){
+            if((!errorOcurred || errorOcurred.tipo === "AudioLength")){
                 deleteBtn.disabled = true;
                 sendBtn.disabled = true;
                 borrarGrabacion();
@@ -790,6 +809,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     sendBtn.addEventListener('click', () => {
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
         if(!clicked){ // Para que el usuario no mande el mismo audio multiples veces, clickeando el boton repetidas veces
             clicked = true;
             if(!errorOcurred){
@@ -828,6 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         fraseALeer = data.text_to_display
                         establecerFraseALeer("Cuando estés listo, pulsa el botón para empezar a grabar");
                         actualizarContador(data.num_recordings);
+                        numberRecordings = data.num_recordings;
                         borrarGrabacion();
                         detenerLoaderEnvio();
                         ocultarAudioResultado();

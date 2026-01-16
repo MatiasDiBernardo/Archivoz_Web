@@ -128,7 +128,13 @@ def grabacion(id_user):
     if request.method == 'GET':
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             text_to_display_on_front = text_ID_to_text(text_id)
+            
+            if(num_recordings_bad + num_recordings_good >= 20):
+                data = {'num_recordings': 20, #Es un conjunto para obtener la cantidad de textos leidos, sin duplicados
+                    'text_to_display': text_to_display_on_front}
 
+                return jsonify(data)
+            
             data = {'num_recordings': num_recordings_good, #Es un conjunto para obtener la cantidad de textos leidos, sin duplicados
                     'text_to_display': text_to_display_on_front}
 
@@ -138,6 +144,12 @@ def grabacion(id_user):
 
     if request.method  == 'POST':
 
+        if(num_recordings_bad + num_recordings_good >= 20):
+            data = {'num_recordings': 20, #Es un conjunto para obtener la cantidad de textos leidos, sin duplicados
+                'text_to_display': text_to_display_on_front}
+
+            return jsonify(data)
+        
         error_ocurred = request.form.get('errorOcurred') #True si fallo la grabacion, False si no
 
         # Si el usuario considero que la grabación no tiene errores (se guarda la data en el back)
