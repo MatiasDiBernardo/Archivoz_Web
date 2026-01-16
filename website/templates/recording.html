@@ -58,9 +58,9 @@
         </div>
         <!-- Este microfono se muestra en vista movil -->
         <div  class="contenedor-microfono-mobile">
-            <div class="contenedor-microfono" id="microfono-mobile">
+            <button class="contenedor-microfono" id="microfono-mobile" tabindex="0" aria-label="Iniciar grabación">
                 <img src="../static/SVG/microfono.svg" alt="">
-            </div>
+            </button>
         </div>
         <button id="detener-grabación">Detener grabación</button>
         <div id="loader-recording" class="loader-wrapper">
@@ -106,7 +106,7 @@
                 <div class="modal-header modal-error-header">
                 <h5 class="modal-title" tabindex="0" aria-label="Ocurrió un error">Error</h5>
                 <button type="button" class="close" aria-label="Cerrar descripción de error" data-modal-close>
-                    <span aria-hidden="true">&times;</span>
+                    <img src="../static/img/x.png" alt="">
                 </button>
             </div>
             <div class="modal-error-body">
@@ -134,5 +134,7 @@
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
+<script src="..\static\js\navbarRecording.js"></script>
 <script src="..\static\js\recording.js"></script>
+
 {% endblock %}

@@ -1,5 +1,7 @@
 let fraseALeer = ''
 let errorOcurred = null
+const mq = window.matchMedia('(max-width: 500px)');
+let isMobile = mq.matches;
 
 function mostrarError(error){
     // Accessible custom modal show/hide without Bootstrap so it stays inert when hidden
@@ -132,6 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Como tenemos el boton de escritorio y el boton de celular, tenemos que agarrar 2 elementos
     const recordingButtonDesktop = document.getElementsByClassName('contenedor-microfono')[0]
     const recordingButtonMobile = document.getElementsByClassName('contenedor-microfono')[1]
+    const recordingButtonMobileContainer = document.getElementsByClassName('contenedor-microfono-mobile')[0]
+
+    function handleChange(e) {
+        isMobile = e.matches;
+    }
+
+    mq.addEventListener('change', handleChange);
     
     // Inicializamos Plyr (no aparece en la pagino sino)
     const player = new Plyr('audio', {
@@ -680,6 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grabando.style.display = 'flex';
             contenedorFrases.style.border = '5px solid red';
             recordingButtonDesktop.style.display = 'none';
+            recordingButtonMobileContainer.style.display = 'none';
             document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'none';
             grabando.focus(); //Si usuario esta usando teclado, foco en grabando
             iniciarCronometro();
@@ -696,27 +706,31 @@ document.addEventListener('DOMContentLoaded', () => {
             grabando.style.display = 'none';
             contenedorFrases.style.border = 'none';
             recordingButtonDesktop.style.display = 'none';
+            recordingButtonMobileContainer.style.display = 'none';
             detenerCronometro();
         })
 
     recordingButtonMobile.addEventListener('click', (e) => {
        
-        if(!recording){ //Si no estamos grabando
-            // cambiarAnimacion(); // Alternar entre animaciones
+        if(!errorOcurred){
             borrarGrabacion();
+            establecerFraseALeer(fraseALeer)
             mediaRecorder.start(); //Empezamos a grabar
             deleteBtn.disabled = true;
             sendBtn.disabled = true;
-            cambiarIcono(e.srcElement.children[0]);
-            recording = true;
-        } else{ //Si estamos grabando
-            // cambiarAnimacion();
-            mediaRecorder.stop(); //Paramos de grabar
-            deleteBtn.disabled = false;
-            sendBtn.disabled = false;
-            deshabilitarGrabar()
-            cambiarIcono(e.srcElement.children[0]);
-            recording = false;
+
+            recordingButtonMobileContainer.style.display = 'none';
+            recordingButtonDesktop.style.display = 'none';
+            detenerGrabacion.style.display = 'block';
+            detenerGrabacion.scrollIntoView({ block: "end", behavior: "smooth" });
+            grabando.style.display = 'flex';
+            contenedorFrases.style.border = '5px solid red';
+            
+            document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'none';
+            grabando.focus(); //Si usuario esta usando teclado, foco en grabando
+            iniciarCronometro();
+        } else{
+            return mostrarError(`No puede continuar con el proceso porque ocurrió un error:\n\n${errorOcurred.mensaje}`)
         }
     });
 
@@ -752,6 +766,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     ocultarAudioResultado();
                     establecerFraseALeer("Cuando estés listo, pulsa el botón para empezar a grabar");
                     document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'flex';
+                    recordingButtonMobileContainer.style.display = 'flex';
+                    recordingButtonMobile.scrollIntoView({ block: "end", behavior: "smooth" });
+                    recordingButtonMobile.focus(); //Si usuario esta usando teclado, foco en grabar
                     recordingButtonDesktop.style.display = 'flex';
                     recordingButtonDesktop.scrollIntoView({ block: "end", behavior: "smooth" });
                     recordingButtonDesktop.focus(); //Si usuario esta usando teclado, foco en grabar
@@ -817,10 +834,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         deleteBtn.disabled = true;
                         sendBtn.disabled = true;
                         document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'flex';
+                        recordingButtonMobileContainer.style.display = 'flex';
+                        recordingButtonMobile.scrollIntoView({ block: "end", behavior: "smooth" });
+                        recordingButtonMobile.focus(); //Si usuario esta usando teclado, foco en grabar
                         recordingButtonDesktop.style.display = 'flex';
                         recordingButtonDesktop.scrollIntoView({ block: "end", behavior: "smooth" });
                         recordingButtonDesktop.focus(); //Si usuario esta usando teclado, foco en grabar
-
                     })
                     .catch(error => {
                         errorOcurred = {mensaje:'Ocurrió un error durante el envió del audio.\n\nInténtalo de nuevo.', tipo: 'AudioDeleted' }

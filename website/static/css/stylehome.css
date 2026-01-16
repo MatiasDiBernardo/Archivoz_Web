@@ -32,7 +32,6 @@
 }
 
 #hero h1 {
-  font-size: 100px;
   margin-bottom: 0 !important;
   font-family: Plus Jakarta Sans,  sans-serif;
   font-weight: 600;
@@ -42,41 +41,8 @@
 #hero p {
   position: relative;
   left: 4px;
-  font-size: 20px;
   font-family: var(--fuenteTitulos), var(--fuenteTitulosAlternativa);
   font-weight: bold;
-}
-
-@media (max-width: 600px) {
-  #hero h1 {
-    font-size: 80px;
-  }
-}
-
-@media (max-width: 500px) {
-  #hero h1 {
-    font-size: 70px;
-  }
-
-  #hero p {
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 400px) {
-  #hero h1 {
-    font-size: 50px;
-  }
-}
-
-@media (max-width: 300px) {
-  #hero h1 {
-    font-size: 47px;
-  }
-
-  #hero p {
-    font-size: 14px;
-  }
 }
 
 #hero img{
@@ -222,18 +188,6 @@
   }
 }
 
-@media (max-width: 400px) {
-  #objectives h1 {
-    font-size: 1.9rem;
-  }
-}
-
-@media (max-width: 300px) {
-  #objectives h1 {
-    font-size: 1.7rem;
-  }
-}
-
 #voice-archive {
   display: flex;
   justify-content: space-evenly;
@@ -258,7 +212,6 @@
 
 .texto-seccion {
   max-width: 1200px;
-  font-size: 20px;
   display: flex;
   line-height: 35px;
   font-family: Poppins;
@@ -334,6 +287,14 @@ iframe {
 
 .tlt {
   color: var(--colorBlanco);
+}
+
+.align-center{
+  text-align: center;
+}
+
+#container-general button{
+  font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem) !important
 }
 
 
@@ -451,15 +412,6 @@ iframe {
   }
 }
 
-@media (max-width: 520px) {
-  #objectives h1,
-  #voice-archive h1,
-  #text-to-speech h1,
-  #infosection h1 {
-    font-size: 2rem !important;
-  }
-}
-
 @media (max-width: 500px) {
   .contenedor-imagen {
     min-width: 400px;
@@ -478,23 +430,6 @@ iframe {
 
 }
 
-@media (max-width: 420px) {
-  .texto-seccion {
-    font-size: 18px;
-  }
-
-  #objectives h1,
-  #voice-archive h1,
-  #text-to-speech h1,
-  #infosection h1 {
-    font-size: 1.8rem !important;
-  }
-
-  #text-to-speech button, #voice-archive button{
-    font-size: 25px;
-  }
-
-}
 
 @media (max-width: 400px) {
 
@@ -503,40 +438,9 @@ iframe {
     min-height: 300px;
   }
 
-  #objectives h1,
-  #voice-archive h1,
-  #text-to-speech h1,
-  #infosection h1 {
-    font-size: 1.6rem !important;
-  }
-
-}
-
-@media (max-width: 350px) {
-  .texto-seccion {
-    font-size: 15px;
-  }
-
-  #text-to-speech button, #voice-archive button{
-    font-size: 22px;
-  }
-
-  #objectives h1,
-  #voice-archive h1,
-  #text-to-speech h1,
-  #infosection h1 {
-    font-size: 1.5rem !important;
-  }
 }
 
 @media (max-width: 330px) {
-  #objectives h1,
-  #voice-archive h1,
-  #text-to-speech h1,
-  #infosection h1 {
-    font-size: 1.3rem !important;
-  }
-
   #voice-archive h1 {
     padding-top: 15px;
   }
@@ -549,10 +453,4 @@ iframe {
     min-height: 250px;
   }
 
-  #objectives h1,
-  #voice-archive h1,
-  #text-to-speech h1,
-  #infosection h1 {
-    font-size: 1.2rem !important;
-  }
 }
