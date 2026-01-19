@@ -16,16 +16,16 @@
 {% block body %}
 <div class="contenedor-externo-general">
   <div class="jumbotron" id="jumbo-canvas">
-    <h1 class="display-4 text-center titleAnim">¿como participar?</h1>
-    <p class="lead text-center subAnim">Para poder donar tu voz en ArchiVoz tenes que completar un formulario.</p>
-    <button href="#" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#infoModal">Más información</button>
+    <h1 class="display-4 text-center titleAnim" tabindex="0">¿como participar?</h1>
+    <p class="lead text-center subAnim" tabindex="0">Para poder donar tu voz en ArchiVoz tenes que completar un formulario.</p>
+    <button class="btn btn-primary btn-lg">Más información</button>
   </div>
   <div id="contenedor-formularios">
     <div class="contenedor-externo">
       <div class="formulario">
         <div class="contenedor-encabezado">
           <div class="line"></div>
-          <h3>Registro</h3>
+          <h3 tabindex="0" aria-label="Formulario de registro">Registro</h3>
           <div class="line"></div>
         </div>
         <form id="signin" method="POST">
@@ -42,11 +42,11 @@
             <div id="entrada__icono">
               <i class="fa-solid fa-cake-candles"></i>
             </div>
-            <input type="number" id="edad" name="edad" placeholder="Edad" required min="1" />
+            <input type="number" id="edad" name="edad" placeholder="Edad" required min="1" aria-label="Introduzca su edad"/>
           </div>
     
           <div class="seleccion">
-            <select id="region" name="region">
+            <select id="region" name="region" tabindex="0" aria-label="Seleccione su provincia de nacimiento">
     
               <option selected disabled>Selecciona la provincia</option>
               <option value="Bs As">Buenos Aires</option>
@@ -94,14 +94,14 @@
             <div id="entrada__icono">
               <img src="../static/SVG/cruz-blanca.svg" alt="">
             </div>
-            <input type="text" id="observaciones" name="observaciones" placeholder="Observaciones*" />
+            <input type="text" id="observaciones" name="observaciones" placeholder="Observaciones*" aria-label="Introduzca observaciones relevantes sobre su voz." />
           </div>
-          <span class="aclaracion">*incluya cualquier patología o cualquier característica relevante de su voz.</span>
-          <span class="aclaracion"> Por ejemplo: si fuma desde hace varias años o si se encuentra afónico o resfriado. </span>
+          <span class="aclaracion" tabindex="0">*incluya cualquier patología o cualquier característica relevante de su voz.</span>
+          <span class="aclaracion" tabindex="0"> Por ejemplo: si fuma desde hace varias años o si se encuentra afónico o resfriado. </span>
 
           <div id="checkbox">
+            <span for="checkbox" tabindex="0">He leído y acepto los <a id="terminos-y-condiciones" href="/terminos">Términos y Condiciones</a>:</span>
             <input type="checkbox" id="demoCheckbox" name="terminos" value="1">
-            <span for="checkbox">He leído y acepto los <span id="terminos-y-condiciones">Terminos y Condiciones</span>.</span>
           </div>
     
           <div class="contenedor-boton">
@@ -150,54 +150,57 @@
   </div>
   
   <!-- Modal info -->
-  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content ">
-        <div class="modal-header bg-col">
-          <h5 class="modal-title">#Info</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+   <div class="modal fade" id="infoModal" style="display:none;" aria-hidden="true" inert>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+                <div class="modal-header bg-col">
+                <h5 class="modal-title" tabindex="0" aria-label="Información sobre participación">Info</h5>
+                <button type="button" class="close" aria-label="Cerrar información sobre participación" data-modal-close>
+                    <img src="../static/img/x.png" alt="">
+                </button>
+            </div>
+            <div class="modal-info-body bg-col">
+              <div>
+                <h6 tabindex="0">¿Por qué necesitamos estos datos?</h6>
+                <p tabindex="0">Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
+              </div>
+              <div>
+                <h6 tabindex="0">¿Se comparten estos datos? </h6>
+                <p tabindex="0">La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página.</p>
+              </div>
+              <h6 tabindex="0">Mas info en Términos y Condiciones.</h6>
+            </div>
+            <div class="modal-footer bg-col">
+            </div>
         </div>
-        <div class="modal-info-body bg-col">
-          <div>
-            <h6>¿Porqué necesitamos estos datos?</h6>
-            <p>Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
-          </div>
-          <div>
-            <h6>¿Se comparten estos datos? </h6>
-            <p>La base de datos que genera este archivo es de acceso libre bajo nuestra supervisación, esto implica que nosotros estamos dispuestos a compartir los datos si se nos garantiza un uso responsable de los mismos. El único dato que no se comparte es el mail, que es necesario para el funcionamiento interno de la página.</p>
-          </div>
-          <h6>Mas info en Terminos y Condiciones.</h6>
-        </div>
-        <div class="modal-footer bg-col">
-        </div>
-      </div>
     </div>
   </div>
+  <div id="custom-modal-backdrop" style="display:none;position: fixed;inset: 0px;background: rgba(0, 0, 0, 0.5);z-index: 1040;"></div>
   {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
   'error' %}
   <!-- Modal error -->
-  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+ <!-- Modal Error (no tiene trigger por ahora) -->
+  <div class="modal fade" id="errorModal" style="display:none;" aria-hidden="true" inert>
+        <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-        <div class="modal-header modal-error-header">
-            <h5 class="modal-title">Error</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-error-body">
-            <div>
-                <p id="error">{{ message }}</p>
+                <div class="modal-header modal-error-header">
+                <h5 class="modal-title" tabindex="0" aria-label="Ocurrió un error">Error</h5>
+                <button type="button" class="close" aria-label="Cerrar descripción de error" data-modal-close>
+                    <img src="../static/img/x.png" alt="">
+                </button>
             </div>
-            <div id="modal-error-button-container">
-                <button data-dismiss="modal" aria-label="Close">Cerrar</button>
+            <div class="modal-error-body">
+                <div style="
+                align-self: flex-start;
+                white-space: pre-line;
+                ">
+                    <p tabindex="0" id="error"> {{message}} </p>
+                </div>
+                <div>
+                    <button data-modal-close aria-label="Cerrar descripción de error">Cerrar</button>
+                </div>
             </div>
-        </div>
         </div>
     </div>
   </div>
@@ -208,5 +211,6 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="..\static\js\navbarForm.js"></script>
 <script src="..\static\js\form.js"></script>
 {% endblock %}

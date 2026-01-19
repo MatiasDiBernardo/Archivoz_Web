@@ -1,3 +1,7 @@
+html{
+  font-size: 100% !important;
+}
+
 :root {
   --colorVerdeFluor: #80f8b2;
   --colorVerdeOscuro: #0db39b;
@@ -9,6 +13,74 @@
   --fuenteTitulos: Major Mono Display;
   --fuenteTitulosAlternativa: monospace;
   --fuenteParrafos: Apple-system;
+
+}
+
+/* Headers - tamaños fluidos que se adaptan */
+h1 {
+  font-size: clamp(1.5rem, 4vw + 1rem, 2.5rem) !important;
+  line-height: 1.2 !important;
+  margin-bottom: 1rem !important;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 3vw + 0.75rem, 2rem) !important;
+  line-height: 1.3 !important;
+  margin-bottom: 0.875rem !important;
+}
+
+h3 {
+  font-size: clamp(1.125rem, 2.5vw + 0.5rem, 1.5rem) !important;
+  line-height: 1.4 !important;
+  margin-bottom: 0.75rem !important;
+}
+
+h4 {
+  font-size: clamp(1rem, 2vw + 0.25rem, 1.25rem) !important;
+  line-height: 1.4 !important;
+  margin-bottom: 0.625rem !important;
+}
+
+h5 {
+  font-size: clamp(0.938rem, 1.5vw + 0.25rem, 1.125rem) !important;
+  line-height: 1.5 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+h6 {
+  font-size: clamp(0.875rem, 1vw + 0.25rem, 1rem) !important;
+  line-height: 1.5 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Texto general - párrafos, spans, listas */
+p, span, li, input, select {
+  font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem) !important;
+  line-height: 1.6 !important;
+}
+
+@media (max-width: 360px) {
+  h1 { font-size: clamp(1.25rem, 5vw, 1.75rem) !important; }
+  h2 { font-size: clamp(1.125rem, 4vw, 1.5rem) !important; }
+  h3 { font-size: clamp(1rem, 3vw, 1.25rem) !important; }
+  p, li, span { font-size: clamp(0.813rem, 2.5vw, 0.938rem) !important; }
+}
+
+/* p, li, span {
+  font-size: 1rem !important;     
+  line-height: 1.5 !important;     
+}
+
+h1 { font-size: clamp(1.75rem, 5vw, 2.5rem) !important; }
+h2 { font-size: clamp(1.5rem, 4vw, 2rem) !important; }
+h3 { font-size: clamp(1.375rem, 3vw, 1.75rem) !important; }
+h4 { font-size: clamp(1.25rem, 2.5vw, 1.5rem) !important; }
+h5 { font-size: clamp(1.125rem, 2vw, 1.25rem) !important; }
+h6 { font-size: 1.125rem !important;  } */
+
+*:focus-visible {
+  outline: 3px solid #005eff !important;
+  outline-offset: 3px !important;
 }
 
 .scrollpos {
@@ -103,10 +175,6 @@ h1 h3 h5 p {
     var(--colorMorado) 100%
   );
   border-radius: 0 !important;
-  /*
-    height: 80vh;
-    min-height: 100px;
-  */
   padding-top: 150px;
   margin: 0;
 }
@@ -245,7 +313,7 @@ hr {
 
 .nav-conteiner__logo h4{
   position: relative;
-  top: 2px;
+  top: 6px;
 }
 
 .nav-conteiner__navegacion {
@@ -255,9 +323,9 @@ hr {
   font-family: Montserrat;
   height: 60px;
   padding-right: 50px;
-  font-size: 20px;
+  /* font-size: 20px; */
   gap: 30px;
-  z-index: 6;
+  z-index: 10000;
 }
 
 .nav-conteiner__navegacion__link {
@@ -317,6 +385,7 @@ hr {
   flex-direction: row;
   max-width: 1200px;
   width: 100%;
+  column-gap: 10px;
 }
 
 .logo {
@@ -384,6 +453,7 @@ hr {
   width: 100%;
   color: white;
   padding-top: 10px;
+  text-align: center;
 }
 
 .enlaces-footer a {
@@ -400,17 +470,40 @@ hr {
 }
 
 /*GENERAL MODAL*/
+.modal{
+  position: absolute;
+}
+
 .modal-dialog {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 1.75rem auto;
+  max-width: 600px;
 }
 
 .modal-content {
-  max-width: 500px;
+  max-width: 800px;
   border-radius: 0.5rem;
+}
+
+.modal-header .close {
+    padding: 0.7rem 1rem;
+    margin: -1rem -1rem -1rem auto;
+}
+
+.modal-header .close:focus-visible{
+  outline: 3px solid #005eff !important;
+}
+
+.modal-title{
+  margin-bottom: 0 !important;
+}
+
+.modal-header img{
+  width: 18px;
+  height: 18px;
 }
 
 /*CONTACT MODAL*/
@@ -449,9 +542,6 @@ hr {
 }
 
 @media (max-width: 400px) {
-  .nav-conteiner__navegacion__link {
-    font-size: 40px !important;
-  }
   .nav-conteiner__logo {
     padding: 0 5px;
   }
@@ -460,7 +550,6 @@ hr {
 @media (max-width: 1200px){
   .nav-conteiner__navegacion {
     padding-right: 20px;
-    font-size: 20px;
     gap: 20px;
   }
 }
@@ -468,7 +557,6 @@ hr {
 @media (max-width: 1070px){
   .nav-conteiner__navegacion {
     padding-right: 20px;
-    font-size: 20px;
     gap: 20px;
   }
 
@@ -492,7 +580,7 @@ hr {
     line-height: 60px;
     cursor: pointer;
     z-index: 6;
-    outline: none !important;
+    outline: none;
   }
 
   .nav-conteiner__navegacion {
@@ -505,7 +593,6 @@ hr {
     top: 70px;
     width: 100%;
     height: calc(100% - 60px);
-    font-size: 50px;
     overflow-y: auto;
     padding-right: 0px;
     pointer-events: none;
@@ -545,10 +632,6 @@ hr {
     height: 0vh;
   }
 
-  .form-control {
-    font-size: 1em;
-  }
-
   .audios {
     gap: 3em;
     margin-top: 5em;
@@ -568,16 +651,7 @@ hr {
     cursor: pointer;
   }
 
-  .titleAnim {
-    font-size: 7em;
-  }
-
-  .subAnim {
-    font-size: 3em;
-  }
-
   .miBtn {
-    font-size: 3em;
     width: 6em;
     height: 3em;
   }
@@ -621,8 +695,4 @@ hr {
     display: grid;
     column-gap: 40px;
   }
-
-  .nav-conteiner__logo h4 {
-    font-size: 1.3rem;
-}
 }

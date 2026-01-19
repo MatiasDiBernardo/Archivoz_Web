@@ -11,27 +11,24 @@
 {% endblock %}
 
 {% block body %}
-<div class="contenedor-externo-general">
-    <div class="invisible-div">
-        <div id="id_user">{{ id_user }}</div>
-    </div>
+<div class="contenedor-externo-general" aria-hidden="true" tabindex="-1">
     <section id="instrucciones">
         <div class="instruccion">
             <div class="grabando">
                 <span>Grabando...</span>
             </div>
-            <span id="texto-instruccion">Esta es la grabadora de Archivoz. El objetivo es donar tu voz para construir una base de datos de voces argentinas con el propósito de desarrollar tecnología para nuestro país.</span>
-            <img id="permiso" src="../static/SVG/permitir.svg" alt="">
-            <ul>
-                <li>No impostar la voz</li>
-                <li>Leer de corrido</li>
+            <span id="texto-instruccion" tabindex="0">Esta es la grabadora de Archivoz. El objetivo es donar tu voz para construir una base de datos de voces argentinas con el propósito de desarrollar tecnología para nuestro país.</span>
+            <img id="permiso" src="../static/SVG/permitir.svg" alt="Si aún no lo has hecho, por favor permita el uso del micrófono" tabindex="0">
+            <ul tabindex="-1">
+                <li tabindex="0">No impostar la voz</li>
+                <li tabindex="0">Leer de corrido</li>
             </ul>
             <div id="instruccion-controles">
-                <button id="prev">
-                    <img src="../static/SVG/flecha1.svg" alt="">
+                <button id="prev" aria-label="Regresar al paso anterior" aria-live="polite">
+                    <img src="../static/SVG/flecha1.svg" alt="" aria-hidden="true">
                 </button>
-                <button id="next">
-                    <img src="../static/SVG/flecha1.svg" alt="">
+                <button id="next" aria-label="Avanzar al siguiente paso" aria-live="polite">
+                    <img src="../static/SVG/flecha1.svg" alt="" aria-hidden="true">
                 </button>
             </div>
             <span id="temporizador">10</span>
@@ -40,30 +37,30 @@
     <section class="contenedor-contenido">
         <div class="contenedor-aux">
             <!-- Este microfono se muestra en vista desktop -->
-            <div id="microfono-desktop" class="contenedor-microfono">
-                <img src="../static/SVG/microfono.svg" alt="">
-            </div>
-            <div class="grabando">
+            <button id="microfono-desktop" class="contenedor-microfono" tabindex="0" aria-label="Iniciar grabación">
+                <img src="../static/SVG/microfono.svg" alt="Icono de microfono" aria-hidden="true">
+            </button>
+            <div class="grabando" tabindex="0" aria-label="Grabación en curso">
                 <span>Grabando...</span>
             </div>
-            <div class="cantidad-grabaciones">
+            <div class="cantidad-grabaciones" tabindex="0">
                 <span>Audios enviados</span>
                 <span class="contador">{{number_recordings or '0'}} / 20</span>
             </div>
-            <div id="cronometro">
+            <div id="cronometro" tabindex="0" aria-label="Cronómetro que marca tiempo de grabación">
                 <span>00:00</span>
             </div>
         </div>
-        <div id="contenedor-frases">
-                <div class="frases-leer">
+        <div id="contenedor-frases" tabindex="-1">
+                <p class="frases-leer" tabindex="0">
                     Cuando estés listo, pulsa el botón para empezar a grabar
-                </div>
+                </p>
         </div>
         <!-- Este microfono se muestra en vista movil -->
         <div  class="contenedor-microfono-mobile">
-            <div class="contenedor-microfono" id="microfono-mobile">
+            <button class="contenedor-microfono" id="microfono-mobile" tabindex="0" aria-label="Iniciar grabación">
                 <img src="../static/SVG/microfono.svg" alt="">
-            </div>
+            </button>
         </div>
         <button id="detener-grabación">Detener grabación</button>
         <div id="loader-recording" class="loader-wrapper">
@@ -72,13 +69,13 @@
         </div>
         <div class = "contenedor-grabacion">
             <div class="sub-contenedor-grabacion">
-                <h2 class="nombre-texto">¿Querés escuchar tu grabación?</h2>
+                <h2 class="nombre-texto" aria-label="¿Querés escuchar tu grabación? Pulsa el botón de reproducir" tabindex="0">¿Querés escuchar tu grabación?</h2>
                 <div class="contenedor-audio">
                     <audio controls></audio>
                 </div>
                 <div class="contenedor-botones">
                     <div class = "borrarGrabacion">
-                        <button id="borrarGrabacion" class="borrar  boton-grabacion">
+                        <button id="borrarGrabacion" class="borrar  boton-grabacion" aria-label="Borrar audio">
                             <img src="../static/SVG/basura.svg" alt="">
                             <span>Borrar</span>
                         </button>
@@ -88,7 +85,7 @@
                         <span class="contador">{{number_recordings}} / 20</span>
                     </div>
                     <div class = "enviarGrabacion">
-                        <button id="enviarGrabacion" class="enviar  boton-grabacion">
+                        <button id="enviarGrabacion" class="enviar  boton-grabacion" aria-label="Enviar audio">
                             <div id="texto-envio">
                                 <img src="../static/SVG/tilde.svg" alt="">
                                 <span>Enviar</span>
@@ -103,32 +100,33 @@
         </div>
     </section>
     <!-- Modal Error (no tiene trigger por ahora) -->
-  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="errorModal" style="display:none;" aria-hidden="true" inert>
+        <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-        <div class="modal-header modal-error-header">
-            <h5 class="modal-title">Error</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-error-body">
-            <div style="
-            align-self: flex-start;
-            white-space: pre-line;
-        ">
-                <p>Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
+                <div class="modal-header modal-error-header">
+                <h5 class="modal-title" tabindex="0" aria-label="Ocurrió un error">Error</h5>
+                <button type="button" class="close" aria-label="Cerrar descripción de error" data-modal-close>
+                    <img src="../static/img/x.png" alt="">
+                </button>
             </div>
-            <div>
-                <button data-dismiss="modal" aria-label="Close">Cerrar</button>
+            <div class="modal-error-body">
+                <div style="
+                align-self: flex-start;
+                white-space: pre-line;
+                overflow-y: auto;
+                overflow-x: hidden;
+                height: 400px;
+                ">
+                    <p tabindex="0">Porque queremos hacer un análisis sonoro de las voces y poder vincular características acústicas con parámetros demográficos como la edad o la región. </p>
+                </div>
+                <div>
+                    <button data-modal-close aria-label="Cerrar descripción de error">Cerrar</button>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-        </div>
         </div>
     </div>
   </div>
+  <div id="custom-modal-backdrop" style="display:none;position: fixed;inset: 0px;background: rgba(0, 0, 0, 0.5);z-index: 1040;"></div>
 </div>
 
 {% endblock %}
@@ -136,5 +134,7 @@
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
+<script src="..\static\js\navbarRecording.js"></script>
 <script src="..\static\js\recording.js"></script>
+
 {% endblock %}

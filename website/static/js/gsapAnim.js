@@ -1,31 +1,23 @@
+
 $(document).ready(function () {
   var title = $(".titleAnim");
   var sub = $(".subAnim");
-  var comenzar = $(".miBtn");
 
-  //tooltip
-  $('[data-toggle="tooltip"]').tooltip();
-
-  //Modal
-  var tl = gsap.timeline({});
-  tl.fromTo(
-    title,
-    { y: 1000, opacity: -2000 },
-    { y: 0, opacity: 100, ease: "back.out(0.5)", duration: 1.1 }
-  )
-    .fromTo(
-      sub,
+  if(title.length && sub.length){
+    $('[data-toggle="tooltip"]').tooltip();
+    var tl = gsap.timeline({});
+    tl.fromTo(
+      title,
       { y: 1000, opacity: -2000 },
-      { y: 0, opacity: 100, ease: "back.out(0.5)", duration: 1.1 },
-      ">-0.9"
+      { y: 0, opacity: 100, ease: "back.out(0.5)", duration: 1.1 }
     )
-    .fromTo(
-      comenzar,
-      { y: 1000, opacity: -2000 },
-      { y: 0, opacity: 100, ease: "back.out(0.5)", duration: 1.1 },
-      ">-0.9"
-    );
-
+      .fromTo(
+        sub,
+        { y: 1000, opacity: -2000 },
+        { y: 0, opacity: 100, ease: "back.out(0.5)", duration: 1.1 },
+        ">-0.9"
+      )
+  }
   //   var infoContainer = $(".info-container");
   //   var infoContainer2 = $(".svg-over");
   //   var info = $("#info");

@@ -1,18 +1,82 @@
 let fraseALeer = ''
 let errorOcurred = null
+const mq = window.matchMedia('(max-width: 500px)');
+let isMobile = mq.matches;
+let numberRecordings = 0;
 
 function mostrarError(error){
-    // Warnings when audio is not good
-    let modalElement = document.getElementById("errorModal");
+    // Accessible custom modal show/hide without Bootstrap so it stays inert when hidden
+    const modalElement = document.getElementById("errorModal");
+    if (!modalElement) return;
 
     // Get the paragraph element within the modal body by its class
-    let paragraphElement = modalElement.querySelector(".modal-error-body p");
+    const paragraphElement = modalElement.querySelector(".modal-error-body p");
+    if (paragraphElement) paragraphElement.textContent = error;
 
-    // Update the content of the paragraph
-    paragraphElement.textContent = error;
+    // Keep track of previously focused element so we can restore focus after closing
+    const previouslyFocused = document.activeElement;
 
-    // Show the modal
-    $(modalElement).modal('show');
+    // Elements to make inert while modal is open
+    const contenedorGeneralDeGrabacion = document.getElementsByClassName('contenedor-contenido')[0];
+    const instrucciones = document.getElementById('instrucciones');
+    const navbar = document.querySelector('.nav-conteiner');
+    const footer = document.querySelector('.footer');
+
+    // Aparecer overlay
+    let backdrop = document.getElementById('custom-modal-backdrop');
+    backdrop.style.display = 'block';
+
+    // Hacer modal visible e interactuable
+    modalElement.style.display = 'block';
+    modalElement.classList.add('show');
+    modalElement.style.zIndex = '1050';
+    modalElement.inert = false;
+    modalElement.setAttribute('aria-hidden', 'false');
+
+    const errorTitle = modalElement.querySelector('.modal-title');
+    errorTitle.focus();
+
+    if (contenedorGeneralDeGrabacion) contenedorGeneralDeGrabacion.inert = true;
+    if (instrucciones && instrucciones.style.display != 'none') instrucciones.inert = true; 
+    if (navbar) navbar.inert = true;
+    if (footer) footer.inert = true;
+
+
+    
+
+    // Selecciono botones de cierre
+    const closeButton = modalElement.querySelectorAll('[data-modal-close]');
+
+    // Cerrar el modal restaurando inertness y visibilidad
+    function closeModal() {
+        modalElement.style.display = 'none';
+        modalElement.classList.remove('show');
+        modalElement.inert = true;
+        modalElement.setAttribute('aria-hidden', 'true');
+        backdrop.style.display = 'none';
+
+        if(contenedorGeneralDeGrabacion && instrucciones.style.display == 'none'){
+            contenedorGeneralDeGrabacion.inert = false;
+        }
+        if (instrucciones && instrucciones.style.display != 'none') instrucciones.inert = false;
+        if (navbar) navbar.inert = false;
+        if (footer) footer.inert = false;
+
+        if (previouslyFocused) previouslyFocused.focus();
+
+        if (closeButton[0]) closeButton[0].removeEventListener('click', closeModal);
+        if (closeButton[1]) closeButton[1].removeEventListener('click', closeModal);
+
+        document.removeEventListener('keydown', keyHandler);
+    }
+
+    function keyHandler(e) {
+        if (e.key === 'Escape') closeModal();
+    }
+
+    if (closeButton[0]) closeButton[0].addEventListener('click', closeModal);
+    if (closeButton[1]) closeButton[1].addEventListener('click', closeModal);
+    document.addEventListener('keydown', keyHandler);
 }
 
 // Función para obtener datos del usuario desde el backend
@@ -31,6 +95,7 @@ function obtenerDatos(idUsuario) {
         })
         .then(data => {
             // console.log('Datos obtenidos:', data);
+            numberRecordings = data.num_recordings;
             return data;
         })
         .catch(error => {
@@ -38,13 +103,22 @@ function obtenerDatos(idUsuario) {
         });
 }
 
+let ultimaInteraccionFueConTeclado = false; 
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Tab" || e.key === "Enter" || e.key === " ") {
+    ultimaInteraccionFueConTeclado = true;
+  }
+});
+
+document.addEventListener("mousedown", () => {
+  ultimaInteraccionFueConTeclado = false;
+});
+
 // Evento que se dispara cuando el contenido HTML se ha cargado completamente
 document.addEventListener('DOMContentLoaded', () => {
-    // Obtener el ID de usuario del elemento HTML
-    // Esta es la solucion que se me ocurrio para no depender de una
-    // funcion asincrona
-    const id_user = document.getElementById('id_user').textContent;
-    // console.log('ID de usuario:', id_user);
+    const segmentos = window.location.pathname.split('/')
+    const id_user = segmentos[segmentos.length - 1];
 
     
     // Variables de grabación
@@ -62,12 +136,106 @@ document.addEventListener('DOMContentLoaded', () => {
     // Como tenemos el boton de escritorio y el boton de celular, tenemos que agarrar 2 elementos
     const recordingButtonDesktop = document.getElementsByClassName('contenedor-microfono')[0]
     const recordingButtonMobile = document.getElementsByClassName('contenedor-microfono')[1]
+    const recordingButtonMobileContainer = document.getElementsByClassName('contenedor-microfono-mobile')[0]
+
+    function handleChange(e) {
+        isMobile = e.matches;
+    }
+
+    mq.addEventListener('change', handleChange);
     
     // Inicializamos Plyr (no aparece en la pagino sino)
     const player = new Plyr('audio', {
         controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
         invertTime: false
     });
+
+    // Aseguramos que el contenedor sea no-focusable por teclado
+    if (player && player.elements && player.elements.container) {
+        player.elements.container.setAttribute('tabindex', '-1');
+    }
+
+    // // Fijar aria-label del botón de reproducir de forma robusta.
+    // // Plyr puede recrear controles internamente, por lo que usamos
+    // // el evento 'ready' y además manejadores 'play'/'pause'.
+    function setPlayButtonLabel(label) {
+        try {
+            const controls = player && player.elements && player.elements.controls;
+            if (!controls) return;
+            const playBtn = controls.querySelector('.plyr__control');
+            if (playBtn) playBtn.setAttribute('aria-label', label);
+        } catch (e) {
+            // silencioso en caso de error
+        }
+    }
+
+    player.on && player.on('ready', () => {
+        setPlayButtonLabel('Reproducir');
+
+        // MutationObserver de respaldo: si otra cosa intenta sobreescribir
+        // el aria-label lo restauramos según el estado del reproductor.
+        try {
+            const controls = player.elements && player.elements.controls;
+            const playBtn = controls && controls.querySelector('.plyr__control');
+            if (playBtn) {
+                const mo = new MutationObserver(mutations => {
+                    mutations.forEach(m => {
+                        if (m.type === 'attributes' && m.attributeName === 'aria-label') {
+                            const expected = player.playing ? 'Pausar' : 'Reproducir';
+                            if (playBtn.getAttribute('aria-label') !== expected) {
+                                playBtn.setAttribute('aria-label', expected);
+                            }
+                        }
+                    });
+                });
+                mo.observe(playBtn, { attributes: true, attributeFilter: ['aria-label'] });
+                // Guardar referencia por si necesitamos desconectar en el futuro
+                player._playButtonObserver = mo;
+            }
+        } catch (e) {}
+    });
+
+    // Mantener aria-label sincronizado con eventos de reproducción
+    player.on && player.on('play', () => setPlayButtonLabel('Pausar'));
+    player.on && player.on('pause', () => setPlayButtonLabel('Reproducir'));
+
+    // Hacer que la barra de progreso y el control de volumen no sean seleccionables por teclado
+    (function setNonFocusableControls(){
+        try{
+            const controls = player.elements && player.elements.controls;
+            if (!controls) return;
+            const progress = controls.querySelector('.plyr__progress');
+            if (progress) {
+                progress.setAttribute('tabindex', '-1');
+                progress.setAttribute('aria-hidden', 'true');
+            }
+            const volume = controls.querySelector('.plyr__volume');
+            if (volume) {
+                volume.setAttribute('tabindex', '-1');
+                volume.setAttribute('aria-hidden', 'true');
+            }
+            const volumeInput = controls.querySelector('input[type="range"]');
+            if (volumeInput) volumeInput.setAttribute('tabindex', '-1');
+        } catch(e){}
+    })();
+
+    // Gestionar aria-label del botón de silenciar/activar sonido
+    function setMuteButtonLabel() {
+        try {
+            const controls = player && player.elements && player.elements.controls;
+            if (!controls) return;
+            const muteBtn = controls.querySelector('.plyr__control--mute, button[data-plyr="mute"], button[aria-label*="Mute"], button[aria-label*="Silenciar"]');
+            if (!muteBtn) return;
+            const label = player && player.muted ? 'Activar sonido' : 'Silenciar sonido';
+            muteBtn.setAttribute('aria-label', label);
+        } catch (e) {}
+    }
+
+    player.on && player.on('ready', setMuteButtonLabel);
+    player.on && player.on('volumechange', setMuteButtonLabel);
+    
+    
+
 
     // Elementos de interfaz de usuario
     let counter = document.getElementsByClassName('contador'); //contadores
@@ -90,7 +258,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let instruccionLista = document.querySelector('.instruccion ul');
     let instruccionGrabando = document.getElementsByClassName('grabando')[0];
     let instruccionPermiso = document.getElementById('permiso');
-
+    let contenedorGeneralDeGrabacion = document.getElementsByClassName('contenedor-contenido')[0];
+    let queresEscucharTuGrabacion = document.getElementsByClassName('nombre-texto')[0];
+    
+    // Al cargar la página, el contenedor general de grabación está inerte (no puede ser seleccionado navegando con teclado)
+    contenedorGeneralDeGrabacion.inert = true;
+    
     // Backend var
     var pathnameURL = window.location.pathname;
 
@@ -100,9 +273,9 @@ document.addEventListener('DOMContentLoaded', () => {
         "Permitenos el acceso a tu micrófono para poder grabar tu voz.",
         "Trata de:",
         "Si te trabas o te equivocas leyendo el texto, borra la grabación.",
-        "En el siguiente paso vas a grabar 10 segundos de ruido de fondo para calibrar audio. Quedate en silencio y espera a que finalice la grabación.",
-        "Quedate en silencio.",
-        "En el siguiente paso vas a grabar 10 segundos de tu voz para calibrar audio. Prepárate para leer en voz alta el texto que verás. No importa si no llegas a leer todo.",        
+        "En el siguiente paso vas a grabar 10 segundos de ruido de fondo para calibrar audio. Quedate en silencio y esperá a que finalice la grabación.",
+        "Espera en silencio.",
+        "En el siguiente paso vas a grabar 10 segundos de tu voz para calibrar audio. Prepárate para leer en voz alta el texto que verás. No importa si no llegás a leer todo.",        
         "Este es un texto de prueba que se utiliza para verificar si hay ruido en tu micrófono."
     ];
 
@@ -123,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loaderGrabacion.style.display = 'none';
         grabacionResultado.style.display = 'flex';
         grabacionResultado.scrollIntoView({ block: "end", behavior: "smooth" });
+        queresEscucharTuGrabacion.focus(); //Si usuario esta usando teclado, foco en escuchar grabacion
     }
 
     function iniciarLoaderEnvio(){
@@ -144,8 +318,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function actualizarContador(numRecordings) {
-        counter[0].innerHTML = `${numRecordings} / 20`
-        counter[1].innerHTML = `${numRecordings} / 20`
+        if(numRecordings < 20){
+            counter[0].innerHTML = `${numRecordings} / 20`
+            counter[1].innerHTML = `${numRecordings} / 20`
+        }
     }
 
     function iniciarTemporizador(){
@@ -226,7 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sampleClipCountThreshold = 3;
         //isClipping = dataArray.some(sample => Math.abs(sample) >= clippíngThreshold);
         let clipCount = dataArray.filter(sample => Math.abs(sample) >= clippíngThreshold).length;
-        console.log(clipCount);
         if (clipCount >= sampleClipCountThreshold) {
             if (instruccionActual == 5) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, busque un lugar silencioso y permanezca en silencio durante la grabación del sonido ambiente.", tipo: "ClippingControl"};
             if (instruccionActual == 7) errorOcurred = {mensaje: "El audio grabado detectó un exceso de volumen. Por favor, intente hablar un poco más bajo o más lejos del micrófono.", tipo: "ClippingControl"};
@@ -298,8 +473,10 @@ document.addEventListener('DOMContentLoaded', () => {
             cambiarInstruccion();
         } else{
             document.getElementById('instrucciones').style.display = 'none';
+            contenedorGeneralDeGrabacion.inert = false;
             audioType = 'recording';
             errorOcurred = null;
+            fraseLeerElement.focus(); //Si usuario esta usando teclado, foco en instrucción previa a grabar
         }
         // console.log('fin SNR');
     }
@@ -428,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(instruccionActual == -1) return;
         instruccionFrase.innerHTML = instrucciones[instruccionActual]
         
+        
         if(instruccionActual == 0){
             prevInstruction.style.visibility = 'hidden';
         } else{
@@ -440,11 +618,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 errorOcurred = { mensaje: 'Permiso de micrófono denegado.\n\nPermita su uso y recargue la página.', tipo: err.name };
                 mostrarError(mensaje);
             })
-        
             instruccionFrase.style.display = 'none';
             instruccionPermiso.style.display = 'block';
+            instruccionPermiso.focus();
         } else{
             instruccionFrase.style.display = 'block';
+            instruccionFrase.focus()
             instruccionPermiso.style.display = 'none';
         }
 
@@ -452,16 +631,23 @@ document.addEventListener('DOMContentLoaded', () => {
             instruccionLista.style.display = 'block';
             instruccionFrase.style.flex = '0';
             instruccionFrase.style.alignSelf = 'start';
+            instruccionFrase.focus();
+            
         } else{
             instruccionLista.style.display = 'none';
             instruccionFrase.style.flex = '1';
             instruccionFrase.style.alignSelf = 'center';
         }
 
+        if(instruccionActual == 3){
+            instruccionFrase.focus();
+        }
+
         if(instruccionActual == 4 || instruccionActual == 6){
             instruccionGrabando.style.display = 'none'
             contenedorInstrucciones.style.border = 'none';
             instruccionesControl.style.display = 'flex';
+            instruccionFrase.focus();
         }
 
         if(instruccionActual == 4){
@@ -479,6 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
             borrarGrabacion();
             mediaRecorder.start();
             iniciarTemporizador();
+            instruccionFrase.focus();
         }
     }
     
@@ -494,6 +681,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let recording = false;
     recordingButtonDesktop.addEventListener('click', (e) => {
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
         if(!errorOcurred){
             borrarGrabacion();
             establecerFraseALeer(fraseALeer)
@@ -506,7 +697,9 @@ document.addEventListener('DOMContentLoaded', () => {
             grabando.style.display = 'flex';
             contenedorFrases.style.border = '5px solid red';
             recordingButtonDesktop.style.display = 'none';
+            recordingButtonMobileContainer.style.display = 'none';
             document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'none';
+            grabando.focus(); //Si usuario esta usando teclado, foco en grabando
             iniciarCronometro();
         } else{
             return mostrarError(`No puede continuar con el proceso porque ocurrió un error:\n\n${errorOcurred.mensaje}`)
@@ -514,42 +707,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     detenerGrabacion.addEventListener('click', (e) => {
-            mediaRecorder.stop(); //Paramos de grabar
-            deleteBtn.disabled = false;
-            sendBtn.disabled = false;
-            detenerGrabacion.style.display = 'none';
-            grabando.style.display = 'none';
-            contenedorFrases.style.border = 'none';
-            recordingButtonDesktop.style.display = 'none';
-            detenerCronometro();
-        })
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
+        mediaRecorder.stop(); //Paramos de grabar
+        deleteBtn.disabled = false;
+        sendBtn.disabled = false;
+        detenerGrabacion.style.display = 'none';
+        grabando.style.display = 'none';
+        contenedorFrases.style.border = 'none';
+        recordingButtonDesktop.style.display = 'none';
+        recordingButtonMobileContainer.style.display = 'none';
+        detenerCronometro();
+    })
 
     recordingButtonMobile.addEventListener('click', (e) => {
-       
-        if(!recording){ //Si no estamos grabando
-            // cambiarAnimacion(); // Alternar entre animaciones
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
+        if(!errorOcurred){
             borrarGrabacion();
+            establecerFraseALeer(fraseALeer)
             mediaRecorder.start(); //Empezamos a grabar
             deleteBtn.disabled = true;
             sendBtn.disabled = true;
-            cambiarIcono(e.srcElement.children[0]);
-            recording = true;
-        } else{ //Si estamos grabando
-            // cambiarAnimacion();
-            mediaRecorder.stop(); //Paramos de grabar
-            deleteBtn.disabled = false;
-            sendBtn.disabled = false;
-            deshabilitarGrabar()
-            cambiarIcono(e.srcElement.children[0]);
-            recording = false;
+
+            recordingButtonMobileContainer.style.display = 'none';
+            recordingButtonDesktop.style.display = 'none';
+            detenerGrabacion.style.display = 'block';
+            detenerGrabacion.scrollIntoView({ block: "end", behavior: "smooth" });
+            grabando.style.display = 'flex';
+            contenedorFrases.style.border = '5px solid red';
+            
+            document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'none';
+            grabando.focus(); //Si usuario esta usando teclado, foco en grabando
+            iniciarCronometro();
+        } else{
+            return mostrarError(`No puede continuar con el proceso porque ocurrió un error:\n\n${errorOcurred.mensaje}`)
         }
     });
 
     let clicked = false;
     deleteBtn.addEventListener('click', () => {
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
         if(!clicked){  // Para que el usuario no borre el mismo audio multiples veces, clickeando el boton repetidas veces
             clicked = true;
-            if(!errorOcurred || errorOcurred.tipo === "AudioLength"){
+            if((!errorOcurred || errorOcurred.tipo === "AudioLength")){
                 deleteBtn.disabled = true;
                 sendBtn.disabled = true;
                 borrarGrabacion();
@@ -577,8 +785,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     ocultarAudioResultado();
                     establecerFraseALeer("Cuando estés listo, pulsa el botón para empezar a grabar");
                     document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'flex';
+                    recordingButtonMobileContainer.style.display = 'flex';
+                    recordingButtonMobile.scrollIntoView({ block: "end", behavior: "smooth" });
+                    recordingButtonMobile.focus(); //Si usuario esta usando teclado, foco en grabar
                     recordingButtonDesktop.style.display = 'flex';
                     recordingButtonDesktop.scrollIntoView({ block: "end", behavior: "smooth" });
+                    recordingButtonDesktop.focus(); //Si usuario esta usando teclado, foco en grabar
                 })
                 .catch(error => {
                     errorOcurred = {mensaje:'Ocurrió un error durante el borrado del audio.\n\nInténtalo de nuevo.', tipo: 'AudioDeleted' }
@@ -597,6 +809,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     sendBtn.addEventListener('click', () => {
+        if(numberRecordings >= 20){
+            return mostrarError("Funcionalidad deshabilitada: ya no hay más textos para leer, gracias por su participación!");
+        }
+
         if(!clicked){ // Para que el usuario no mande el mismo audio multiples veces, clickeando el boton repetidas veces
             clicked = true;
             if(!errorOcurred){
@@ -615,7 +831,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 form.append('file', audioBlob2, 'data.webm');
                 form.append("duration", audio_duration);
                 form.append("errorOcurred", "False");  
-            
+
                 iniciarLoaderEnvio();
                 fetch(pathnameURL, {
                         method: 'POST',
@@ -635,14 +851,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         fraseALeer = data.text_to_display
                         establecerFraseALeer("Cuando estés listo, pulsa el botón para empezar a grabar");
                         actualizarContador(data.num_recordings);
+                        numberRecordings = data.num_recordings;
                         borrarGrabacion();
                         detenerLoaderEnvio();
                         ocultarAudioResultado();
                         deleteBtn.disabled = true;
                         sendBtn.disabled = true;
                         document.getElementsByClassName('cantidad-grabaciones')[0].style.display = 'flex';
+                        recordingButtonMobileContainer.style.display = 'flex';
+                        recordingButtonMobile.scrollIntoView({ block: "end", behavior: "smooth" });
+                        recordingButtonMobile.focus(); //Si usuario esta usando teclado, foco en grabar
                         recordingButtonDesktop.style.display = 'flex';
                         recordingButtonDesktop.scrollIntoView({ block: "end", behavior: "smooth" });
+                        recordingButtonDesktop.focus(); //Si usuario esta usando teclado, foco en grabar
                     })
                     .catch(error => {
                         errorOcurred = {mensaje:'Ocurrió un error durante el envió del audio.\n\nInténtalo de nuevo.', tipo: 'AudioDeleted' }
